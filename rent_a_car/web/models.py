@@ -53,3 +53,13 @@ class Vehicle(models.Model):
     # Insurense Details 
     insurense_value = models.DecimalField('Insurense Value', default=0, max_digits=14, decimal_places=2)
     type_of_insurense = models.CharField('Type of Insurense', null=True, blank=True, max_length=20)
+
+
+    def __unicode__(self):
+
+        return str(self.vehicle_no)
+
+    class Meta:
+
+        verbose_name = 'Vehicle'
+        verbose_name_plural = 'Vehicle'
