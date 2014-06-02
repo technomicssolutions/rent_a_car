@@ -109,6 +109,33 @@ function AddClientController($scope, $http, $location) {
 	$scope.add_client = function() {
 		$scope.is_valid = $scope.validate_client_form();  
 		console.log($scope.is_valid);
+		if ($scope.is_valid) {
+			$scope.validation_error = '';
+			params = { 
+                'client_details': angular.toJson($scope.client),
+                "csrfmiddlewaretoken" : $scope.csrf_token
+            }
+            $http({
+                method : 'post',
+                url : "/add_client/",
+                data : $.param(params),
+                headers : {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                }
+            }).success(function(data, status) {
+                
+                if (data.result == 'error'){
+                    $scope.error_flag=true;
+                    $scope.message = data.message;
+                } else {
+                    $scope.error_flag=false;
+                    $scope.message = '';
+                    document.location.href ='/clients/';
+                }
+            }).error(function(data, status){
+                console.log(data);
+            });
+		}
 	}
 
 }
