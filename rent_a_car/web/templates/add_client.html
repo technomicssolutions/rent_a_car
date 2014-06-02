@@ -6,7 +6,6 @@
 {% block controller %}ng-controller="AddClientController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
 {% block content %}
-
 	<div id="main-title">
 		<div class="alert alert-info" align="Center"><h4>Add Client</h4></div>
 	</div>
@@ -47,7 +46,8 @@
 							<label for="home_address">Home Address</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="home_address" ng-model="client.home_address" id="home_address" >
+							<textarea name="home_address" ng-model="client.home_address"></textarea>
+							
 						</div>
 					</div>
 					
@@ -55,7 +55,7 @@
 
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="home_ph_no">Tel No.</label>
+							<label for="home_ph_no">Tel No.(Home)</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="home_ph_no" ng-model="client.home_ph_no" id="home_ph_no"/>
@@ -73,7 +73,7 @@
 
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="work_ph_no">Tel No.</label>
+							<label for="work_ph_no">Tel No.(Work)</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="work_ph_no" ng-model="client.work_ph_no">
@@ -100,7 +100,7 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="date_of_license_issue">Date of License Issue</label>
+							<label for="date_of_license_issue">Date of License Issued</label>
 						</div>
 						
 						<div class="forminput" >
@@ -153,7 +153,7 @@
 				<div  align="Center">
 					<div class="buttons">
 						<p class="error_message"> [[validation_error]] </p>
-						<input type="button" value="Submit" ng-click="save_purchase();" class="btn btn-info">
+						<input type="button" value="Submit" ng-click="add_client();" class="btn btn-info">
 						<a href="{% url 'home' %}"><input type="button" value="Cancel" class="btn btn-info"></a>
 					</div>
 				</div>	

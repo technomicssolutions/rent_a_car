@@ -37,5 +37,23 @@ class Logout(View):
         logout(request)
         return HttpResponseRedirect(reverse('home'))
 
+class AddClient(View):
+
+    def get(self, request, *args, **kwargs):
+
+        context = {}
+        print 'hiiii'
+        return render(request, 'add_client.html', context)
+
+class ClientList(View):
+
+    def get(self, request, *args, **kwargs):
+
+        clients = Client.objects.all().order_by('id')
+
+        context = {
+            'clients': clients,
+        }
+        return render(request, 'clients.html', context)
 
 
