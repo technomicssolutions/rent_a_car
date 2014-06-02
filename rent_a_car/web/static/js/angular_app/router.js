@@ -1,4 +1,4 @@
-angular.module('smartbook.router', ['ngRoute']).config(function($routeProvider, $locationProvider) {
+angular.module('rent_a_car.router', ['ngRoute']).config(function($routeProvider, $locationProvider) {
     $routeProvider.when('/blog', {
         templateUrl: 'blog/blog.html',
         controller: BlogController,

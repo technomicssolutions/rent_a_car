@@ -2,7 +2,7 @@
 
 /* Directives */
 
-var directives = angular.module('smartbook.directives', []);
+var directives = angular.module('rent_a_car.directives', []);
 
 directives.directive('appVersion', [ 'version', function(version)
 {

@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('smartbook', ['smartbook.services', 'smartbook.directives']);
+var app = angular.module('rent_a_car', ['rent_a_car.services', 'rent_a_car.directives']);
 
 app.config(function($interpolateProvider)
 {
