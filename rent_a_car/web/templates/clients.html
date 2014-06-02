@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block body_id %}clients{% endblock %}
+
+{% block title %}Clients{% endblock title %}
+
+{% block content %}
+
+	<div class="top_section">
+		
+		<a class="btn btn-info" href="{% url 'add_client' %}">New Client</a> 
+	</div>
+	{% if clients|length > 0 %}
+		<table border="0" class="table_list" cellspacing="0">
+			<tr>
+						
+				<th> Name </th>
+				<th> House Name</th>
+				<th> Street </th>
+				<th> City </th>
+				<th> District </th>
+				<th> Pincode </th>
+				<th> Mobile </th>
+				<th> Phone </th>
+				<th> Email </th>
+
+			</tr>
+		</table>
+	{% else %}
+		<div class="message"><p>No Clients</p></div>
+	{% endif %}
+
+{% endblock content %}
