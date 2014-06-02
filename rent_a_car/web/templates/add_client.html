@@ -95,7 +95,13 @@
 						</div>
 						
 						<div class="forminput" >
-							<input type="text" name="license_type" ng-model="client.license_type"/>
+							<!-- <input type="text" name="license_type" ng-model="client.license_type"/> -->
+							<select name="license_type" ng-model="client.license_type">
+								<option value=''>Select</option>
+								<option value="automatic">Automatic</option>
+								<option value='manual'>Manual</option>
+								<option value='heavy'>Heavy</option>
+							</select>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -124,6 +130,8 @@
 						<div class="forminput">
 							<input type="text" name="expiry_date" ng-model="client.expiry_date" id="expiry_date" />
 						</div>
+					</div>
+					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="passport_no">Passport No.</label>
 						</div>
