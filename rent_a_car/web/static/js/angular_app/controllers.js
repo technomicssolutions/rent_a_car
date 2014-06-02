@@ -53,6 +53,10 @@ function AddClientController($scope, $http, $location) {
 	}
 
 	$scope.validate_client_form = function() {
+		$scope.client.dob = $$('#dob')[0].get('value');
+		$scope.client.date_of_license_issue = $$('#date_of_license_issue')[0].get('value');
+		$scope.client.expiry_date = $$('#expiry_date')[0].get('value');
+		$scope.client.passport_issued_date = $$('#passport_issued_date')[0].get('value');
 		if ($scope.client.name == '' || $scope.client.name == undefined) {
 			$scope.validation_error = 'Please enter the name of the client';
 			return false;
