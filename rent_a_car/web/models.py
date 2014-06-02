@@ -1,3 +1,55 @@
 from django.db import models
 
 # Create your models here.
+
+
+class Client(models.Model):
+
+    # Personal Details
+    name = models.CharField('Name of the Client', max_length=75, null=True, blank=True)
+    address = models.TextField('Address', null=True, blank=True)
+    nationality = models.CharField('Nationality', null=True, blank=True, max_length=50)
+    dob = models.DateField('Date of Birth', null=True, blank=True)
+    phone_number = models.CharField('Phone number', max_length=15, null=True, blank=True, unique=True)
+    work_address = models.TextField('Work Address', null=True, blank=True)
+    work_ph_no = models.CharField('Phone no.(Work)', max_length=15, null=True, blank=True)
+
+    # License Details
+    license_no = models.CharField('License No.', max_length=30, null=True, blank=True)
+    license_type = models.CharField('License Type', max_length=40, null=True, blank=True)
+    date_of_issue = models.DateField('Date of Issue', null=True, blank=True)
+    issued_by = models.CharField('Issued By', null=True, blank=True, max_length=50)
+    expiry_license_date = models.DateField('Expiry Date', null=True, blank=True)
+
+    # Passport Details
+    passport_no = models.CharField('Passport Number', unique=True, max_length=30)
+    date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
+    place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
+
+    # Rent Details
+    deposit_amount = models.DecimalField('Deposit Amount', default=0, max_digits=14, decimal_places=2)
+    rent = models.DecimalField('Rent Amount', default=0, max_digits=14, decimal_places=2)
+    paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
+    balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
+
+
+    def __unicode__(self):
+
+        return self.name
+
+    class Meta:
+
+        verbose_name = 'Client'
+        verbose_name_plural = 'Client'
+
+class Vehicle(models.Model):
+
+    vehicle_no = models.CharField('Vehicle No', null=True, blank=True, max_length=20)
+    plate_no = models.CharField('Plate No', null=True, blank=True, max_length=20)
+    vehicle_make = models.CharField('Vehicle Make', null=True, blank=True, max_length=25)
+    vehicle_type = models.CharField('Vehicle Type', null=True, blank=True, max_length=25)
+    vehicle_color = models.CharField('Vehicle Color', null=True, blank=True, max_length=25)
+
+    # Insurense Details 
+    insurense_value = models.DecimalField('Insurense Value', default=0, max_digits=14, decimal_places=2)
+    type_of_insurense = models.CharField('Type of Insurense', null=True, blank=True, max_length=20)
