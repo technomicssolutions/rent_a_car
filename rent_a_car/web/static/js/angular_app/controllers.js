@@ -154,6 +154,16 @@ function AddClientController($scope, $http, $location) {
 
 function AddVehicleController($scope, $http, $location) {
 
+	$scope.vehicle = {
+		'vehicle_no': '',
+		'plate_no': '',
+		'condition': '',
+		'vehicle_type': '',
+		'color': '',
+		'meter_reading': '',
+		'insurance_type': '',
+		'insurance_value': '',
+	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 		get_vehicle_types($scope, $http);
@@ -209,6 +219,41 @@ function AddVehicleController($scope, $http, $location) {
             }).error(function(data, status){
                 $scope.message = data.message;
             });
+		}
+	}
+	$scope.validate_vehicle_form = function() {
+		if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
+			$scope.validation_error = 'Please enter Vehicle No.';
+			return false;
+		} else if ($scope.vehicle.plate_no == '' || $scope.vehicle.plate_no == undefined) {
+			$scope.validation_error = 'Please enter Plate No.';
+			return false;
+		} else if ($scope.vehicle.condition == '' || $scope.vehicle.condition == undefined) {
+			$scope.validation_error = 'Please enter Vehicle Condition';
+			return false;
+		} else if ($scope.vehicle.vehicle_type == '' || $scope.vehicle.vehicle_type == undefined || $scope.vehicle.vehicle_type == 'other') {
+			$scope.validation_error = 'Please choose Vehicle Type';
+			return false;
+		} else if ($scope.vehicle.color == '' || $scope.vehicle.color == undefined) {
+			$scope.validation_error = 'Please enter Vehicle Color';
+			return false;
+		} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
+			$scope.validation_error = 'Please enter Meter Reading';
+			return false;
+		} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
+			$scope.validation_error = 'Please enter Insurance Type';
+			return false;
+		} else if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
+			$scope.validation_error = 'Please enter Insurance Value';
+			return false;
+		}
+		return true;
+	}
+	$scope.add_vehicle = function() {
+		$scope.is_valid = $scope.validate_vehicle_form();
+		if ($scope.is_valid) {
+			$scope.validation_error = '';
+			console.log('no error');
 		}
 	}
 
