@@ -344,3 +344,9 @@ class EditClient(View):
                 status = 500
             response = simplejson.dumps(res)
             return HttpResponse(response, status=status, mimetype='application/json')
+
+class RentAgreementView(View):
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, 'rent_agreement.html', {})

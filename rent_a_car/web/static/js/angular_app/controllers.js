@@ -532,3 +532,10 @@ function EditClientController($scope, $http, $location) {
 		}
 	}
 }
+
+function RentAgreementController($scope, $http, $location) {
+
+	$scope.init = function(csrf_token) {
+		$scope.csrf_token = csrf_token;
+	}
+}
