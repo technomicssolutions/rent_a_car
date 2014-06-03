@@ -45,6 +45,7 @@ class Client(models.Model):
 
         verbose_name = 'Client'
         verbose_name_plural = 'Client'
+        
 class VehicleType(models.Model):
 
     vehicle_type_name = models.CharField('Vehicle Type', max_length=20, null=True, blank=True)
@@ -60,8 +61,8 @@ class VehicleType(models.Model):
 
 class Vehicle(models.Model):
 
-    vehicle_no = models.CharField('Vehicle No', null=True, blank=True, max_length=20)
-    plate_no = models.CharField('Plate No', null=True, blank=True, max_length=20)
+    vehicle_no = models.CharField('Vehicle No', null=True, blank=True, max_length=20, unique=True)
+    plate_no = models.CharField('Plate No', null=True, blank=True, max_length=20, unique=True)
     vehicle_make = models.CharField('Vehicle Make', null=True, blank=True, max_length=25)
     vehicle_type_name = models.ForeignKey(VehicleType, null=True, blank=True)
     vehicle_color = models.CharField('Vehicle Color', null=True, blank=True, max_length=25)
