@@ -23,7 +23,7 @@
 				<th> License No. </th>
 				<th> Expiry Date </th>
 				<th> Passport No. </th>
-		
+				<th> &nbsp;&nbsp;</th>
 			</tr>
 			{% for client in clients %}
 				<tr>
@@ -36,6 +36,9 @@
 					<td>{{client.license_no}}</td>
 					<td>{{client.expiry_license_date| date:'d/m/Y'}}</td>
 					<td>{{client.passport_no}}</td>
+					<td><a href="{% url 'edit_client' client_id=client.id %}">
+						<img src="/static/images/edit.png">
+					</a></td>
 				</tr>
 			{% endfor %}
 		</table>

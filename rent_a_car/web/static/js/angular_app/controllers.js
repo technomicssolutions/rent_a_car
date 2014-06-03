@@ -384,3 +384,63 @@ function EditVehicleController($scope, $http, $location) {
 		}
 	}
 }
+
+function EditClientController($scope, $http, $location) {
+	$scope.client = {
+		'name': '',
+		'nationality': '',
+		'dob': '',
+		'home_ph_no': '',
+		'work_ph_no': '',
+		'license_no': '',
+		'license_type': '',
+		'date_of_license_issue': '',
+		'issued_by': '',
+		'expiry_date': '',
+		'passport_no': '',
+		'passport_issued_date': '',
+		'place_of_issue': '',
+	};
+	$scope.init = function(csrf_token, client_id) {
+		$scope.csrf_token = csrf_token;
+		$scope.client_id = client_id;
+		$scope.get_client_details();
+		new Picker.Date($$('#passport_issued_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
+        new Picker.Date($$('#expiry_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
+        new Picker.Date($$('#dob'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+            canAlwaysGoUp: ['months', 'years']
+        });
+        new Picker.Date($$('#date_of_license_issue'), {
+        	timePicker: false,
+        	positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        })
+	}
+	$scope.get_client_details = function() {
+		var url = '/edit_client/'+$scope.client_id+'/';
+		$http.get(url).success(function(data){
+			$scope.client = data.client[0];
+			$scope.home_address = data.client[0].home_address;
+			$scope.work_address = data.client[0].work_address;
+		})
+	}
+}

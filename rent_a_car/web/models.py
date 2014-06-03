@@ -45,6 +45,8 @@ class Client(models.Model):
 
         verbose_name = 'Client'
         verbose_name_plural = 'Client'
+        unique_together = ('passport_no', 'phone_number')
+
 
 class VehicleType(models.Model):
 
