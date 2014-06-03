@@ -6,5 +6,23 @@
 {% block controller %}ng-controller="RentAgreementController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
 {% block content %}
+	<div id="main-title">
+		<div class="alert alert-info" align="Center"><h4>Rent Agreement</h4></div>
+	</div>
 
+	<div class="purchase_form_container">
+		<form name="purchase_entry" method="post">
+			<div class="form_contents_purchase">
+				<div class="section_1_purchase">
+				</div>
+				<div  align="Center">
+					<div class="buttons">
+						<p class="error_message"> [[validation_error]] </p>
+						<input type="button" value="Submit" ng-click="create_rent_agreement();" class="btn btn-info">
+						<a href="{% url 'home' %}"><input type="button" value="Cancel" class="btn btn-info"></a>
+					</div>
+				</div>	
+			</div>
+		</form>
+	</div>
 {% endblock content %}

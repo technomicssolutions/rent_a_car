@@ -177,7 +177,7 @@ function AddClientController($scope, $http, $location) {
                 } else {
                     $scope.error_flag=false;
                     $scope.message = '';
-                    document.location.href ='/clients/';
+                    document.location.href ='/rent_agreement/';
                 }
             }).error(function(data, status){
                 $scope.validation_error = data.message;
