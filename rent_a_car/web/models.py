@@ -14,7 +14,7 @@ class Client(models.Model):
     address = models.TextField('Address', null=True, blank=True)
     nationality = models.CharField('Nationality', null=True, blank=True, max_length=50)
     dob = models.DateField('Date of Birth', null=True, blank=True)
-    phone_number = models.CharField('Phone number', max_length=15, null=True, blank=True, unique=True)
+    phone_number = models.CharField('Phone number', max_length=15, null=True, blank=True)
     work_address = models.TextField('Work Address', null=True, blank=True)
     work_ph_no = models.CharField('Phone no.(Work)', max_length=15, null=True, blank=True)
 
@@ -26,7 +26,7 @@ class Client(models.Model):
     expiry_license_date = models.DateField('Expiry Date', null=True, blank=True)
 
     # Passport Details
-    passport_no = models.CharField('Passport Number', unique=True, max_length=30)
+    passport_no = models.CharField('Passport Number', max_length=30)
     date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
     place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
 
