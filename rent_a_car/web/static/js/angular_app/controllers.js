@@ -6,6 +6,12 @@ get_clients = function($scope, $http) {
     })
 }
 
+get_vehicle_types = function($scope, $http) {
+	$http.get('/vehicle_type/list/').success(function(data){
+		$scope.vehicle_types = data.vehicle_types;
+	})
+}
+
 function AddClientController($scope, $http, $location) {
 
 	$scope.client = {
@@ -150,6 +156,7 @@ function AddVehicleController($scope, $http, $location) {
 
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
+		get_vehicle_types($scope, $http);
 	}
 
 	$scope.add_new_type = function() {
@@ -166,6 +173,9 @@ function AddVehicleController($scope, $http, $location) {
             $scope.popup.set_overlay_height(height);
             $scope.popup.show_content();
 		}
+	}
+	$scope.close_popup = function() {
+		$scope.popup.hide_popup();
 	}
 	$scope.save_new_vehicle_type = function() {
 		if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
@@ -191,6 +201,9 @@ function AddVehicleController($scope, $http, $location) {
                 } else {
                     $scope.error_flag=false;
                     $scope.message = '';
+                    get_vehicle_types($scope, $http);
+                    $scope.vehicle.vehicle_type = data.vehicle_type_name;
+                    $scope.close_popup();
                     // document.location.href ='/clients/';
                 }
             }).error(function(data, status){
