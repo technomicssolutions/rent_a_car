@@ -61,17 +61,17 @@ class VehicleType(models.Model):
 
 class Vehicle(models.Model):
 
-    vehicle_no = models.CharField('Vehicle No', null=True, blank=True, max_length=20, unique=True)
-    plate_no = models.CharField('Plate No', null=True, blank=True, max_length=20, unique=True)
+    vehicle_no = models.CharField('Vehicle No', null=True, blank=True, max_length=20)
+    plate_no = models.CharField('Plate No', null=True, blank=True, max_length=20)
     vehicle_make = models.CharField('Vehicle Make', null=True, blank=True, max_length=25)
     vehicle_type_name = models.ForeignKey(VehicleType, null=True, blank=True)
     vehicle_color = models.CharField('Vehicle Color', null=True, blank=True, max_length=25)
     meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
     vehicle_condition = models.CharField('Vehicle Condition', null=True, blank=True, max_length=30)
 
-    # Insuranse Details 
-    insuranse_value = models.DecimalField('Insuranse Value', default=0, max_digits=14, decimal_places=2)
-    type_of_insuranse = models.CharField('Type of Insuranse', null=True, blank=True, max_length=20)
+    # Insurance Details 
+    insuranse_value = models.DecimalField('Insurance Value', default=0, max_digits=14, decimal_places=2)
+    type_of_insuranse = models.CharField('Type of Insurance', null=True, blank=True, max_length=20)
 
 
     def __unicode__(self):
@@ -82,3 +82,4 @@ class Vehicle(models.Model):
 
         verbose_name = 'Vehicle'
         verbose_name_plural = 'Vehicle'
+        unique_together = ('vehicle_no', 'plate_no')

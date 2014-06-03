@@ -14,28 +14,26 @@
 		<table border="0" class="table_list" cellspacing="0">
 			<tr>
 						
-				<th> Name </th>
-				<th> Nationality</th>
-				<th> Home Address </th>
-				<th> Tel No. </th>
-				<th> Work Address </th>
-				<th> Tel No. </th>
-				<th> License No. </th>
-				<th> Expiry Date </th>
-				<th> Passport No. </th>
+				<th> Vehicle No. </th>
+				<th> Plate No. </th>
+				<th> Vehicle Type </th>
+				<th> Vehicle Color. </th>
+				<th> Meter Reading </th>
+				<th> Vehicle Condition </th>
+				<th> Insurance Type </th>
+				<th> Insurance Value </th>
 		
 			</tr>
 			{% for vehicle in vehicles %}
 				<tr>
-					<td>{{vehicle.name}}</td>
-					<td>{{vehicle.nationality}}</td>
-					<td>{{vehicle.address}}</td>
-					<td>{{vehicle.phone_number}}</td>
-					<td>{{vehicle.work_address}}</td>
-					<td>{{vehicle.work_ph_no}}</td>
-					<td>{{vehicle.license_no}}</td>
-					<td>{{vehicle.expiry_license_date| date:'d/m/Y'}}</td>
-					<td>{{vehicle.passport_no}}</td>
+					<td>{{vehicle.vehicle_no}}</td>
+					<td>{{vehicle.plate_no}}</td>
+					<td>{{vehicle.vehicle_type_name.vehicle_type_name}}</td>
+					<td>{{vehicle.vehicle_color}}</td>
+					<td>{{vehicle.meter_reading}}</td>
+					<td>{{vehicle.vehicle_condition}}</td>
+					<td>{{vehicle.type_of_insuranse}}</td>
+					<td>{{vehicle.insuranse_value}}</td>
 				</tr>
 			{% endfor %}
 		</table>

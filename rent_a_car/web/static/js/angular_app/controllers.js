@@ -267,19 +267,9 @@ function AddVehicleController($scope, $http, $location) {
                 }
             }).success(function(data, status) {
                 
-                if (data.result == 'error'){
-                    $scope.error_flag=true;
-                    $scope.message = data.message;
-                } else {
-                    $scope.error_flag=false;
-                    $scope.message = '';
-                    get_vehicle_types($scope, $http);
-                    $scope.vehicle.vehicle_type = data.vehicle_type_name;
-                    $scope.close_popup();
                     // document.location.href ='/clients/';
-                }
             }).error(function(data, status){
-                $scope.message = data.message;
+                $scope.validation_error = data.message;
             });
 		}
 	}
