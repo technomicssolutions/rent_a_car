@@ -167,5 +167,36 @@ function AddVehicleController($scope, $http, $location) {
             $scope.popup.show_content();
 		}
 	}
+	$scope.save_new_vehicle_type = function() {
+		if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
+			$scope.message = 'Please enter the vehicle type';
+		} else {
+			$scope.message = '';
+			params = { 
+				'vehicle_type': $scope.vehicle_type,
+                "csrfmiddlewaretoken" : $scope.csrf_token,
+            }
+            $http({
+                method : 'post',
+                url : "/add_vehicle_type/",
+                data : $.param(params),
+                headers : {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                }
+            }).success(function(data, status) {
+                
+                if (data.result == 'error'){
+                    $scope.error_flag=true;
+                    $scope.message = data.message;
+                } else {
+                    $scope.error_flag=false;
+                    $scope.message = '';
+                    // document.location.href ='/clients/';
+                }
+            }).error(function(data, status){
+                $scope.message = data.message;
+            });
+		}
+	}
 
 }

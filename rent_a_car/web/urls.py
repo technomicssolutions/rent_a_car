@@ -13,4 +13,6 @@ urlpatterns = patterns('',
 	url(r'clients/$', login_required(ClientList.as_view()), name='clients'),
 	url(r'add_vehicle/$', login_required(AddVehicle.as_view()), name='add_vehicle'),
 	url(r'vehicles/$', login_required(Vehicles.as_view()), name='vehicles'),
+	url(r'add_vehicle_type/$', login_required(AddVehicleType.as_view()), name='add_vehicle_type'),
+	url(r'vehicle_type/list/$', login_required(VehicleTypeList.as_view()), name='vehicle_types'),
 )

@@ -127,6 +127,24 @@ class Vehicles(View):
 
         return render(request, 'vehicles.html', context)
 
+class AddVehicleType(View):
+
+    def post(self, request, *args, **kwargs):
+
+        if request.is_ajax():
+
+            new_vehicle_type, created = VehicleType.objects.get_or_create(vehicle_type_name=request.POST['vehicle_type'])
+
+            res = {
+                'result': 'ok',
+                'vehicle_type_name': new_vehicle_type.vehicle_type_name,
+            }
+
+            response = simplejson.dumps(res)
+
+            status = 200
+
+            return HttpResponse(response, status=status, mimetype='application/json')
 
 
 
