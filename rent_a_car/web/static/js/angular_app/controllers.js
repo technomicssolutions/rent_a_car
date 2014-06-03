@@ -368,6 +368,7 @@ function EditVehicleController($scope, $http, $location) {
 				"csrfmiddlewaretoken" : $scope.csrf_token,
 			}
 			var url = "/edit_vehicle/"+ $scope.vehicle_id+'/';
+			console.log(url);
 			$http({
                 method : 'post',
                 url : url,

@@ -233,6 +233,34 @@ class EditVehicle(View):
         }
 
         return render(request, 'edit_vehicle.html', context)
+    def post(self, request, *args, **kwargs):
 
+        if request.is_ajax():
 
-
+            vehicle_id = kwargs['vehicle_id']
+            vehicle = Vehicle.objects.get(id=int(vehicle_id))
+            vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
+            vehicle_type = VehicleType.objects.get(vehicle_type_name=vehicle_details['vehicle_type'])
+            try:
+                vehicle.vehicle_no = vehicle_details['vehicle_no']
+                vehicle.plate_no = vehicle_details['plate_no']
+                vehicle.vehicle_type_name = vehicle_type
+                vehicle.vehicle_color = vehicle_details['color']
+                vehicle.meter_reading = vehicle_details['meter_reading']
+                vehicle.vehicle_condition = vehicle_details['condition']
+                vehicle.insuranse_value = vehicle_details['insurance_value']
+                vehicle.type_of_insuranse = vehicle_details['insurance_type']
+                vehicle.save()
+                res = {
+                    'result': 'ok'
+                }
+                status = 200
+            except Exception as ex:
+                print "Exception == ", str(ex)
+                res = {
+                    'result': 'error',
+                    'message': 'Vehicle with this Vehicle No. and Plate No. is already existing'
+                }
+                status = 500
+            response = simplejson.dumps(res)
+            return HttpResponse(response, status=status, mimetype='application/json')
