@@ -1,5 +1,5 @@
 get_clients = function($scope, $http) {
-	$http.get('/Salesman/list/').success(function(data)
+	$http.get('/clients/').success(function(data)
     {
         $scope.clients = data.clients;
         $scope.client_name = '';
@@ -142,6 +142,14 @@ function AddClientController($scope, $http, $location) {
                 $scope.validation_error = data.message;
             });
 		}
+	}
+
+}
+
+function AddVehicle($scope, $http, $location) {
+
+	$scope.init = function(csrf_token) {
+		$scope.csrf_token = csrf_token;
 	}
 
 }

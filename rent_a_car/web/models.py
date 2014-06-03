@@ -31,8 +31,8 @@ class Client(models.Model):
     place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
 
     # Rent Details
-    deposit_amount = models.DecimalField('Deposit Amount', default=0, max_digits=14, decimal_places=2)
-    rent = models.DecimalField('Rent Amount', default=0, max_digits=14, decimal_places=2)
+    # deposit_amount = models.DecimalField('Deposit Amount', default=0, max_digits=14, decimal_places=2)
+    rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
     paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
     balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
 
@@ -65,6 +65,7 @@ class Vehicle(models.Model):
     vehicle_make = models.CharField('Vehicle Make', null=True, blank=True, max_length=25)
     vehicle_type_name = models.ForeignKey(VehicleType, null=True, blank=True)
     vehicle_color = models.CharField('Vehicle Color', null=True, blank=True, max_length=25)
+    meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
 
     # Insurense Details 
     insurense_value = models.DecimalField('Insurense Value', default=0, max_digits=14, decimal_places=2)
