@@ -109,6 +109,23 @@ class ClientList(View):
         }
         return render(request, 'clients.html', context)
 
+class AddVehicle(View):
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, 'add_vehicle.html', {})
+
+class Vehicles(View):
+
+    def get(self, request, *args, **kwargs):
+
+        vehicles = Vehicle.objects.all().order_by('id')
+
+        context = {
+            'vehicles': vehicles,
+        }
+
+        return render(request, 'vehicles.html', context)
 
 
 

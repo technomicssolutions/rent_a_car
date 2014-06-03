@@ -11,4 +11,6 @@ urlpatterns = patterns('',
 	url(r'logout/$', login_required(Logout.as_view()), name='logout'),
 	url(r'add_client/$', login_required(AddClient.as_view()), name='add_client'),
 	url(r'clients/$', login_required(ClientList.as_view()), name='clients'),
+	url(r'add_vehicle/$', login_required(AddVehicle.as_view()), name='add_vehicle'),
+	url(r'vehicles/$', login_required(Vehicles.as_view()), name='vehicles'),
 )
