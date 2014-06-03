@@ -1,4 +1,10 @@
-
+get_clients = function($scope, $http) {
+	$http.get('/Salesman/list/').success(function(data)
+    {
+        $scope.clients = data.clients;
+        $scope.client_name = '';
+    })
+}
 
 function AddClientController($scope, $http, $location) {
 
@@ -6,9 +12,7 @@ function AddClientController($scope, $http, $location) {
 		'name': '',
 		'nationality': '',
 		'dob': '',
-		// 'home_address': '',
 		'home_ph_no': '',
-		// 'work_address': '',
 		'work_ph_no': '',
 		'license_no': '',
 		'license_type': '',

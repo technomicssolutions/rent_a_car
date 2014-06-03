@@ -92,6 +92,17 @@ class ClientList(View):
     def get(self, request, *args, **kwargs):
 
         clients = Client.objects.all().order_by('id')
+        ctx_clients = []
+        if request.is_ajax():
+            if clients.count() > 0:
+                ctx_clients.append({
+                    'client_name': client.name,
+                })
+            res = {
+                'clients': ctx_clients,
+            }
+            response = simplejson.dumps(res)
+            return HttpResponse(response, status=200, mimetype='application/json')
 
         context = {
             'clients': clients,

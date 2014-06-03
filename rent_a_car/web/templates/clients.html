@@ -15,16 +15,29 @@
 			<tr>
 						
 				<th> Name </th>
-				<th> House Name</th>
-				<th> Street </th>
-				<th> City </th>
-				<th> District </th>
-				<th> Pincode </th>
-				<th> Mobile </th>
-				<th> Phone </th>
-				<th> Email </th>
-
+				<th> Nationality</th>
+				<th> Home Address </th>
+				<th> Tel No. </th>
+				<th> Work Address </th>
+				<th> Tel No. </th>
+				<th> License No. </th>
+				<th> Expiry Date </th>
+				<th> Passport No. </th>
+		
 			</tr>
+			{% for client in clients %}
+				<tr>
+					<td>{{client.name}}</td>
+					<td>{{client.nationality}}</td>
+					<td>{{client.address}}</td>
+					<td>{{client.phone_number}}</td>
+					<td>{{client.work_address}}</td>
+					<td>{{client.work_ph_no}}</td>
+					<td>{{client.license_no}}</td>
+					<td>{{client.expiry_license_date| date:'d/m/Y'}}</td>
+					<td>{{client.passport_no}}</td>
+				</tr>
+			{% endfor %}
 		</table>
 	{% else %}
 		<div class="message"><p>No Clients</p></div>
