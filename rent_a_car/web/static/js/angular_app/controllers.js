@@ -152,4 +152,20 @@ function AddVehicleController($scope, $http, $location) {
 		$scope.csrf_token = csrf_token;
 	}
 
+	$scope.add_new_type = function() {
+		if ($scope.vehicle.vehicle_type == 'other') {
+			$scope.popup = new DialogueModelWindow({
+                'dialogue_popup_width': '36%',
+                'message_padding': '0px',
+                'left': '28%',
+                'top': '40px',
+                'height': 'auto',
+                'content_div': '#new_vehicle_type'
+            });
+            var height = $(document).height();
+            $scope.popup.set_overlay_height(height);
+            $scope.popup.show_content();
+		}
+	}
+
 }

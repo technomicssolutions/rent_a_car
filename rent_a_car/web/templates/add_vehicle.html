@@ -5,6 +5,10 @@
 {% block title %}Add Vehicle{% endblock title %}
 {% block controller %}ng-controller="AddVehicleController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
+{% block dialogue_popup%}
+	{% include 'add_vehicle_type.html' %}
+{% endblock %}
+
 {% block content %}
 	<div id="main-title">
 		<div class="alert alert-info" align="Center"><h4>Add Vehicle</h4></div>
@@ -46,7 +50,7 @@
 							<label for="vehicle_type">Vehicle Type</label>
 						</div>
 						<div class="forminput">
-							<select name="vehicle_type" ng-model="vehicle.vehicle_type" ng-change="add_new_vehicle_type()">
+							<select name="vehicle_type" ng-model="vehicle.vehicle_type" ng-change="add_new_type()">
 								<option value="">Select</option>
 								<option ng-repeat="type in vehicle_types" value="[[type.name]]">[[type.name]]</option>
 								<option value="other">Other</option>

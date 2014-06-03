@@ -829,3 +829,16 @@ a {
 #edit_expense .delivery_note {
 	margin-left: 94px !important;
 }
+
+
+/* Rent a Car */
+
+/* new vehicle type popup */
+
+#new_vehicle_type .formtext {
+	width: 25% !important;
+}
+
+#add_vehicle #dialogue_popup label {
+	width: 100% !important;
+}
