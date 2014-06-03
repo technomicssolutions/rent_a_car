@@ -146,7 +146,7 @@ function AddClientController($scope, $http, $location) {
 
 }
 
-function AddVehicle($scope, $http, $location) {
+function AddVehicleController($scope, $http, $location) {
 
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
