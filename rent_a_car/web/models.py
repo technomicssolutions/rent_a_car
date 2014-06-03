@@ -31,7 +31,6 @@ class Client(models.Model):
     place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
 
     # Rent Details
-    # deposit_amount = models.DecimalField('Deposit Amount', default=0, max_digits=14, decimal_places=2)
     rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
     paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
     balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
@@ -74,6 +73,7 @@ class Vehicle(models.Model):
     # Insurance Details 
     insuranse_value = models.DecimalField('Insurance Value', default=0, max_digits=14, decimal_places=2)
     type_of_insuranse = models.CharField('Type of Insurance', null=True, blank=True, max_length=20)
+    is_available = models.BooleanField('Is Available', default=True)
 
 
     def __unicode__(self):
@@ -85,3 +85,31 @@ class Vehicle(models.Model):
         verbose_name = 'Vehicle'
         verbose_name_plural = 'Vehicle'
         unique_together = ('vehicle_no', 'plate_no')
+
+class RentAgreement(models.Model):
+
+    vehicle = models.ForeignKey(Vehicle, null=True, blank=True)
+    client = models.ForeignKey(Client, null=True, blank=True)
+    agreement_no = models.CharField('Agreement No.', null=True, blank=True, max_length=25)
+    agreement_type = models.CharField('Agreement Type', null=True, blank=True, max_length=30)
+    agreement_date = models.DateField('Agreement Date', null=True, blank=True)
+    starting_date_time = models.DateTimeField('Starting Date and Time', null=True, blank=True)
+    rent_type = models.CharField('Rent Type', null=True, blank=True, max_length=25)
+    identity_driver = models.CharField('Identity Driver', null=True, blank=True, max_length=35)
+    client_identity = models.CharField('Cleint Identity', null=True, blank=True, max_length=25)
+    driver_name = models.CharField('Driver Name', null=True, blank=True, max_length=25)
+    driver_phone = models.CharField('Driver Phone', null=True, blank=True, max_length=15)
+    driver_address = models.TextField('Driver Address', null=True, blank=True)
+    sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=25)
+    sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
+    sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
+    notes = models.TextField('Notes', null=True, blank=True)
+
+    def __unicode__(self):
+
+        return str(self.agreement_no)
+
+    class Meta:
+
+        verbose_name = 'Rent Agreement'
+        verbose_name_plural = 'Rent Agreement'
