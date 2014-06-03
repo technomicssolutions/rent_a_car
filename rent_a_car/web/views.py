@@ -95,9 +95,10 @@ class ClientList(View):
         ctx_clients = []
         if request.is_ajax():
             if clients.count() > 0:
-                ctx_clients.append({
-                    'client_name': client.name,
-                })
+                for client in clients:
+                    ctx_clients.append({
+                        'client_name': client.name,
+                    })
             res = {
                 'clients': ctx_clients,
             }
@@ -146,7 +147,28 @@ class AddVehicleType(View):
 
             return HttpResponse(response, status=status, mimetype='application/json')
 
+class VehicleTypeList(View):
 
+    def get(self, request, *args, **kwargs):
+
+        vehicle_types = VehicleType.objects.all().order_by('id')
+
+        ctx_vehicle_types = []
+
+        if request.is_ajax():
+            if vehicle_types.count() > 0:
+                for vehicle_type in vehicle_types:
+                    ctx_vehicle_types.append({
+                        'vehicle_type': vehicle_type.vehicle_type_name,
+                    })
+            res = {
+                'result': 'ok',
+                'vehicle_types': ctx_vehicle_types,
+            }
+            status = 200
+            response = simplejson.dumps(res)
+
+            return HttpResponse(response, status=status, mimetype='application/json')
 
 
 
