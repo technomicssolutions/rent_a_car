@@ -12,6 +12,41 @@ get_vehicle_types = function($scope, $http) {
 	})
 }
 
+save_vehicle_type = function($scope, $http) {
+	if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
+		$scope.message = 'Please enter the vehicle type';
+	} else {
+		$scope.message = '';
+		params = { 
+			'vehicle_type': $scope.vehicle_type,
+            "csrfmiddlewaretoken" : $scope.csrf_token,
+        }
+        $http({
+            method : 'post',
+            url : "/add_vehicle_type/",
+            data : $.param(params),
+            headers : {
+                'Content-Type' : 'application/x-www-form-urlencoded'
+            }
+        }).success(function(data, status) {
+            
+            if (data.result == 'error'){
+                $scope.error_flag=true;
+                $scope.message = data.message;
+            } else {
+                $scope.error_flag=false;
+                $scope.message = '';
+                get_vehicle_types($scope, $http);
+                $scope.vehicle.vehicle_type = data.vehicle_type_name;
+                $scope.close_popup();
+                // document.location.href ='/clients/';
+            }
+        }).error(function(data, status){
+            $scope.message = data.message;
+        });
+	}
+}
+
 function AddClientController($scope, $http, $location) {
 
 	$scope.client = {
@@ -164,13 +199,13 @@ function AddVehicleController($scope, $http, $location) {
 		'insurance_type': '',
 		'insurance_value': '',
 	}
-	$scope.init = function(csrf_token, id) {
+	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
-		$scope.id = id;
 		get_vehicle_types($scope, $http);
 	}
 
 	$scope.add_new_type = function() {
+		$scope.message = '';
 		if ($scope.vehicle.vehicle_type == 'other') {
 			$scope.popup = new DialogueModelWindow({
                 'dialogue_popup_width': '36%',
@@ -189,38 +224,7 @@ function AddVehicleController($scope, $http, $location) {
 		$scope.popup.hide_popup();
 	}
 	$scope.save_new_vehicle_type = function() {
-		if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
-			$scope.message = 'Please enter the vehicle type';
-		} else {
-			$scope.message = '';
-			params = { 
-				'vehicle_type': $scope.vehicle_type,
-                "csrfmiddlewaretoken" : $scope.csrf_token,
-            }
-            $http({
-                method : 'post',
-                url : "/add_vehicle_type/",
-                data : $.param(params),
-                headers : {
-                    'Content-Type' : 'application/x-www-form-urlencoded'
-                }
-            }).success(function(data, status) {
-                
-                if (data.result == 'error'){
-                    $scope.error_flag=true;
-                    $scope.message = data.message;
-                } else {
-                    $scope.error_flag=false;
-                    $scope.message = '';
-                    get_vehicle_types($scope, $http);
-                    $scope.vehicle.vehicle_type = data.vehicle_type_name;
-                    $scope.close_popup();
-                    // document.location.href ='/clients/';
-                }
-            }).error(function(data, status){
-                $scope.message = data.message;
-            });
-		}
+		save_vehicle_type($scope, $http);
 	}
 	$scope.validate_vehicle_form = function() {
 		if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
@@ -274,4 +278,108 @@ function AddVehicleController($scope, $http, $location) {
 		}
 	}
 
+}
+
+function EditVehicleController($scope, $http, $location) {
+
+	$scope.vehicle = {
+		'vehicle_no': '',
+		'plate_no': '',
+		'condition': '',
+		'vehicle_type': '',
+		'color': '',
+		'meter_reading': '',
+		'insurance_type': '',
+		'insurance_value': '',
+	}
+	$scope.change_type = false;
+	$scope.init = function(csrf_token, id) {
+		$scope.csrf_token = csrf_token;
+		$scope.vehicle_id = id;
+		get_vehicle_types($scope, $http);
+		$scope.get_vehicle_details();
+	}
+
+	$scope.add_new_type = function() {
+		if ($scope.vehicle.vehicle_type == 'other') {
+			$scope.message = '';
+			$scope.popup = new DialogueModelWindow({
+                'dialogue_popup_width': '36%',
+                'message_padding': '0px',
+                'left': '28%',
+                'top': '40px',
+                'height': 'auto',
+                'content_div': '#new_vehicle_type'
+            });
+            var height = $(document).height();
+            $scope.popup.set_overlay_height(height);
+            $scope.popup.show_content();
+		}
+	}
+	$scope.close_popup = function() {
+		$scope.popup.hide_popup();
+	}
+	$scope.save_new_vehicle_type = function() {
+		save_vehicle_type($scope, $http);
+	}
+	$scope.get_vehicle_details = function() {
+		var url = '/edit_vehicle/'+$scope.vehicle_id+'/';
+		$http.get(url).success(function(data){
+			$scope.vehicle = data.vehicle[0];
+		})
+	}
+	$scope.change_vehicle_type = function() {
+		$scope.change_type = true;
+	}
+	$scope.validate_vehicle_form = function() {
+		if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
+			$scope.validation_error = 'Please enter Vehicle No.';
+			return false;
+		} else if ($scope.vehicle.plate_no == '' || $scope.vehicle.plate_no == undefined) {
+			$scope.validation_error = 'Please enter Plate No.';
+			return false;
+		} else if ($scope.vehicle.condition == '' || $scope.vehicle.condition == undefined) {
+			$scope.validation_error = 'Please enter Vehicle Condition';
+			return false;
+		} else if ($scope.vehicle.vehicle_type == '' || $scope.vehicle.vehicle_type == undefined || $scope.vehicle.vehicle_type == 'other') {
+			$scope.validation_error = 'Please choose Vehicle Type';
+			return false;
+		} else if ($scope.vehicle.color == '' || $scope.vehicle.color == undefined) {
+			$scope.validation_error = 'Please enter Vehicle Color';
+			return false;
+		} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
+			$scope.validation_error = 'Please enter Meter Reading';
+			return false;
+		} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
+			$scope.validation_error = 'Please enter Insurance Type';
+			return false;
+		} else if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
+			$scope.validation_error = 'Please enter Insurance Value';
+			return false;
+		}
+		return true;
+	}
+	$scope.edit_vehicle = function() {
+		$scope.is_valid = $scope.validate_vehicle_form();
+		if ($scope.is_valid) {
+			$scope.validation_error = '';
+			params = {
+				'vehicle_details': angular.toJson($scope.vehicle),
+				"csrfmiddlewaretoken" : $scope.csrf_token,
+			}
+			var url = "/edit_vehicle/"+ $scope.vehicle_id+'/';
+			$http({
+                method : 'post',
+                url : url,
+                data : $.param(params),
+                headers : {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                }
+            }).success(function(data, status) {
+                document.location.href ='/vehicles/';
+            }).error(function(data, status){
+                $scope.validation_error = data.message;
+            });
+		}
+	}
 }

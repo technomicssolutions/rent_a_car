@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block body_id %}edit_vehicle{% endblock %}
+
+{% block title %}Edit Vehicle{% endblock title %}
+{% block controller %}ng-controller="EditVehicleController" ng-init="init('{{csrf_token}}', '{{vehicle_id}}')"{% endblock controller %}
+
+{% block dialogue_popup%}
+	{% include 'add_vehicle_type.html' %}
+{% endblock %}
+
+{% block content %}
+	<div id="main-title">
+		<div class="alert alert-info" align="Center"><h4>Edit Vehicle</h4></div>
+	</div>
+
+	<div class="purchase_form_container">
+		<form name="purchase_entry" method="post">
+			<div class="form_contents_purchase">
+				<div class="section_1_purchase">
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="vehicle_no">Vehicle No.</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="vehicle_no" ng-model="vehicle.vehicle_no"/>
+						</div>
+					</div>
+
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="plate_no">Plate No. </label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="plate_no"  ng-model="vehicle.plate_no" />
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="condition">Vehicle Condition</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="condition" ng-model="vehicle.condition" />
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="vehicle_type">Vehicle Type</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="vehicle.vehicle_type" ng-click="change_vehicle_type()" ng-hide="change_type"/>
+							<select name="vehicle_type" ng-model="vehicle.vehicle_type" ng-change="add_new_type()" ng-show="change_type">
+								<option value="">Select</option>
+								<option ng-repeat="type in vehicle_types" value="[[type.vehicle_type]]" ng-selected="type.vehicle_type == vehicle.vehicle_type">[[type.vehicle_type]]</option>
+								<option value="other">Other</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="color">Vehicle Color</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="color" ng-model="vehicle.color" id="color"/>
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="meter_reading">Meter Reading</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="meter_reading" ng-model="vehicle.meter_reading" id="meter_reading"/>
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="type_of_insurance">Type of Insurance</label>
+						</div>
+						<div class="forminput">
+							<select name="type_of_insurance" ng-model="vehicle.insurance_type">
+								<option value="">Select</option>
+								<option value="liability">Liability</option>
+								<option value="collision">Collision</option>
+								<option value="comprehensive">Comprehensive</option>
+							</select>
+						</div> 
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="insurance_value">Insurance Value</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="insurance_value" ng-model="vehicle.insurance_value">
+						</div>
+					</div>
+					
+				</div>
+				<div  align="Center">
+					<div class="buttons">
+						<p class="error_message"> [[validation_error]] </p>
+						<input type="button" value="Submit" ng-click="edit_vehicle();" class="btn btn-info">
+						<a href="{% url 'home' %}"><input type="button" value="Cancel" class="btn btn-info"></a>
+					</div>
+				</div>	
+			</div>		
+		</form>
+		<div class="clear"></div>
+	</div>
+
+{% endblock content %}

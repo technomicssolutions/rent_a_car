@@ -203,5 +203,36 @@ class VehicleTypeList(View):
 
             return HttpResponse(response, status=status, mimetype='application/json')
 
+class EditVehicle(View):
+
+    def get(self, request, *args, **kwargs):
+
+        vehicle_id = kwargs['vehicle_id']
+        ctx_vehicle = []
+        vehicle = Vehicle.objects.get(id=int(vehicle_id))
+        if request.is_ajax():
+            ctx_vehicle.append({
+                'vehicle_no': vehicle.vehicle_no,
+                'plate_no': vehicle.plate_no,
+                'condition': vehicle.vehicle_condition,
+                'vehicle_type': vehicle.vehicle_type_name.vehicle_type_name,
+                'color': vehicle.vehicle_color,
+                'meter_reading': vehicle.meter_reading,
+                'insurance_type': vehicle.type_of_insuranse,
+                'insurance_value': vehicle.insuranse_value,
+            })
+            res = {
+                'vehicle': ctx_vehicle,
+            }
+            status = 200
+            response = simplejson.dumps(res)
+
+            return HttpResponse(response, status=status, mimetype='application/json')
+        context = {
+            'vehicle_id': vehicle.id,
+        }
+
+        return render(request, 'edit_vehicle.html', context)
+
 
 

@@ -839,6 +839,6 @@ a {
 	width: 25% !important;
 }
 
-#add_vehicle #dialogue_popup label {
+#add_vehicle #dialogue_popup label, #edit_vehicle #dialogue_popup label {
 	width: 100% !important;
 }
