@@ -45,7 +45,7 @@ class Client(models.Model):
 
         verbose_name = 'Client'
         verbose_name_plural = 'Client'
-        
+
 class VehicleType(models.Model):
 
     vehicle_type_name = models.CharField('Vehicle Type', max_length=20, null=True, blank=True)
@@ -67,10 +67,11 @@ class Vehicle(models.Model):
     vehicle_type_name = models.ForeignKey(VehicleType, null=True, blank=True)
     vehicle_color = models.CharField('Vehicle Color', null=True, blank=True, max_length=25)
     meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
+    vehicle_condition = models.CharField('Vehicle Condition', null=True, blank=True, max_length=30)
 
-    # Insurense Details 
-    insurense_value = models.DecimalField('Insurense Value', default=0, max_digits=14, decimal_places=2)
-    type_of_insurense = models.CharField('Type of Insurense', null=True, blank=True, max_length=20)
+    # Insuranse Details 
+    insuranse_value = models.DecimalField('Insuranse Value', default=0, max_digits=14, decimal_places=2)
+    type_of_insuranse = models.CharField('Type of Insuranse', null=True, blank=True, max_length=20)
 
 
     def __unicode__(self):

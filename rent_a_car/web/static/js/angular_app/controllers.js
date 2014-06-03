@@ -164,8 +164,9 @@ function AddVehicleController($scope, $http, $location) {
 		'insurance_type': '',
 		'insurance_value': '',
 	}
-	$scope.init = function(csrf_token) {
+	$scope.init = function(csrf_token, id) {
 		$scope.csrf_token = csrf_token;
+		$scope.id = id;
 		get_vehicle_types($scope, $http);
 	}
 
@@ -253,7 +254,33 @@ function AddVehicleController($scope, $http, $location) {
 		$scope.is_valid = $scope.validate_vehicle_form();
 		if ($scope.is_valid) {
 			$scope.validation_error = '';
-			console.log('no error');
+			params = {
+				'vehicle_details': angular.toJson($scope.vehicle),
+				"csrfmiddlewaretoken" : $scope.csrf_token,
+			}
+			$http({
+                method : 'post',
+                url : "/add_vehicle/",
+                data : $.param(params),
+                headers : {
+                    'Content-Type' : 'application/x-www-form-urlencoded'
+                }
+            }).success(function(data, status) {
+                
+                if (data.result == 'error'){
+                    $scope.error_flag=true;
+                    $scope.message = data.message;
+                } else {
+                    $scope.error_flag=false;
+                    $scope.message = '';
+                    get_vehicle_types($scope, $http);
+                    $scope.vehicle.vehicle_type = data.vehicle_type_name;
+                    $scope.close_popup();
+                    // document.location.href ='/clients/';
+                }
+            }).error(function(data, status){
+                $scope.message = data.message;
+            });
 		}
 	}
 
