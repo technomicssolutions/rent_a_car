@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block body_id %}vehicles{% endblock %}
+
+{% block title %}Vehicles{% endblock title %}
+
+{% block content %}
+
+	<div class="top_section">
+		
+		<a class="btn btn-info" href="{% url 'add_vehicle' %}">New Vehicle</a> 
+	</div>
+	{% if vehicles|length > 0 %}
+		<table border="0" class="table_list" cellspacing="0">
+			<tr>
+						
+				<th> Name </th>
+				<th> Nationality</th>
+				<th> Home Address </th>
+				<th> Tel No. </th>
+				<th> Work Address </th>
+				<th> Tel No. </th>
+				<th> License No. </th>
+				<th> Expiry Date </th>
+				<th> Passport No. </th>
+		
+			</tr>
+			{% for vehicle in vehicles %}
+				<tr>
+					<td>{{vehicle.name}}</td>
+					<td>{{vehicle.nationality}}</td>
+					<td>{{vehicle.address}}</td>
+					<td>{{vehicle.phone_number}}</td>
+					<td>{{vehicle.work_address}}</td>
+					<td>{{vehicle.work_ph_no}}</td>
+					<td>{{vehicle.license_no}}</td>
+					<td>{{vehicle.expiry_license_date| date:'d/m/Y'}}</td>
+					<td>{{vehicle.passport_no}}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<div class="message"><p>No vehicles</p></div>
+	{% endif %}
+
+{% endblock content %}
