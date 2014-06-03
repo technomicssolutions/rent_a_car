@@ -6,9 +6,9 @@ function AddClientController($scope, $http, $location) {
 		'name': '',
 		'nationality': '',
 		'dob': '',
-		'home_address': '',
+		// 'home_address': '',
 		'home_ph_no': '',
-		'work_address': '',
+		// 'work_address': '',
 		'work_ph_no': '',
 		'license_no': '',
 		'license_type': '',
@@ -66,13 +66,13 @@ function AddClientController($scope, $http, $location) {
 		} else if ($scope.client.dob == '' || $scope.client.dob == undefined) {
 			$scope.validation_error = 'Please enter the date of birth';
 			return false;
-		} else if ($scope.client.home_address == '' || $scope.client.home_address == undefined) {
+		} else if ($scope.home_address == '' || $scope.home_address == undefined) {
 			$scope.validation_error = 'Please enter the home address';
 			return false;
 		} else if ($scope.client.home_ph_no == '' || $scope.client.home_ph_no == undefined) {
 			$scope.validation_error = 'Please enter the Tel. no(home)';
 			return false;
-		} else if ($scope.client.work_address == '' || $scope.client.work_address == undefined) {
+		} else if ($scope.work_address == '' || $scope.work_address == undefined) {
 			$scope.validation_error = 'Please enter work address';
 			return false;
 		} else if ($scope.client.work_ph_no == '' || $scope.client.work_ph_no == undefined) {
@@ -112,8 +112,10 @@ function AddClientController($scope, $http, $location) {
 		if ($scope.is_valid) {
 			$scope.validation_error = '';
 			params = { 
+				'client_work_address': $scope.work_address,
+				'client_home_address': $scope.home_address,
                 'client_details': angular.toJson($scope.client),
-                "csrfmiddlewaretoken" : $scope.csrf_token
+                "csrfmiddlewaretoken" : $scope.csrf_token,
             }
             $http({
                 method : 'post',
@@ -133,7 +135,7 @@ function AddClientController($scope, $http, $location) {
                     document.location.href ='/clients/';
                 }
             }).error(function(data, status){
-                console.log(data);
+                $scope.validation_error = data.message;
             });
 		}
 	}

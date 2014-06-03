@@ -39,7 +39,7 @@ class Client(models.Model):
 
     def __unicode__(self):
 
-        return self.name
+        return str(self.name)
 
     class Meta:
 
