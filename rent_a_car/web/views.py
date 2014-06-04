@@ -8,6 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render
+from django.db.models import Max
+
 
 from web.models import *
 
@@ -380,4 +382,14 @@ class RentAgreementView(View):
 
     def get(self, request, *args, **kwargs):
 
-        return render(request, 'rent_agreement.html', {})
+
+        agreement_id = RentAgreement.objects.aggregate(Max('id'))['id__max']
+        if not agreement_id:
+            agreement_id = 1
+        else:
+            agreement_id = agreement_id + 1
+        context = {
+            'agreement_no': agreement_id,
+        }
+
+        return render(request, 'rent_agreement.html', context)
