@@ -97,7 +97,16 @@ class ClientList(View):
             if clients.count() > 0:
                 for client in clients:
                     ctx_clients.append({
+                        'id': client.id,
                         'client_name': client.name,
+                        'license_no': client.license_no,
+                        'license_issue_date': client.date_of_issue.strftime('%d/%m/%Y'),
+                        'license_type': client.license_type,
+                        'expiry_date': client.expiry_license_date.strftime('%d/%m/%Y'),
+                        'passport_no': client.passport_no,
+                        'passport_date_of_issue': client.date_of_passport_issue.strftime('%d/%m/%Y'),
+
+
                     })
             res = {
                 'clients': ctx_clients,
@@ -149,12 +158,34 @@ class AddVehicle(View):
 
 
 
-class Vehicles(View):
+class VehicleList(View):
 
     def get(self, request, *args, **kwargs):
 
-        vehicles = Vehicle.objects.all().order_by('id')
-
+        ctx_vehicles = []
+        if request.is_ajax():
+            vehicles = Vehicle.objects.filter(is_available=True).order_by('id')
+            if vehicles.count() > 0:
+                for vehicle in vehicles:
+                    ctx_vehicles.append({
+                        'id': vehicle.id,
+                        'vehicle_no': vehicle.vehicle_no,
+                        'plate_no': vehicle.plate_no,
+                        'vehicle_type': vehicle.vehicle_type_name.vehicle_type_name,
+                        'meter_reading': vehicle.meter_reading,
+                        'vehicle_condition': vehicle.vehicle_condition,
+                        'color': vehicle.vehicle_color,
+                        'insuranse_value': vehicle.insuranse_value,
+                        'type_of_insuranse': vehicle.type_of_insuranse,
+                    })
+            res = {
+                'vehicles': ctx_vehicles
+            }
+            response = simplejson.dumps(res)
+            status = 200
+            return HttpResponse(response, status=status, mimetype='application/json')
+        else:
+            vehicles = Vehicle.objects.all().order_by('id')
         context = {
             'vehicles': vehicles,
         }

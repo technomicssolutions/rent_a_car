@@ -842,3 +842,7 @@ a {
 #add_vehicle #dialogue_popup label, #edit_vehicle #dialogue_popup label {
 	width: 100% !important;
 }
+
+#rent_agreement .section_1_purchase {
+	margin-bottom: 35px;
+}

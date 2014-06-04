@@ -12,6 +12,12 @@ get_vehicle_types = function($scope, $http) {
 	})
 }
 
+get_vehicles = function($scope, $http) {
+	$http.get('/vehicles/').success(function(data){
+		$scope.vehicles = data.vehicles;
+	})
+}
+
 save_vehicle_type = function($scope, $http) {
 	if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
 		$scope.message = 'Please enter the vehicle type';
@@ -535,7 +541,41 @@ function EditClientController($scope, $http, $location) {
 
 function RentAgreementController($scope, $http, $location) {
 
+	$scope.client = {
+		'id': '',
+		'client_name': '',
+		'license_no': '',
+		'license_issue_date': '',
+		'license_type': '',
+		'expiry_date': '',
+		'passport_no': '',
+		'passport_date_of_issue': '',
+	}
+	$scope.vehicle = {
+		'id': '',
+		'vehicle_no': '',
+		'plate_no': '',
+	}
+	$scope.rent_agreement = {
+		'agreement_no': '',
+		'agreement_type': '',
+	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
+		get_clients($scope, $http);
+		get_vehicles($scope, $http);
+	}
+	$scope.create_rent_agreement = function() {
+		params = {
+			"csrfmiddlewaretoken": $scope.csrf_token,
+		}
+	}
+	$scope.get_customer_details = function(client) {
+		console.log(client);
+		$scope.client = client;
+	}
+	$scope.get_vehicle_details = function(vehicle) {
+		console.log(vehicle);
+		$scope.vehicle = vehicle;
 	}
 }
