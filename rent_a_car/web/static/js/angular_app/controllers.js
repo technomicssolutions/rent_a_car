@@ -619,7 +619,7 @@ function RentAgreementController($scope, $http, $location) {
             positionOffset: {x: 5, y: 0},
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y',
+            format:'%d/%m/%Y %H:%M',
             canAlwaysGoUp: ['months', 'years']
         });
         new Picker.Date($$('#end_date_time'), {
