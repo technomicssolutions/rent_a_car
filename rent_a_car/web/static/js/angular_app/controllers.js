@@ -555,20 +555,24 @@ function RentAgreementController($scope, $http, $location) {
 		'id': '',
 		'vehicle_no': '',
 		'plate_no': '',
+		'vehicle_condition': '',
+		'type_of_insuranse': '',
+		'insuranse_value': '',
+		'meter_reading': '',
 	}
 	$scope.rent_agreement = {
 		'agreement_no': '',
 		'agreement_type': '',
 		'rent_type': '',
-		'amount': '',
+		'amount': 0,
 		'date': '',
-		'commission': '',
+		'commission': 0,
 		'start_date_time': '',
-		'reduction': '',
+		'reduction': 0,
 		'end_date_time': '',
-		'rent': '',
-		'paid': '',
-		'balance': '',
+		'rent': 0,
+		'paid': 0,
+		'balance': 0,
 		'type_of_contract': '',
 		'with_driver': 'no',
 		'driver_name': '',
@@ -591,6 +595,14 @@ function RentAgreementController($scope, $http, $location) {
 		get_clients($scope, $http);
 		get_vehicles($scope, $http);
 		new Picker.Date($$('#dob'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+            canAlwaysGoUp: ['months', 'years']
+        });
+        new Picker.Date($$('#date'), {
             timePicker: false,
             positionOffset: {x: 5, y: 0},
             pickerClass: 'datepicker_bootstrap',
@@ -631,12 +643,7 @@ function RentAgreementController($scope, $http, $location) {
             canAlwaysGoUp: ['months', 'years']
         });
 	}
-	$scope.create_rent_agreement = function() {
-		console.log($$('#end_date_time')[0].get('value'));
-		params = {
-			"csrfmiddlewaretoken": $scope.csrf_token,
-		}
-	}
+	
 	$scope.get_customer_details = function(client) {
 		console.log(client);
 		$scope.client = client;
@@ -644,5 +651,58 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.get_vehicle_details = function(vehicle) {
 		console.log(vehicle);
 		$scope.vehicle = vehicle;
+	}
+	$scope.calculate_rent_amount = function() {
+		if ($scope.rent_agreement.amount != Number($scope.rent_agreement.amount)) {
+			$scope.rent_agreement.amount = 0;
+		}
+		if ($scope.rent_agreement.commission != Number($scope.rent_agreement.commission)) {
+			$scope.rent_agreement.commission = 0;
+		}
+		if ($scope.rent_agreement.reduction != Number($scope.rent_agreement.reduction)) {
+			$scope.rent_agreement.reduction = 0;
+		}
+		if ($scope.rent_agreement.paid != Number($scope.rent_agreement.paid)) {
+			$scope.rent_agreement.paid = 0;
+		}
+		$scope.rent_agreement.rent = ((parseFloat($scope.rent_agreement.amount) + parseFloat($scope.rent_agreement.commission)) - parseFloat($scope.rent_agreement.reduction)).toFixed(2);
+		$scope.rent_agreement.balance = (parseFloat($scope.rent_agreement.rent) - parseFloat($scope.rent_agreement.paid)).toFixed(2);
+	}
+	$scope.rent_agreement_validation = function() {
+		$scope.rent_agreement.agreement_no = $$('#agreement_no')[0].get('value');
+		$scope.rent_agreement.dob = $$('#dob')[0].get('value');
+		$scope.rent_agreement.date = $$('#date')[0].get('value');
+		$scope.rent_agreement.license_expiry_date = $$('#license_expiry_date')[0].get('value'); 
+		$scope.rent_agreement.license_issued_date = $$('#license_issued_date')[0].get('value');
+		$scope.rent_agreement.start_date_time = $$('#start_date_time')[0].get('value');
+		$scope.rent_agreement.end_date_time = $$('#end_date_time')[0].get('value');
+		console.log($scope.rent_agreement.end_date_time);
+		if ($scope.rent_agreement.agreement_no == '' || $scope.rent_agreement.agreement_no == undefined) {
+			$scope.validation_error = 'Please enter the Agreement No.';
+		} else if ($scope.rent_agreement.agreement_type == '' || $scope.rent_agreement.agreement_type == undefined) {
+			$scope.validation_error = 'Please enter the Agreement Type';
+		} else if ($scope.client.id == '' || $scope.client.id == undefined) {
+			$scope.validation_error = 'Please choose the Customer';
+		} else if ($scope.vehicle.id == '' || $scope.vehicle.id == undefined) {
+			$scope.validation_error = 'Please choose the Vehicle';
+		} else if ($scope.rent_agreement.rent_type == '' || $scope.rent_agreement.rent_type == undefined) {
+			$scope.validation_error = 'Please enter the Rent Type';
+		} else if ($scope.rent_agreement.date == '' || $scope.rent_agreement.date == undefined) { 
+			$scope.validation_error = 'Please enter the Agreement Date';
+		} else if ($scope.rent_agreement.start_date_time == '' || $scope.rent_agreement.start_date_time == undefined) {
+			$scope.validation_error = 'Please enter the Starting Date and Time';
+		} else if ($scope.rent_agreement.end_date_time == '' || $scope.rent_agreement.end_date_time == undefined) {
+			$scope.validation_error = 'Please enter the End Date and Time';
+		} else if ($scope.rent_agreement.amount == 0 || $scope.rent_agreement.amount == undefined) {
+			$scope.validation_error = 'Please enter the Amount';
+		} else if ($scope.rent_agreement.paid == undefined || $scope.rent_agreement.paid == '') {
+			$scope.validation_error = 'Please enter the Paid';
+		}
+	} 
+	$scope.create_rent_agreement = function() {
+		$scope.is_valid = $scope.rent_agreement_validation();
+		params = {
+			"csrfmiddlewaretoken": $scope.csrf_token,
+		}
 	}
 }

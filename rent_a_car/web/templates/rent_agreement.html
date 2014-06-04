@@ -19,7 +19,7 @@
 							<label for="agreement_no">Agreement No.</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="agreement_no" value="{{agreement_no}}" readonly>
+							<input type="text" name="agreement_no" value="{{agreement_no}}" readonly id="agreement_no">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -149,10 +149,10 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="amount">Amount</label>
+							<label for="paid">Paid</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.amount" name="amount">
+							<input type="text" ng-model="rent_agreement.paid" name="paid" ng-change="calculate_rent_amount()">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -160,7 +160,7 @@
 							<label for="date">Agreement Date</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.date" name="date">
+							<input type="text" ng-model="rent_agreement.date" name="date" id="date">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -168,7 +168,7 @@
 							<label for="commission">Commision</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.commission" name="commission">
+							<input type="text" ng-model="rent_agreement.commission" name="commission" ng-change="calculate_rent_amount()">
 						</div>
 					</div>
 
@@ -185,13 +185,13 @@
 							<label for="reduction">Reduction</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.reduction" name="reduction">
+							<input type="text" ng-model="rent_agreement.reduction" name="reduction" ng-change="calculate_rent_amount()">
 						</div>
 					</div>
 
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="end_date_time">End Date and Time</label>
+							<label for="end_date_time ">End Date and Time</label>
 						</div>
 						<div class="forminput">
 							<input type="text" ng-model="rent_agreement.end_date_time" name="end_date_time" id="end_date_time">
@@ -202,23 +202,24 @@
 							<label for="rent">Rent</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.rent" name="rent">
+							<input type="text" ng-model="rent_agreement.rent" name="rent" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="paid">Paid</label>
+							<label for="amount">Amount</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.paid" name="paid">
+							<input type="text" ng-model="rent_agreement.amount" name="amount">
 						</div>
 					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="balance">Balance</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.balance" name="balance">
+							<input type="text" ng-model="rent_agreement.balance" name="balance" readonly>
 						</div>
 					</div>
 				</div>
