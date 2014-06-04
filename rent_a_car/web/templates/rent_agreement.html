@@ -136,6 +136,7 @@
 							<input type="text" ng-model="vehicle.meter_reading" name="meter_reading">
 						</div>
 					</div>
+				</div>
 				<div class="clear"></div>
 				<div class="section_1_purchase">
 					<div class="formrow_purchase">
@@ -156,10 +157,27 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
+							<label for="date">Agreement Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.date" name="date">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
 							<label for="commission">Commision</label>
 						</div>
 						<div class="forminput">
 							<input type="text" ng-model="rent_agreement.commission" name="commission">
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="start_date_time">Starting Date and Time</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.start_date_time" name="start_date_time">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -168,6 +186,15 @@
 						</div>
 						<div class="forminput">
 							<input type="text" ng-model="rent_agreement.reduction" name="reduction">
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="end_date_time">End Date and Time</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.end_date_time" name="end_date_time">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -192,6 +219,160 @@
 						</div>
 						<div class="forminput">
 							<input type="text" ng-model="rent_agreement.balance" name="balance">
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<div class="section_1_purchase">
+					
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="type_of_contract">Type of Contract</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.type_of_contract" name="type_of_contract">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="with_driver">With Driver</label>
+						</div>
+						<div class="forminput" id="radio_input">
+							<input type="radio" value="yes" ng-model="rent_agreement.with_driver" name="with_driver">
+							<label>Yes</label>
+							<input type="radio" value="no" ng-model="rent_agreement.with_driver" name="with_driver">
+							<label>No</label>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="driver_name">Driver Name</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.driver_name" name="driver_name"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="driver_phone">Driver Phone</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.driver_phone" name="driver_phone"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="driver_address">Driver Address</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.driver_address" name="driver_address"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="passport_no">Passport No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.passport_no" name="passport_no"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="nationality">Nationality</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.nationality" name="nationality"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_no">License No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.license_no" name="license_no"/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="dob">Date of Birth</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.dob" name="dob" id="dob"/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_expiry_date">License Expiry Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.license_expiry_date" name="license_expiry_date" id="license_expiry_date"/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_issued_place">License Issued Place</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.license_issued_place" name="license_issued_place"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_issued_date">License Issued Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.license_issued_date" name="license_issued_date" id="license_issued_date"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_name">Sponsar Name</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.sponsar_name" name="sponsar_name"/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_telephone">Sponsar Telephone</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.sponsar_telephone" name="sponsar_telephone"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_address">Sponsar Address</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.sponsar_address" name="sponsar_address"/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="notes">Notes</label>
+						</div>
+						<div class="forminput">
+							<textarea name="notes" ng-model="rent_agreement.notes"></textarea>
+
 						</div>
 					</div>
 

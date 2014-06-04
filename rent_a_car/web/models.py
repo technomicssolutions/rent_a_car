@@ -104,6 +104,7 @@ class RentAgreement(models.Model):
     client_identity = models.CharField('Cleint Identity', null=True, blank=True, max_length=25)
     with_driver = models.BooleanField('With Driver', default=False)
     
+    type_of_contract = models.CharField('Type of Contract', null=True, blank=True, max_length=25)
     driver_name = models.CharField('Driver Name', null=True, blank=True, max_length=25)
     driver_phone = models.CharField('Driver Phone', null=True, blank=True, max_length=15)
     driver_address = models.TextField('Driver Address', null=True, blank=True)
