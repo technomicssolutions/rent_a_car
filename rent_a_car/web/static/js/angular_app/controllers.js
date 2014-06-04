@@ -559,13 +559,80 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.rent_agreement = {
 		'agreement_no': '',
 		'agreement_type': '',
+		'rent_type': '',
+		'amount': '',
+		'date': '',
+		'commission': '',
+		'start_date_time': '',
+		'reduction': '',
+		'end_date_time': '',
+		'rent': '',
+		'paid': '',
+		'balance': '',
+		'type_of_contract': '',
+		'with_driver': 'no',
+		'driver_name': '',
+		'driver_phone': '',
+		'driver_address': '',
+		'passport_no': '',
+		'nationality': '',
+		'license_no': '',
+		'dob': '',
+		'license_expiry_date': '',
+		'license_issued_place': '',
+		'license_issued_date': '',
+		'sponsar_name': '',
+		'sponsar_telephone': '',
+		'sponsar_address': '',
+		'notes': '',
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 		get_clients($scope, $http);
 		get_vehicles($scope, $http);
+		new Picker.Date($$('#dob'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+            canAlwaysGoUp: ['months', 'years']
+        });
+        new Picker.Date($$('#license_expiry_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+            canAlwaysGoUp: ['months', 'years']
+        });
+        new Picker.Date($$('#license_issued_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+            canAlwaysGoUp: ['months', 'years']
+        });
+        new Picker.Date($$('#start_date_time'), {
+            timePicker: true,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+            canAlwaysGoUp: ['months', 'years']
+        });
+        new Picker.Date($$('#end_date_time'), {
+            timePicker: true,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y %H:%M',
+            canAlwaysGoUp: ['months', 'years']
+        });
 	}
 	$scope.create_rent_agreement = function() {
+		console.log($$('#end_date_time')[0].get('value'));
 		params = {
 			"csrfmiddlewaretoken": $scope.csrf_token,
 		}
