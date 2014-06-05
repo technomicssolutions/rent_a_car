@@ -837,6 +837,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'notes': '',
 	}
 	$scope.receipt = {
+		'receipt_no': ''
 		'agreement_id': '',
 		'receipt_date': '',
 		'credit_card_no': '',
@@ -923,6 +924,7 @@ function ReceiveCarController($scope, $http, $location) {
 	$scope.receipt_car_validation = function() {
 		$scope.receipt.receipt_date = $$('#receipt_date')[0].get('value');
 		$scope.receipt.card_expiry_date = $$('#card_expiry_date')[0].get('value');
+		$scope.receipt.receipt_no = $$('#receipt_no')[0].get('value');
 		if ($scope.receipt.agreement_id == '' || $scope.receipt.agreement_id == undefined) {
 			$scope.validation_error = 'Please enter Contract No.';
 		} else if ($scope.receipt.receipt_date == '' || $scope.receipt.receipt_date == undefined) {

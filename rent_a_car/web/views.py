@@ -471,7 +471,24 @@ class ReceiveCarView(View):
         }
 
         return render(request, 'receive_car.html', context)
+    def post(self, request, *args, **kwargs):
 
+        receive_car_details = ast.literal_eval(request.POST['receipt_car'])
+        try:
+            receive_car, created = ReceiveCar.objects.get_or_create(receipt_no=receive_car_details['receipt_no'])
+            rent_agreement = RentAgreement.objects.get(id=receive_car['agreement_id'])
+            receive_car.rent_agreement = rent_agreement
+            receive_car.save()
+            res = {
+                'result': 'ok',
+            }
+        except Exception as ex:
+            print str(ex)
+            res = {
+                'result': 'error',
+            }
+        response = simplejson.dumps(res)
+        return HttpResponse(response, status=status, mimetype='application/json')
 class AgreementDetails(View):
 
     def get(self, request, *args, **kwargs):
