@@ -840,14 +840,15 @@ function ReceiveCarController($scope, $http, $location) {
 		'credit_card_no': '',
 		'card_expiry_date': '',
 		'cheque_no': '',
-		'meter_reading': '',
-		'petrol': '',
-		'fine': '',
-		'accident_passable': '',
-		'extra_charge': '',
-		'total_amount': '',
-		'reduction': '',
-		'balance': '',
+		'meter_reading': 0,
+		'petrol': 0,
+		'fine': 0,
+		'accident_passable': 0,
+		'extra_charge': 0,
+		'total_amount': 0,
+		'reduction': 0,
+		'balance': 0,
+		'paid': 0,
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -868,15 +869,23 @@ function ReceiveCarController($scope, $http, $location) {
         });
 	}
 	$scope.get_agreement_details = function() {
-		$http.get('/agreements/').success(function(data) {
-			$scope.agreements = data.agreements;
-			$scope.selecting_agreement = true;
-			$scope.agreement_selected = false;
+		var url = '/agreements/?agreement_no='+$scope.contract_no;
+		$http.get(url).success(function(data) {
+			console.log(data.agreements.length);
+			if (data.agreements.length == 0) {
+				$scope.message = 'No Rent Agreement with this  Agreement No.';
+				$scope.agreement_selected = true;
+			} else {
+				$scope.message = '';
+				$scope.agreements = data.agreements;
+				$scope.selecting_agreement = true;
+				$scope.agreement_selected = false;
+			}
 		})
 	}
 	$scope.add_agreement = function(agreement) {
 		$scope.agreement = agreement;
-		$scope.agreement_no = agreement.agreement_no;
+		$scope.contract_no = agreement.agreement_no;
 		$scope.agreement_selected = true;
 		$scope.receipt.total_amount = agreement.rent;
 		$scope.calculate_balance();
@@ -902,5 +911,9 @@ function ReceiveCarController($scope, $http, $location) {
 		}
 		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - (parseFloat($scope.receipt.reduction) + parseFloat($scope.agreement.paid))).toFixed(2);
+	}
+
+	$scope.receipt_car_validation = function() {
+		// if ($scope.receipt.)
 	}
 }

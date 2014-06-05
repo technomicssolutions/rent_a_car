@@ -759,3 +759,7 @@ a {
     border: 1px solid #ADD8E6;
     border-radius: 5px;
 }
+
+#receive_car .error_message {
+	margin-top: 45px;
+}

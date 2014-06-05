@@ -153,6 +153,11 @@ class ReceiveCar(models.Model):
     expiry_date = models.DateField('Expiry Date', null=True, blank=True)
     cheque_no = models.CharField('Cheque no', null=True, blank=True, max_length=20)
 
+    total_amount = models.DecimalField('Total Amount', decimal_places=2, max_digits=25, default=0)
+    paid = models.DecimalField('Paid on receipt', decimal_places=2, max_digits=25, default=0)
+
+    notes = models.TextField('Notes', null=True, blank=True)
+
     def __unicode__(self):
 
         return str(self.receipt_no)

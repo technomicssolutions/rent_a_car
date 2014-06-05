@@ -476,7 +476,8 @@ class AgreementDetails(View):
 
     def get(self, request, *args, **kwargs):
 
-        agreements = RentAgreement.objects.filter(is_completed=False)
+        agreement_no = request.GET.get('agreement_no', '')
+        agreements = RentAgreement.objects.filter(is_completed=False, agreement_no__startswith=agreement_no)
         ctx_agreements = []
         if request.is_ajax():
             if agreements.count() > 0:
