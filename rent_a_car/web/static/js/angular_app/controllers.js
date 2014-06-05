@@ -788,7 +788,7 @@ function RentAgreementController($scope, $http, $location) {
 	            } else {
 	                $scope.error_flag=false;
 	                $scope.message = '';
-	                // document.location.href ='/rent_agreement/';
+	                document.location.href ='/rent_agreement/';
 	                console.log('added');
 	            }
 	        }).error(function(data, status){
