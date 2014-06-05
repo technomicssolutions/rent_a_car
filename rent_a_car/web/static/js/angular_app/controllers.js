@@ -837,8 +837,17 @@ function ReceiveCarController($scope, $http, $location) {
 	}
 	$scope.receipt = {
 		'receipt_date': '',
-		'credit_card': '',
+		'credit_card_no': '',
 		'card_expiry_date': '',
+		'cheque_no': '',
+		'meter_reading': '',
+		'petrol': '',
+		'fine': '',
+		'accident_passable': '',
+		'extra_charge': '',
+		'total_amount': '',
+		'reduction': '',
+		'balance': '',
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -850,10 +859,16 @@ function ReceiveCarController($scope, $http, $location) {
             pickOnly: 'months',
             format:'%m/%Y',
         });
+        new Picker.Date($$('#receipt_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
 	}
 	$scope.get_agreement_details = function() {
 		$http.get('/agreements/').success(function(data) {
-			console.log(data.agreements);
 			$scope.agreements = data.agreements;
 			$scope.selecting_agreement = true;
 			$scope.agreement_selected = false;
@@ -861,7 +876,6 @@ function ReceiveCarController($scope, $http, $location) {
 	}
 	$scope.add_agreement = function(agreement) {
 		$scope.agreement = agreement;
-		console.log(agreement);
 		$scope.agreement_no = agreement.agreement_no;
 		$scope.agreement_selected = true;
 		$scope.receipt.total_amount = agreement.rent;
