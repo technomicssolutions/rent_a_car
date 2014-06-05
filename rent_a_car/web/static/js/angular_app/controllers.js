@@ -642,6 +642,7 @@ function RentAgreementController($scope, $http, $location) {
             format:'%d/%m/%Y %H:%M',
             canAlwaysGoUp: ['months', 'years']
         });
+        
 	}
 	
 	$scope.get_customer_details = function(client) {
@@ -669,6 +670,7 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.rent_agreement.balance = (parseFloat($scope.rent_agreement.rent) - parseFloat($scope.rent_agreement.paid)).toFixed(2);
 	}
 	$scope.rent_agreement_validation = function() {
+
 		$scope.rent_agreement.agreement_no = $$('#agreement_no')[0].get('value');
 		$scope.rent_agreement.dob = $$('#dob')[0].get('value');
 		$scope.rent_agreement.date = $$('#date')[0].get('value');
@@ -676,29 +678,79 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.rent_agreement.license_issued_date = $$('#license_issued_date')[0].get('value');
 		$scope.rent_agreement.start_date_time = $$('#start_date_time')[0].get('value');
 		$scope.rent_agreement.end_date_time = $$('#end_date_time')[0].get('value');
-		console.log($scope.rent_agreement.end_date_time);
+		
 		if ($scope.rent_agreement.agreement_no == '' || $scope.rent_agreement.agreement_no == undefined) {
 			$scope.validation_error = 'Please enter the Agreement No.';
+			return false;
 		} else if ($scope.rent_agreement.agreement_type == '' || $scope.rent_agreement.agreement_type == undefined) {
 			$scope.validation_error = 'Please enter the Agreement Type';
+			return false;
 		} else if ($scope.client.id == '' || $scope.client.id == undefined) {
 			$scope.validation_error = 'Please choose the Customer';
+			return false;
 		} else if ($scope.vehicle.id == '' || $scope.vehicle.id == undefined) {
 			$scope.validation_error = 'Please choose the Vehicle';
+			return false;
 		} else if ($scope.rent_agreement.rent_type == '' || $scope.rent_agreement.rent_type == undefined) {
 			$scope.validation_error = 'Please enter the Rent Type';
+			return false;
 		} else if ($scope.rent_agreement.date == '' || $scope.rent_agreement.date == undefined) { 
 			$scope.validation_error = 'Please enter the Agreement Date';
+			return false;
 		} else if ($scope.rent_agreement.start_date_time == '' || $scope.rent_agreement.start_date_time == undefined) {
 			$scope.validation_error = 'Please enter the Starting Date and Time';
+			return false;
 		} else if ($scope.rent_agreement.end_date_time == '' || $scope.rent_agreement.end_date_time == undefined) {
 			$scope.validation_error = 'Please enter the End Date and Time';
+			return false;
 		} else if ($scope.rent_agreement.amount == 0 || $scope.rent_agreement.amount == undefined) {
 			$scope.validation_error = 'Please enter the Amount';
+			return false;
 		} else if ($scope.rent_agreement.paid == undefined || $scope.rent_agreement.paid == '') {
 			$scope.validation_error = 'Please enter the Paid';
-		}
-	} 
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.driver_name == '' || $scope.rent_agreement.driver_name == undefined)) {
+			$scope.validation_error = 'Please enter Driver name';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.driver_phone == '' || $scope.rent_agreement.driver_phone == undefined)) {
+			$scope.validation_error = 'Please enter Driver Phone';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.driver_address == '' || $scope.rent_agreement.driver_address == undefined)) {
+			$scope.validation_error = 'Please enter Driver Address';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.passport_no == '' || $scope.rent_agreement.passport_no == undefined)) {
+			$scope.validation_error = 'Please enter Passport No.';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.nationality == '' || $scope.rent_agreement.nationality == undefined)) {
+			$scope.validation_error = 'Please enter Nationality';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.license_no == '' || $scope.rent_agreement.license_no == undefined)) {
+			$scope.validation_error = 'Please enter License No.';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.dob == '' || $scope.rent_agreement.dob == undefined)) {
+			$scope.validation_error = 'Please enter Date of Birth';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.license_expiry_date == '' || $scope.rent_agreement.license_expiry_date == undefined)) {
+			$scope.validation_error = 'Please enter License Expiry Date';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.license_issued_place == '' || $scope.rent_agreement.license_issued_place == undefined)) {
+			$scope.validation_error = 'Please enter License Issued Place';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.license_issued_date == '' || $scope.rent_agreement.license_issued_date == undefined)) {
+			$scope.validation_error = 'Please enter License Issued Date';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.sponsar_name == '' || $scope.rent_agreement.sponsar_name == undefined)) {
+			$scope.validation_error = 'Please enter Sponsar Name';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.sponsar_telephone == '' || $scope.rent_agreement.sponsar_telephone == undefined)) {
+			$scope.validation_error = 'Please enter Sponsar Telephone';
+			return false;
+		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.sponsar_address == '' || $scope.rent_agreement.sponsar_address == undefined)) {
+			$scope.validation_error = 'Please enter Sponsar Address';
+			return false;
+		} 
+		return true;
+	}  
 	$scope.create_rent_agreement = function() {
 		$scope.is_valid = $scope.rent_agreement_validation();
 		params = {

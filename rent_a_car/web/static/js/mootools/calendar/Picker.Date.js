@@ -593,7 +593,8 @@ var renderers = {
 
 		new Element('input.ok', {
 			'type': 'submit',
-			value: Locale.get('DatePicker.time_confirm_button'),
+			// value: Locale.get('DatePicker.time_confirm_button'),
+			value: 'Ok',
 			events: {click: function(event){
 				event.stop();
 				date.set({
