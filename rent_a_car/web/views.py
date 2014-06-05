@@ -471,4 +471,28 @@ class ReceiveCarView(View):
         }
 
         return render(request, 'receive_car.html', context)
-                
+
+class AgreementDetails(View):
+
+    def get(self, request, *args, **kwargs):
+
+        agreements = RentAgreement.objects.filter(is_completed=False)
+        ctx_agreements = []
+        if request.is_ajax():
+            if agreements.count() > 0:
+                for agreement in agreements:
+                    ctx_agreements.append({
+                        'id': agreement.id,
+                        'agreement_no': agreement.agreement_no,
+                        'agreement_type': agreement.agreement_type,
+
+                    })
+            res = {
+                'result': 'ok',
+                'agreements': ctx_agreements,
+            }
+            status = 200
+            response = simplejson.dumps(res)
+
+            return HttpResponse(response, status=status, mimetype='application/json')
+                    

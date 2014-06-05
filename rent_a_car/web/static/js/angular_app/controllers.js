@@ -803,4 +803,12 @@ function ReceiveCarController($scope, $http, $location) {
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 	}
+	$scope.get_agreement_details = function() {
+		$http.get('/agreements/').success(function(data) {
+			console.log(data.agreements);
+			$scope.agreements = data.agreements;
+			$scope.selecting_agreement = true;
+			$scope.agreement_selected = false;
+		})
+	}
 }

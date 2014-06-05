@@ -19,7 +19,13 @@
 							<label for="receipt_no">Contract No.</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="contract_no" id="contract_no" ng-model="contract_no">
+							<input type="text" name="contract_no" id="contract_no" ng-model="contract_no" ng-change="get_agreement_details()">
+						</div>
+						<div class="item_list agreements" ng-show='selecting_agreement' ng-hide="agreement_selected">
+							<div ng-repeat="agreement in agreements" ng-click="add_agreement(agreement)" class="item_list_row">
+								<span>[[agreement.agreement_no]]</span>
+							</div>
+							<div class="clear"></div>
 						</div>
 					</div>
 					<div class="formrow_purchase">

@@ -126,6 +126,8 @@ class RentAgreement(models.Model):
     rent = models.DecimalField('Rent', max_digits=25, decimal_places=2, default=0)
     paid = models.DecimalField('Paid', max_digits=25, decimal_places=2, default=0)
 
+    is_completed = models.BooleanField('Completed', default=False)
+
     def __unicode__(self):
 
         return str(self.agreement_no)
@@ -137,8 +139,7 @@ class RentAgreement(models.Model):
 
 class ReceiveCar(models.Model):
 
-    vehicle = models.ForeignKey(Vehicle, null=True, blank=True)
-    client = models.ForeignKey(Client, null=True, blank=True)
+    rent_agreement = models.ForeignKey(RentAgreement, null=True, blank=True)
 
     receipt_no = models.CharField('Receipt No', null=True, blank=True, max_length=10)
     new_meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
