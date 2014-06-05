@@ -5,4 +5,5 @@ admin.site.register(Client)
 admin.site.register(VehicleType)
 admin.site.register(Vehicle)
 admin.site.register(RentAgreement)
+admin.site.register(ReceiveCar)
 

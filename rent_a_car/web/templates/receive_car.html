@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block body_id %}receive_car{% endblock %}
+
+{% block title %}Receive Car{% endblock title %}
+{% block controller %}ng-controller="ReceiveCarController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+
+{% block content %}
+	<div id="main-title">
+		<div class="alert alert-info" align="Center"><h4>Receive Car</h4></div>
+	</div>
+
+	<div class="purchase_form_container">
+		<form name="purchase_entry" method="post">
+			<div class="form_contents_purchase">
+				<div class="section_1_purchase">
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="receipt_no">Contract No.</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="contract_no" id="contract_no" ng-model="contract_no">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="receipt_no">Receipt No.</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="receipt_no" value="{{receipt_no}}" readonly id="receipt_no">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+{% endblock content %}

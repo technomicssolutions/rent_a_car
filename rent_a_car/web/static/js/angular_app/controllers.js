@@ -798,3 +798,9 @@ function RentAgreementController($scope, $http, $location) {
 	    }
 	}
 }
+
+function ReceiveCarController($scope, $http, $location) {
+	$scope.init = function(csrf_token) {
+		$scope.csrf_token = csrf_token;
+	}
+}

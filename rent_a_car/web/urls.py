@@ -18,4 +18,5 @@ urlpatterns = patterns('',
 	url(r'vehicle_type/list/$', login_required(VehicleTypeList.as_view()), name='vehicle_types'),
 	url(r'edit_vehicle/(?P<vehicle_id>\d+)/$', login_required(EditVehicle.as_view()), name='edit_vehicle'),
 	url(r'rent_agreement/$', login_required(RentAgreementView.as_view()), name='rent_agreement'),
+	url(r'receive_car/$', login_required(ReceiveCarView.as_view()), name='receive_car'),
 )
