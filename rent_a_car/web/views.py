@@ -478,6 +478,16 @@ class ReceiveCarView(View):
             receive_car, created = ReceiveCar.objects.get_or_create(receipt_no=receive_car_details['receipt_no'])
             rent_agreement = RentAgreement.objects.get(id=receive_car['agreement_id'])
             receive_car.rent_agreement = rent_agreement
+            receive_car.petrol = receive_car_details['petrol']
+            receive_car.fine = receive_car_details['fine']
+            receive_car.extra_charge = receive_car_details['extra_charge']
+            receive_car.accident_passable = receive_car_details['accident_passable']
+            receive_car.credit_card_no = receive_car_details['credit_card_no']
+            receive_car.cheque_no = receive_car_details['cheque_no']
+            receive_car.expiry_date = datetime.strptime(receive_car_details['card_expiry_date'], '%m/%Y')
+            receive_car.total_amount = receive_car_details['total_amount']
+            receive_car.paid = receive_car_details['paid']
+            receive_car.notes = receive_car_details['notes']
             receive_car.save()
             res = {
                 'result': 'ok',

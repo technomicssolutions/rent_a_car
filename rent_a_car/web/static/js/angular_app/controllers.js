@@ -852,6 +852,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'reduction': 0,
 		'balance': 0,
 		'paid': 0,
+		'notes': '',
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
