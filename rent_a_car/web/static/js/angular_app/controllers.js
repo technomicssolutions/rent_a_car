@@ -561,6 +561,8 @@ function RentAgreementController($scope, $http, $location) {
 		'meter_reading': '',
 	}
 	$scope.rent_agreement = {
+		'client_id': '',
+		'vehicle_id': '',
 		'agreement_no': '',
 		'agreement_type': '',
 		'rent_type': '',
@@ -625,12 +627,12 @@ function RentAgreementController($scope, $http, $location) {
 	}
 	
 	$scope.get_customer_details = function(client) {
-		console.log(client);
 		$scope.client = client;
+		$scope.rent_agreement.client_id = $scope.client.id;
 	}
 	$scope.get_vehicle_details = function(vehicle) {
-		console.log(vehicle);
 		$scope.vehicle = vehicle;
+		$scope.rent_agreement.vehicle_id = $scope.vehicle.id;
 	}
 	$scope.with_driver_mode = function(mode) {
 		if (mode == 'yes') {
@@ -664,16 +666,16 @@ function RentAgreementController($scope, $http, $location) {
 		}
 	}
 	$scope.calculate_rent_amount = function() {
-		if ($scope.rent_agreement.amount != Number($scope.rent_agreement.amount)) {
+		if ($scope.rent_agreement.amount != Number($scope.rent_agreement.amount) || $scope.rent_agreement.amount == '') {
 			$scope.rent_agreement.amount = 0;
 		}
-		if ($scope.rent_agreement.commission != Number($scope.rent_agreement.commission)) {
+		if ($scope.rent_agreement.commission != Number($scope.rent_agreement.commission) || $scope.rent_agreement.commission == '') {
 			$scope.rent_agreement.commission = 0;
 		}
-		if ($scope.rent_agreement.reduction != Number($scope.rent_agreement.reduction)) {
+		if ($scope.rent_agreement.reduction != Number($scope.rent_agreement.reduction) || $scope.rent_agreement.reduction == '') {
 			$scope.rent_agreement.reduction = 0;
 		}
-		if ($scope.rent_agreement.paid != Number($scope.rent_agreement.paid)) {
+		if ($scope.rent_agreement.paid != Number($scope.rent_agreement.paid) || $scope.rent_agreement.paid == '') {
 			$scope.rent_agreement.paid = 0;
 		}
 		$scope.rent_agreement.rent = ((parseFloat($scope.rent_agreement.amount) + parseFloat($scope.rent_agreement.commission)) - parseFloat($scope.rent_agreement.reduction)).toFixed(2);
@@ -768,6 +770,31 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.is_valid = $scope.rent_agreement_validation();
 		params = {
 			"csrfmiddlewaretoken": $scope.csrf_token,
+			'rent_agreement': angular.toJson($scope.rent_agreement),
 		}
+		if ($scope.is_valid) {
+			$http({
+	            method : 'post',
+	            url : '/rent_agreement/',
+	            data : $.param(params),
+	            headers : {
+	                'Content-Type' : 'application/x-www-form-urlencoded'
+	            }
+	        }).success(function(data, status) {
+	            
+	            if (data.result == 'error'){
+	                $scope.error_flag=true;
+	                $scope.message = data.message;
+	            } else {
+	                $scope.error_flag=false;
+	                $scope.message = '';
+	                // document.location.href ='/rent_agreement/';
+	                console.log('added');
+	            }
+	        }).error(function(data, status){
+	            $scope.validation_error = data.message;
+	            console.log('error occured');
+	        });
+	    }
 	}
 }

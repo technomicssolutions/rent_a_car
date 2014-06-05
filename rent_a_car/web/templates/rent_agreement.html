@@ -36,7 +36,7 @@
 						</div>
 						<div class="forminput">
 							<select>
-								<option value="">Select</option>
+								<option value="" ng-click="get_customer_details('')">Select</option>
 								<option ng-repeat="client in clients" value="[[client.client_name]]" ng-click="get_customer_details(client)">[[client.client_name]]</option>
 							</select>
 						</div>
@@ -91,7 +91,7 @@
 						</div>
 						<div class="forminput">
 							<select>
-								<option value="">Select</option>
+								<option value="" ng-click="get_vehicle_details('')">Select</option>
 								<option ng-repeat="vehicle in vehicles" value="[[vehicle.vehicle_no]]" ng-click="get_vehicle_details(vehicle)">[[vehicle.vehicle_no]]</option>
 							</select>
 						</div>

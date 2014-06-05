@@ -393,3 +393,64 @@ class RentAgreementView(View):
         }
 
         return render(request, 'rent_agreement.html', context)
+
+    def post(self, request, *args, **kwargs):
+
+        if request.is_ajax():
+            rent_agreement_details = ast.literal_eval(request.POST['rent_agreement'])
+            # try:
+            rent_agreement, agreement_created = RentAgreement.objects.get_or_create(agreement_no=rent_agreement_details['agreement_no'])
+            # if agreement_created:
+            client = Client.objects.get(id=int(rent_agreement_details['client_id']))
+            vehicle = Vehicle.objects.get(id=int(rent_agreement_details['vehicle_id']))
+            rent_agreement.client = client
+            rent_agreement.vehicle = vehicle
+            rent_agreement.agreement_type = rent_agreement_details['agreement_type']
+            rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
+            rent_agreement.starting_date_time = datetime.strptime(rent_agreement_details['start_date_time'], '%d/%m/%Y %H:%M')
+            rent_agreement.end_date_time = datetime.strptime(rent_agreement_details['end_date_time'], '%d/%m/%Y %H:%M') 
+            rent_agreement.rent_type = rent_agreement_details['rent_type']
+            rent_agreement.type_of_contract = rent_agreement_details['type_of_contract']
+            if rent_agreement_details['with_driver'] == 'yes':
+                rent_agreement.with_driver = True
+            else:
+                rent_agreement.with_driver = False
+            if rent_agreement_details['with_driver'] == 'yes':
+                rent_agreement.driver_name = rent_agreement_details['driver_name']
+                rent_agreement.driver_phone = rent_agreement_details['driver_phone']
+                rent_agreement.driver_address = rent_agreement_details['driver_address']
+                rent_agreement.driver_nationality = rent_agreement_details['nationality']
+                rent_agreement.driver_passport_no = rent_agreement_details['passport_no']
+                rent_agreement.driver_license_no = rent_agreement_details['license_no']
+                rent_agreement.driver_dob = datetime.strptime(rent_agreement_details['dob'], '%d/%m/%Y')
+                rent_agreement.driver_license_expiry_date = datetime.strptime(rent_agreement_details['license_expiry_date'], '%d/%m/%Y')
+                rent_agreement.driver_license_issue_place = rent_agreement_details['license_issued_place']
+                rent_agreement.driver_license_issue_date = datetime.strptime(rent_agreement_details['license_issued_date'], '%d/%m/%Y')
+                rent_agreement.sponsar_name = rent_agreement_details['sponsar_name']
+                rent_agreement.sponsar_address = rent_agreement_details['sponsar_telephone']
+                rent_agreement.sponsar_phone = rent_agreement_details['sponsar_address']
+            rent_agreement.notes = rent_agreement_details['notes']
+            rent_agreement.total_amount = rent_agreement_details['amount']
+            rent_agreement.commission = rent_agreement_details['commission']
+            rent_agreement.reduction = rent_agreement_details['reduction']
+            rent_agreement.rent = rent_agreement_details['rent']
+            rent_agreement.paid = rent_agreement_details['paid']
+            rent_agreement.save()
+            client.rent = float(client.rent) + float(rent_agreement_details['rent'])
+            client.paid = float(client.paid) + float(rent_agreement_details['paid'])
+            client.balance = float(client.rent) - float(client.paid)
+            client.save()
+            res = {
+                'result': 'ok',
+            }
+            status = 200
+            # except Exception as ex:
+            #     print str(ex)
+            #     res = {
+            #         'result': 'error',
+            #     }
+            #     status = 500
+            response = simplejson.dumps(res)
+
+            return HttpResponse(response, status=status, mimetype='application/json')
+                

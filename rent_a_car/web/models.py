@@ -98,7 +98,6 @@ class RentAgreement(models.Model):
     starting_date_time = models.DateTimeField('Starting Date and Time', null=True, blank=True)
     end_date_time = models.DateTimeField('End Date and Time', null=True, blank=True)
     rent_type = models.CharField('Rent Type', null=True, blank=True, max_length=25)
-    commission = models.DecimalField('Commission', null=True, blank=True, max_digits=25, decimal_places=2)
     
     identity_driver = models.CharField('Identity Driver', null=True, blank=True, max_length=35)
     client_identity = models.CharField('Cleint Identity', null=True, blank=True, max_length=25)
@@ -114,14 +113,20 @@ class RentAgreement(models.Model):
     driver_license_issue_date = models.DateField('Driver License Issue Date', null=True, blank=True)
     driver_license_issue_place = models.CharField('Driver License Issue Place', null=True, blank=True, max_length=25)
     driver_license_expiry_date = models.DateField('Driver License Expiry Date', null=True, blank=True)
-    
+    driver_dob = models.DateField('Driver DOB', null=True, blank=True)
+
     sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=25)
     sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
     sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
     notes = models.TextField('Notes', null=True, blank=True)
 
-    rent = models.DecimalField('Rent', null=True, blank=True, max_digits=14, decimal_places=2)
-    paid = models.DecimalField('Paid', null=True, blank=True, max_digits=14, decimal_places=2)
+    total_amount = models.DecimalField('Amount', decimal_places=2, max_digits=25, default=0)
+    commission = models.DecimalField('Commission', max_digits=25, decimal_places=2, default=0)
+    reduction = models.DecimalField('Reduction', max_digits=25, decimal_places=2, default=0)
+    rent = models.DecimalField('Rent', max_digits=25, decimal_places=2, default=0)
+    paid = models.DecimalField('Paid', max_digits=25, decimal_places=2, default=0)
+    
+    
 
     def __unicode__(self):
 
