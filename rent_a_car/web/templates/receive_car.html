@@ -248,12 +248,94 @@
 							<input type="text" name="credit_card_no" ng-model="receipt.credit_card_no" id="credit_card_no">
 						</div>
 					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="receipt_date">Card Expiry Date</label>
+							<label for="card_expiry_date">Card Expiry Date</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="card_expiry_date" ng-model="receipt.card_expiry_date" id="card_expiry_date">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="cheque_no">Cheque No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="cheque_no" ng-model="receipt.cheque_no" id="cheque_no">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="meter_reading">Meter Reading</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="meter_reading" ng-model="receipt.meter_reading" id="meter_reading">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="petrol">Petrol</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="petrol" ng-model="receipt.petrol" id="petrol" ng-change="calculate_balance()">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="fine">Fine</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="fine" ng-model="receipt.fine" id="fine" ng-change="calculate_balance()">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="accident_passable">Accident Passable</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="accident_passable" ng-model="receipt.accident_passable" id="accident_passable" ng-change="calculate_balance()">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="extra_charge">Extra Charge</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="extra_charge" ng-model="receipt.extra_charge" id="extra_charge" ng-change="calculate_balance()">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="total_amount">Total Amount</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="total_amount" ng-model="receipt.total_amount" id="total_amount" ng-change="calculate_balance()">
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="reduction">Reduction</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="reduction" ng-model="receipt.reduction" id="reduction" ng-change="calculate_balance">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="paid">Paid</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="paid" ng-model="agreement.paid" id="paid" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="balance">Balance</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="balance" ng-model="receipt.balance" id="balance" readonly>
 						</div>
 					</div>
 				</div>

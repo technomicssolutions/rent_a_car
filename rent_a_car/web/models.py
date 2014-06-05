@@ -144,11 +144,11 @@ class ReceiveCar(models.Model):
     receipt_no = models.CharField('Receipt No', null=True, blank=True, max_length=10)
     new_meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
     type_of_fee = models.CharField('Type of Fee', max_length=40, null=True, blank=True)
+    
     petrol = models.DecimalField('Petrol', max_digits=25, decimal_places=2, default=0)
-    accident = models.DecimalField('Accident', max_digits=25, decimal_places=2, default=0)
     fine = models.DecimalField('Fine', max_digits=25, decimal_places=2, default=0)
     extra_charge = models.DecimalField('Extra Charge', max_digits=25, decimal_places=2, default=0)
-    passable = models.DecimalField('Passable', max_digits=25, decimal_places=2, default=0)
+    accident_passable = models.DecimalField('Accident Passable', max_digits=25, decimal_places=2, default=0)
     credit_card_no = models.CharField('Credit card no', max_length=20, null=True, blank=True)
     expiry_date = models.DateField('Expiry Date', null=True, blank=True)
     cheque_no = models.CharField('Cheque no', null=True, blank=True, max_length=20)

@@ -507,6 +507,7 @@ class AgreementDetails(View):
                         'driver_name': agreement.driver_name,
                         'driver_passport_no': agreement.driver_passport_no,
                         'sponsar_name': agreement.sponsar_name,
+                        'paid': agreement.paid,
                     })
             res = {
                 'result': 'ok',

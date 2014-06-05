@@ -864,5 +864,29 @@ function ReceiveCarController($scope, $http, $location) {
 		console.log(agreement);
 		$scope.agreement_no = agreement.agreement_no;
 		$scope.agreement_selected = true;
+		$scope.receipt.total_amount = agreement.rent;
+		$scope.calculate_balance();
+	}
+	$scope.calculate_balance = function() {
+		if ($scope.receipt.petrol == '' || $scope.receipt.petrol != Number($scope.receipt.petrol)) {
+			$scope.receipt.petrol = 0;
+		}
+		if ($scope.agreement.rent == '' || $scope.agreement.rent != Number($scope.agreement.rent)) {
+			$scope.agreement.rent = 0;
+		}
+		if ($scope.receipt.fine == '' || $scope.receipt.fine != Number($scope.receipt.fine)) {
+			$scope.receipt.fine =  0;
+		}
+		if ($scope.receipt.accident_passable == '' || $scope.receipt.accident_passable != Number($scope.receipt.accident_passable)) {
+			$scope.receipt.accident_passable = 0;
+		}
+		if ($scope.receipt.extra_charge == '' || $scope.receipt.extra_charge != Number($scope.receipt.extra_charge)) {
+			$scope.receipt.extra_charge = 0;
+		}
+		if ($scope.receipt.reduction == '' || $scope.receipt.reduction != Number($scope.receipt.reduction)) {
+			$scope.receipt.reduction = 0;
+		}
+		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
+		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - (parseFloat($scope.receipt.reduction) + parseFloat($scope.agreement.paid))).toFixed(2);
 	}
 }
