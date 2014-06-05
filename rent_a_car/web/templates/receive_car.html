@@ -311,7 +311,7 @@
 							<label for="total_amount">Total Amount</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="total_amount" ng-model="receipt.total_amount" id="total_amount" ng-change="calculate_balance()">
+							<input type="text" name="total_amount" ng-model="receipt.total_amount" id="total_amount" readonly>
 						</div>
 					</div>
 
@@ -336,7 +336,7 @@
 							<label for="paid">Paid Amount on Receipt</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="paid" ng-model="receipt.paid" id="paid">
+							<input type="text" name="paid" ng-model="receipt.paid" id="paid" ng-change="calculate_balance()">
 						</div>
 					</div>
 					<div class="formrow_purchase">

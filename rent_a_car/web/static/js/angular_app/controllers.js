@@ -817,6 +817,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'plate_no': '',
 		'date': '',
 		'rent': 0,
+		'paid': 0,
 		'type_of_contract': '',
 		'with_driver': 'no',
 		'driver_name': '',
@@ -836,6 +837,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'notes': '',
 	}
 	$scope.receipt = {
+		'agreement_id': '',
 		'receipt_date': '',
 		'credit_card_no': '',
 		'card_expiry_date': '',
@@ -888,6 +890,7 @@ function ReceiveCarController($scope, $http, $location) {
 		$scope.contract_no = agreement.agreement_no;
 		$scope.agreement_selected = true;
 		$scope.receipt.total_amount = agreement.rent;
+		$scope.receipt.agreement_id = agreement.id;
 		$scope.calculate_balance();
 	}
 	$scope.calculate_balance = function() {
@@ -909,11 +912,36 @@ function ReceiveCarController($scope, $http, $location) {
 		if ($scope.receipt.reduction == '' || $scope.receipt.reduction != Number($scope.receipt.reduction)) {
 			$scope.receipt.reduction = 0;
 		}
+		if ($scope.receipt.paid == '' || $scope.receipt.paid != Number($scope.receipt.paid)) {
+			$scope.receipt.paid = 0;
+		}
 		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - (parseFloat($scope.receipt.reduction) + parseFloat($scope.agreement.paid))).toFixed(2);
+		$scope.receipt.balance = parseFloat($scope.receipt.balance) - parseFloat($scope.receipt.paid);
 	}
 
 	$scope.receipt_car_validation = function() {
-		// if ($scope.receipt.)
+		$scope.receipt.receipt_date = $$('#receipt_date')[0].get('value');
+		$scope.receipt.card_expiry_date = $$('#card_expiry_date')[0].get('value');
+		if ($scope.receipt.agreement_id == '' || $scope.receipt.agreement_id == undefined) {
+			$scope.validation_error = 'Please enter Contract No.';
+		} else if ($scope.receipt.receipt_date == '' || $scope.receipt.receipt_date == undefined) {
+			$scope.validation_error = 'Please choose Receipt Date';
+		} else if (($scope.receipt.credit_card_no == '' || $scope.receipt.credit_card_no == undefined) && ($scope.receipt.cheque_no == '' || $scope.receipt.cheque_no == undefined)) {
+			$scope.validation_error = 'Please enter Credit Card No or Cheque No';
+		} else if ($scope.receipt.credit_card_no != '' && ($scope.receipt.card_expiry_date == '' || $scope.receipt.card_expiry_date == undefined)) {
+			$scope.validation_error = 'Please enter Credit Card Expiry Date';
+		} else if ($scope.receipt.meter_reading == 0 || $scope.receipt.meter_reading == '' || $scope.receipt.meter_reading == undefined) {
+			$scope.validation_error = 'Please enter Meter Reading';
+		} else if ($scope.receipt.paid == 0 || $scope.receipt.paid == '' || $scope.receipt.paid == undefined) {
+			$scope.validation_error = 'Please enter Paid Amount on Receipt';
+		}
+	}
+
+	$scope.receipt_car = function() {
+		$scope.is_valid = $scope.receipt_car_validation();
+		console.log($scope.is_valid);
 	}
 }
+
+
