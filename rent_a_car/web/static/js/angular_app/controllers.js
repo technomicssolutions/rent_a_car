@@ -800,8 +800,56 @@ function RentAgreementController($scope, $http, $location) {
 }
 
 function ReceiveCarController($scope, $http, $location) {
+	$scope.agreement = {
+		'id': '',
+		'client': '',
+		'vehicle_no': '',
+		'agreement_no': '',
+		'agreement_type': '',
+		'begining_date': '',
+		'begining_time': '',
+		'end_date': '',
+		'end_time': '',
+		'vehicle_condition': '',
+		'insurance_value': '',
+		'insurance_type': '',
+		'meter_reading': '',
+		'plate_no': '',
+		'date': '',
+		'rent': 0,
+		'type_of_contract': '',
+		'with_driver': 'no',
+		'driver_name': '',
+		'driver_phone': '',
+		'driver_address': '',
+		'passport_no': '',
+		'nationality': '',
+		'license_no': '',
+		'dob': '',
+		'passport_no': '',
+		'place_of_issue': '',
+		'license_date': '',
+		'license_type': '',
+		'sponsar_name': '',
+		'sponsar_telephone': '',
+		'sponsar_address': '',
+		'notes': '',
+	}
+	$scope.receipt = {
+		'receipt_date': '',
+		'credit_card': '',
+		'card_expiry_date': '',
+	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
+		new Picker.Date($$('#card_expiry_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            pickOnly: 'months',
+            format:'%m/%Y',
+        });
 	}
 	$scope.get_agreement_details = function() {
 		$http.get('/agreements/').success(function(data) {
@@ -810,5 +858,11 @@ function ReceiveCarController($scope, $http, $location) {
 			$scope.selecting_agreement = true;
 			$scope.agreement_selected = false;
 		})
+	}
+	$scope.add_agreement = function(agreement) {
+		$scope.agreement = agreement;
+		console.log(agreement);
+		$scope.agreement_no = agreement.agreement_no;
+		$scope.agreement_selected = true;
 	}
 }

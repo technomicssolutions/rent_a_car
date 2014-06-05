@@ -747,7 +747,7 @@ a {
 	width: 100% !important;
 }
 
-#rent_agreement .section_1_purchase {
+#rent_agreement .section_1_purchase, #receive_car .section_1_purchase {
 	margin-bottom: 35px;
 }
 
