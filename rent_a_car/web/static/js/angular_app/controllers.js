@@ -590,18 +590,12 @@ function RentAgreementController($scope, $http, $location) {
 		'sponsar_address': '',
 		'notes': '',
 	}
+	$scope.driver_details_needed = true;
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 		get_clients($scope, $http);
 		get_vehicles($scope, $http);
-		new Picker.Date($$('#dob'), {
-            timePicker: false,
-            positionOffset: {x: 5, y: 0},
-            pickerClass: 'datepicker_bootstrap',
-            useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y',
-            canAlwaysGoUp: ['months', 'years']
-        });
+		
         new Picker.Date($$('#date'), {
             timePicker: false,
             positionOffset: {x: 5, y: 0},
@@ -610,22 +604,7 @@ function RentAgreementController($scope, $http, $location) {
             format:'%d/%m/%Y',
             canAlwaysGoUp: ['months', 'years']
         });
-        new Picker.Date($$('#license_expiry_date'), {
-            timePicker: false,
-            positionOffset: {x: 5, y: 0},
-            pickerClass: 'datepicker_bootstrap',
-            useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y',
-            canAlwaysGoUp: ['months', 'years']
-        });
-        new Picker.Date($$('#license_issued_date'), {
-            timePicker: false,
-            positionOffset: {x: 5, y: 0},
-            pickerClass: 'datepicker_bootstrap',
-            useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y',
-            canAlwaysGoUp: ['months', 'years']
-        });
+        
         new Picker.Date($$('#start_date_time'), {
             timePicker: true,
             positionOffset: {x: 5, y: 0},
@@ -642,7 +621,7 @@ function RentAgreementController($scope, $http, $location) {
             format:'%d/%m/%Y %H:%M',
             canAlwaysGoUp: ['months', 'years']
         });
-        
+
 	}
 	
 	$scope.get_customer_details = function(client) {
@@ -652,6 +631,37 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.get_vehicle_details = function(vehicle) {
 		console.log(vehicle);
 		$scope.vehicle = vehicle;
+	}
+	$scope.with_driver_mode = function(mode) {
+		if (mode == 'yes') {
+			$scope.driver_details_needed = false;
+			new Picker.Date($$('#dob'), {
+	            timePicker: false,
+	            positionOffset: {x: 5, y: 0},
+	            pickerClass: 'datepicker_bootstrap',
+	            useFadeInOut: !Browser.ie,
+	            format:'%d/%m/%Y',
+	            canAlwaysGoUp: ['months', 'years']
+	        });
+			new Picker.Date($$('#license_expiry_date'), {
+	            timePicker: false,
+	            positionOffset: {x: 5, y: 0},
+	            pickerClass: 'datepicker_bootstrap',
+	            useFadeInOut: !Browser.ie,
+	            format:'%d/%m/%Y',
+	            canAlwaysGoUp: ['months', 'years']
+	        });
+	        new Picker.Date($$('#license_issued_date'), {
+	            timePicker: false,
+	            positionOffset: {x: 5, y: 0},
+	            pickerClass: 'datepicker_bootstrap',
+	            useFadeInOut: !Browser.ie,
+	            format:'%d/%m/%Y',
+	            canAlwaysGoUp: ['months', 'years']
+	        });
+		} else {
+			$scope.driver_details_needed = true;
+		}
 	}
 	$scope.calculate_rent_amount = function() {
 		if ($scope.rent_agreement.amount != Number($scope.rent_agreement.amount)) {
@@ -708,6 +718,9 @@ function RentAgreementController($scope, $http, $location) {
 			return false;
 		} else if ($scope.rent_agreement.paid == undefined || $scope.rent_agreement.paid == '') {
 			$scope.validation_error = 'Please enter the Paid';
+			return false;
+		} else if ($scope.rent_agreement.type_of_contract == '' || $scope.rent_agreement.type_of_contract == undefined) {
+			$scope.validation_error = 'Please enter Type of Contract';
 			return false;
 		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.driver_name == '' || $scope.rent_agreement.driver_name == undefined)) {
 			$scope.validation_error = 'Please enter Driver name';

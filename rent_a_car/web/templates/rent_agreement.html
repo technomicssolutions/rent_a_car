@@ -210,7 +210,7 @@
 							<label for="amount">Amount</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.amount" name="amount">
+							<input type="text" ng-model="rent_agreement.amount" name="amount" ng-change="calculate_rent_amount()">
 						</div>
 					</div>
 					
@@ -239,9 +239,9 @@
 							<label for="with_driver">With Driver</label>
 						</div>
 						<div class="forminput" id="radio_input">
-							<input type="radio" value="yes" ng-model="rent_agreement.with_driver" name="with_driver">
+							<input type="radio" value="yes" ng-model="rent_agreement.with_driver" name="with_driver" ng-click="with_driver_mode('yes')">
 							<label>Yes</label>
-							<input type="radio" value="no" ng-model="rent_agreement.with_driver" name="with_driver">
+							<input type="radio" value="no" ng-model="rent_agreement.with_driver" name="with_driver" ng-click="with_driver_mode('no')">
 							<label>No</label>
 
 						</div>
@@ -251,7 +251,7 @@
 							<label for="driver_name">Driver Name</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.driver_name" name="driver_name"/>
+							<input type="text" ng-model="rent_agreement.driver_name" name="driver_name" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -260,7 +260,7 @@
 							<label for="driver_phone">Driver Phone</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.driver_phone" name="driver_phone"/>
+							<input type="text" ng-model="rent_agreement.driver_phone" name="driver_phone" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -269,7 +269,7 @@
 							<label for="driver_address">Driver Address</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.driver_address" name="driver_address"/>
+							<textarea ng-model="rent_agreement.driver_address" name="driver_address" ng-readonly="driver_details_needed"></textarea>
 
 						</div>
 					</div>
@@ -278,7 +278,7 @@
 							<label for="passport_no">Passport No</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.passport_no" name="passport_no"/>
+							<input type="text" ng-model="rent_agreement.passport_no" name="passport_no" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -287,7 +287,7 @@
 							<label for="nationality">Nationality</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.nationality" name="nationality"/>
+							<input type="text" ng-model="rent_agreement.nationality" name="nationality" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -296,7 +296,7 @@
 							<label for="license_no">License No</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.license_no" name="license_no"/>
+							<input type="text" ng-model="rent_agreement.license_no" name="license_no" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -306,7 +306,7 @@
 							<label for="dob">Date of Birth</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.dob" name="dob" id="dob"/>
+							<input type="text" ng-model="rent_agreement.dob" name="dob" id="dob" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -316,7 +316,7 @@
 							<label for="license_expiry_date">License Expiry Date</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.license_expiry_date" name="license_expiry_date" id="license_expiry_date"/>
+							<input type="text" ng-model="rent_agreement.license_expiry_date" name="license_expiry_date" id="license_expiry_date" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -326,7 +326,7 @@
 							<label for="license_issued_place">License Issued Place</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.license_issued_place" name="license_issued_place"/>
+							<input type="text" ng-model="rent_agreement.license_issued_place" name="license_issued_place" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -335,7 +335,7 @@
 							<label for="license_issued_date">License Issued Date</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.license_issued_date" name="license_issued_date" id="license_issued_date"/>
+							<input type="text" ng-model="rent_agreement.license_issued_date" name="license_issued_date" id="license_issued_date" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -344,7 +344,7 @@
 							<label for="sponsar_name">Sponsar Name</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.sponsar_name" name="sponsar_name"/>
+							<input type="text" ng-model="rent_agreement.sponsar_name" name="sponsar_name" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -354,7 +354,7 @@
 							<label for="sponsar_telephone">Sponsar Telephone</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.sponsar_telephone" name="sponsar_telephone"/>
+							<input type="text" ng-model="rent_agreement.sponsar_telephone" name="sponsar_telephone" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
@@ -363,7 +363,7 @@
 							<label for="sponsar_address">Sponsar Address</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.sponsar_address" name="sponsar_address"/>
+							<textarea name="sponsar_address" ng-model="rent_agreement.sponsar_address" ng-readonly="driver_details_needed"></textarea>
 
 						</div>
 					</div>
