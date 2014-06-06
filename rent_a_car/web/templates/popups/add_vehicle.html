@@ -45,7 +45,7 @@
                                     <select name="vehicle_type" ng-model="vehicle.vehicle_type" ng-change="add_new_type()">
 										<option value="">Select</option>
 										<option ng-repeat="type in vehicle_types" value="[[type.vehicle_type]]" ng-selected="type.vehicle_type == vehicle.vehicle_type">[[type.vehicle_type]]</option>
-										<!-- <option value="other">Other</option> -->
+										<option value="other">Other</option>
 									</select>
                                 </div>  
                             </div>

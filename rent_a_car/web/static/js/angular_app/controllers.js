@@ -18,7 +18,7 @@ get_vehicles = function($scope, $http) {
 	})
 }
 
-save_vehicle_type = function($scope, $http) {
+save_vehicle_type = function($scope, $http, from) {
 	if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
 		$scope.message = 'Please enter the vehicle type';
 	} else {
@@ -44,7 +44,12 @@ save_vehicle_type = function($scope, $http) {
                 $scope.message = '';
                 get_vehicle_types($scope, $http);
                 $scope.vehicle.vehicle_type = data.vehicle_type_name;
-                $scope.close_popup();
+                if (from == 'add_vehicle') {
+                	$('#new_vehicle_type').hide();
+                	$('#new_vehicle').show();
+                } else {
+                	$scope.close_popup();
+                }
                 // document.location.href ='/clients/';
             }
         }).error(function(data, status){
@@ -231,7 +236,7 @@ function AddVehicleController($scope, $http, $location) {
 		$scope.popup.hide_popup();
 	}
 	$scope.save_new_vehicle_type = function() {
-		save_vehicle_type($scope, $http);
+		save_vehicle_type($scope, $http, '');
 	}
 	$scope.validate_vehicle_form = function() {
 		if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
@@ -649,9 +654,10 @@ function RentAgreementController($scope, $http, $location) {
         get_vehicle_types($scope, $http);
 	}
 	$scope.add_new_type = function() {
+		$('#new_vehicle').hide();
 		$scope.message = '';
 		if ($scope.vehicle.vehicle_type == 'other') {
-			$scope.popup = new DialogueModelWindow({
+			$scope.type_popup = new DialogueModelWindow({
                 'dialogue_popup_width': '36%',
                 'message_padding': '0px',
                 'left': '28%',
@@ -660,16 +666,15 @@ function RentAgreementController($scope, $http, $location) {
                 'content_div': '#new_vehicle_type'
             });
             var height = $(document).height();
-            $scope.popup.set_overlay_height(height);
-            $scope.popup.show_content();
+            $scope.type_popup.set_overlay_height(height);
+            $scope.type_popup.show_content();
 		}
 	}
 	$scope.close_popup = function() {
 		$scope.popup.hide_popup();
 	}
 	$scope.save_new_vehicle_type = function() {
-		save_vehicle_type($scope, $http);
-		$scope.popup.show_content();
+		save_vehicle_type($scope, $http, 'add_vehicle');
 	}
 	$scope.get_customer_details = function(client) {
 		$scope.client = client;
