@@ -553,12 +553,6 @@ function EditClientController($scope, $http, $location) {
 		} else if ($scope.client.home_ph_no == '' || $scope.client.home_ph_no == undefined) {
 			$scope.validation_error = 'Please enter the Tel. no(home)';
 			return false;
-		} else if ($scope.work_address == '' || $scope.work_address == undefined) {
-			$scope.validation_error = 'Please enter work address';
-			return false;
-		} else if ($scope.client.work_ph_no == '' || $scope.client.work_ph_no == undefined) {
-			$scope.validation_error = 'Please enter Tel. no(work)';
-			return false;
 		} else if ($scope.client.license_no == '' || $scope.client.license_no == undefined) {
 			$scope.validation_error = 'Please enter License  no.';
 			return false;
@@ -791,6 +785,21 @@ function RentAgreementController($scope, $http, $location) {
 		$('#new_vehicle').show();
 	}
 	$scope.add_client = function() {
+		$scope.client = {
+			'name': '',
+			'nationality': '',
+			'dob': '',
+			'home_ph_no': '',
+			'work_ph_no': '',
+			'license_no': '',
+			'license_type': '',
+			'date_of_license_issue': '',
+			'issued_by': '',
+			'expiry_date': '',
+			'passport_no': '',
+			'passport_issued_date': '',
+			'place_of_issue': '',
+		};
 		$scope.client_popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
             'message_padding': '0px',
@@ -879,7 +888,7 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.rent_agreement_validation = function() {
 
 		$scope.rent_agreement.agreement_no = $$('#agreement_no')[0].get('value');
-		$scope.rent_agreement.dob = $$('#dob')[0].get('value');
+		$scope.rent_agreement.dob = $$('#driver_dob')[0].get('value');
 		$scope.rent_agreement.date = $$('#date')[0].get('value');
 		$scope.rent_agreement.license_expiry_date = $$('#license_expiry_date')[0].get('value'); 
 		$scope.rent_agreement.license_issued_date = $$('#license_issued_date')[0].get('value');

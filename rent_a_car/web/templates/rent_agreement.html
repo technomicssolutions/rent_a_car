@@ -44,7 +44,7 @@
 						<div class="forminput">
 							<select ng-model="client_data">
 								<option value="" ng-click="get_customer_details('')">Select</option>
-								<option ng-repeat="client in clients" value="[[client.client_name]]" ng-click="get_customer_details(client)">[[client.client_name]]</option>
+								<option ng-repeat="client in clients" value="[[client.client_name]]" ng-click="get_customer_details(client)" ng-selected="client.client_name == client_data.client_name">[[client.client_name]]</option>
 								<option value="other" ng-click="add_client()">Other</option>
 							</select>
 						</div>

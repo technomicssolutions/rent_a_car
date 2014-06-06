@@ -74,6 +74,7 @@ class AddClient(View):
         if request.is_ajax():
             client_details = ast.literal_eval(request.POST['client_details'])
             client, created = Client.objects.get_or_create(phone_number=client_details['home_ph_no'], passport_no=client_details['passport_no'])
+            ctx_client = []
             if created:
                 client.name = client_details['name']
                 client.address = request.POST['client_home_address']
@@ -94,8 +95,19 @@ class AddClient(View):
                 client.place_of_issue = client_details['place_of_issue']
 
                 client.save()
+                ctx_client.append({
+                    'id': client.id,
+                    'client_name': client.name,
+                    'license_no': client.license_no,
+                    'license_issue_date': client.date_of_issue.strftime('%d/%m/%Y'),
+                    'license_type': client.license_type,
+                    'expiry_date': client.expiry_license_date.strftime('%d/%m/%Y'),
+                    'passport_no': client.passport_no,
+                    'passport_date_of_issue': client.date_of_passport_issue.strftime('%d/%m/%Y'),
+                })
                 res = {
                     'result': 'ok',
+                    'client_data': ctx_client,
                 }
                 status = 200
             else:
@@ -119,14 +131,14 @@ class ClientList(View):
             if clients.count() > 0:
                 for client in clients:
                     ctx_clients.append({
-                        'id': client.id,
-                        'client_name': client.name,
-                        'license_no': client.license_no,
-                        'license_issue_date': client.date_of_issue.strftime('%d/%m/%Y'),
-                        'license_type': client.license_type,
-                        'expiry_date': client.expiry_license_date.strftime('%d/%m/%Y'),
-                        'passport_no': client.passport_no,
-                        'passport_date_of_issue': client.date_of_passport_issue.strftime('%d/%m/%Y'),
+                        'id': client.id if client else '',
+                        'client_name': client.name if client else '',
+                        'license_no': client.license_no if client else '',
+                        'license_issue_date': client.date_of_issue.strftime('%d/%m/%Y') if client.date_of_issue else '',
+                        'license_type': client.license_type if client else '',
+                        'expiry_date': client.expiry_license_date.strftime('%d/%m/%Y') if client.expiry_license_date else '',
+                        'passport_no': client.passport_no if client else '',
+                        'passport_date_of_issue': client.date_of_passport_issue.strftime('%d/%m/%Y') if client.date_of_passport_issue else '',
 
 
                     })
