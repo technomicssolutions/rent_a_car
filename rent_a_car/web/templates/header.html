@@ -1,6 +1,6 @@
 <div class="menu_header">
 	<div class="logo">
-		<img src="/static/images/logo.jpg" >
+		<img src="" alt="Logo Image">
 	</div>
 	<div class="menu_div">
 		{% if user.is_authenticated %}
@@ -24,9 +24,17 @@
 						
 					</ul>
 				</li>
-				<li class="menu"> <a href="{% url 'rent_agreement' %}"> Rent Agreement </a> 
+				<li class="menu"> <a href=""> Rent Agreement </a> 
+					<ul>
+						<li><a href="{% url 'rent_agreement' %}">Rent Agreement</a></li>
+						<li><a href="">Print</a></li>
+					</ul>
 				</li>
-				<li class="menu last"> <a href="{% url 'receive_car' %}"> Receive Car </a> 
+				<li class="menu last"> <a href=""> Receive Car </a> 
+					<ul>
+						<li><a href="{% url 'receive_car' %}">Receive Car</a></li>
+						<li><a href="">Print</a></li>
+					</ul>
 				</li>
 				
 			</ul>
