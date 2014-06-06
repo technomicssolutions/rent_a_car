@@ -1188,4 +1188,11 @@ function ReceiveCarController($scope, $http, $location) {
 	}
 }
 
+function AddDriverController($scope, $http, $location) {
+
+	$scope.init = function(csrf_token) {
+		$scope.csrf_token = csrf_token;
+	}
+}
+
 

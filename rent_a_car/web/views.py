@@ -694,4 +694,7 @@ class PrintRentAgreement(View):
 
         return response
 
+class AddDriver(View):
 
+    def get(self, request, *args, **kwargs):
+        return render(request, 'add_driver.html', {})

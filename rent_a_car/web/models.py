@@ -14,7 +14,7 @@ class Client(models.Model):
     address = models.TextField('Address', null=True, blank=True)
     nationality = models.CharField('Nationality', null=True, blank=True, max_length=50)
     dob = models.DateField('Date of Birth', null=True, blank=True)
-    phone_number = models.CharField('Phone number', max_length=15, null=True, blank=True)
+    phone_number = models.CharField('Phone number', max_length=15, unique=True, null=True, blank=True)
     work_address = models.TextField('Work Address', null=True, blank=True)
     work_ph_no = models.CharField('Phone no.(Work)', max_length=15, null=True, blank=True)
 
@@ -26,7 +26,7 @@ class Client(models.Model):
     expiry_license_date = models.DateField('Expiry Date', null=True, blank=True)
 
     # Passport Details
-    passport_no = models.CharField('Passport Number', max_length=30)
+    passport_no = models.CharField('Passport Number', max_length=30, unique=True, null=True, blank=True)
     date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
     place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
 
@@ -45,7 +45,6 @@ class Client(models.Model):
 
         verbose_name = 'Client'
         verbose_name_plural = 'Client'
-        unique_together = ('passport_no', 'phone_number')
 
 
 class VehicleType(models.Model):
@@ -63,8 +62,8 @@ class VehicleType(models.Model):
 
 class Vehicle(models.Model):
 
-    vehicle_no = models.CharField('Vehicle No', null=True, blank=True, max_length=20)
-    plate_no = models.CharField('Plate No', null=True, blank=True, max_length=20)
+    vehicle_no = models.CharField('Vehicle No', null=True, blank=True, max_length=20, unique=True)
+    plate_no = models.CharField('Plate No', null=True, blank=True, max_length=20, unique=True)
     vehicle_make = models.CharField('Vehicle Make', null=True, blank=True, max_length=25)
     vehicle_type_name = models.ForeignKey(VehicleType, null=True, blank=True)
     vehicle_color = models.CharField('Vehicle Color', null=True, blank=True, max_length=25)
@@ -85,7 +84,6 @@ class Vehicle(models.Model):
 
         verbose_name = 'Vehicle'
         verbose_name_plural = 'Vehicle'
-        unique_together = ('vehicle_no', 'plate_no')
 
 class RentAgreement(models.Model):
 
@@ -166,4 +164,19 @@ class ReceiveCar(models.Model):
 
         verbose_name = 'Receive Car'
         verbose_name_plural = 'Receive Car'
+class Driver(models.Model):
 
+    driver_name = models.CharField('Driver Name', null=True, blank=True, max_length=25)
+    driver_phone = models.CharField('Driver Phone', null=True, blank=True, max_length=15, unique=True)
+    driver_address = models.TextField('Driver Address', null=True, blank=True)
+    driver_nationality = models.CharField('Driver Nationality', null=True, blank=True, max_length=25)
+    driver_passport_no = models.CharField('Driver Passport No', null=True, blank=True, max_length=25, unique=True)
+    driver_license_no = models.CharField('Driver License No', null=True, blank=True, max_length=25)
+    driver_license_issue_date = models.DateField('Driver License Issue Date', null=True, blank=True)
+    driver_license_issue_place = models.CharField('Driver License Issue Place', null=True, blank=True, max_length=25)
+    driver_license_expiry_date = models.DateField('Driver License Expiry Date', null=True, blank=True)
+    driver_dob = models.DateField('Driver DOB', null=True, blank=True)
+
+    sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=25)
+    sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
+    sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
