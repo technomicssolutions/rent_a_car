@@ -96,9 +96,9 @@
 							<label for="name">Vehicle No</label>
 						</div>
 						<div class="forminput">
-							<select>
+							<select ng-model="vehicle_data">
 								<option value="" ng-click="get_vehicle_details('')">Select</option>
-								<option ng-repeat="vehicle in vehicles" value="[[vehicle.vehicle_no]]" ng-click="get_vehicle_details(vehicle)">[[vehicle.vehicle_no]]</option>
+								<option ng-repeat="vehicle in vehicles" value="[[vehicle.vehicle_no]]" ng-click="get_vehicle_details(vehicle)" ng-selected="vehicle.vehicle_no == vehicle_data.vehicle_no">[[vehicle.vehicle_no]]</option>
 								<option value="other" ng-click="add_new_vehicle()">Other</option>
 							</select>
 						</div>

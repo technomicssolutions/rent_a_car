@@ -58,6 +58,67 @@ save_vehicle_type = function($scope, $http, from) {
 	}
 }
 
+validate_vehicle_form = function($scope, $http) {
+	if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
+		$scope.validation_error = 'Please enter Vehicle No.';
+		return false;
+	} else if ($scope.vehicle.plate_no == '' || $scope.vehicle.plate_no == undefined) {
+		$scope.validation_error = 'Please enter Plate No.';
+		return false;
+	} else if ($scope.vehicle.condition == '' || $scope.vehicle.condition == undefined) {
+		$scope.validation_error = 'Please enter Vehicle Condition';
+		return false;
+	} else if ($scope.vehicle.vehicle_make == '' || $scope.vehicle.vehicle_make == undefined) {
+		$scope.validation_error = 'Please enter Vehicle Make';
+		return false;
+	} else if ($scope.vehicle.vehicle_type == '' || $scope.vehicle.vehicle_type == undefined || $scope.vehicle.vehicle_type == 'other') {
+		$scope.validation_error = 'Please choose Vehicle Type';
+		return false;
+	} else if ($scope.vehicle.color == '' || $scope.vehicle.color == undefined) {
+		$scope.validation_error = 'Please enter Vehicle Color';
+		return false;
+	} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
+		$scope.validation_error = 'Please enter Meter Reading';
+		return false;
+	} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
+		$scope.validation_error = 'Please enter Insurance Type';
+		return false;
+	} else if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
+		$scope.validation_error = 'Please enter Insurance Value';
+		return false;
+	}
+	return true;
+}
+add_vehicle = function($scope, $http, from) {
+	$scope.is_valid = validate_vehicle_form($scope, $http);
+	if ($scope.is_valid) {
+		$scope.validation_error = '';
+		params = {
+			'vehicle_details': angular.toJson($scope.vehicle),
+			"csrfmiddlewaretoken" : $scope.csrf_token,
+		}
+		$http({
+            method : 'post',
+            url : "/add_vehicle/",
+            data : $.param(params),
+            headers : {
+                'Content-Type' : 'application/x-www-form-urlencoded'
+            }
+        }).success(function(data, status) {
+            if (from != 'add_vehicle') {
+            	document.location.href ='/vehicles/';
+            } else {
+            	$scope.vehicle_data = data.vehicle_data[0];
+            	get_vehicles($scope, $http);
+            	$scope.vehicle = data.vehicle_data[0];
+            	$scope.close_popup_add_vehicle();
+            }
+        }).error(function(data, status){
+            $scope.validation_error = data.message;
+        });
+	}
+}
+
 function AddClientController($scope, $http, $location) {
 
 	$scope.client = {
@@ -238,58 +299,10 @@ function AddVehicleController($scope, $http, $location) {
 	$scope.save_new_vehicle_type = function() {
 		save_vehicle_type($scope, $http, '');
 	}
-	$scope.validate_vehicle_form = function() {
-		if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
-			$scope.validation_error = 'Please enter Vehicle No.';
-			return false;
-		} else if ($scope.vehicle.plate_no == '' || $scope.vehicle.plate_no == undefined) {
-			$scope.validation_error = 'Please enter Plate No.';
-			return false;
-		} else if ($scope.vehicle.condition == '' || $scope.vehicle.condition == undefined) {
-			$scope.validation_error = 'Please enter Vehicle Condition';
-			return false;
-		} else if ($scope.vehicle.vehicle_make == '' || $scope.vehicle.vehicle_make == undefined) {
-			$scope.validation_error = 'Please enter Vehicle Make';
-			return false;
-		} else if ($scope.vehicle.vehicle_type == '' || $scope.vehicle.vehicle_type == undefined || $scope.vehicle.vehicle_type == 'other') {
-			$scope.validation_error = 'Please choose Vehicle Type';
-			return false;
-		} else if ($scope.vehicle.color == '' || $scope.vehicle.color == undefined) {
-			$scope.validation_error = 'Please enter Vehicle Color';
-			return false;
-		} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
-			$scope.validation_error = 'Please enter Meter Reading';
-			return false;
-		} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
-			$scope.validation_error = 'Please enter Insurance Type';
-			return false;
-		} else if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
-			$scope.validation_error = 'Please enter Insurance Value';
-			return false;
-		}
-		return true;
-	}
 	$scope.add_vehicle = function() {
-		$scope.is_valid = $scope.validate_vehicle_form();
+		$scope.is_valid = validate_vehicle_form($scope, $http);
 		if ($scope.is_valid) {
-			$scope.validation_error = '';
-			params = {
-				'vehicle_details': angular.toJson($scope.vehicle),
-				"csrfmiddlewaretoken" : $scope.csrf_token,
-			}
-			$http({
-                method : 'post',
-                url : "/add_vehicle/",
-                data : $.param(params),
-                headers : {
-                    'Content-Type' : 'application/x-www-form-urlencoded'
-                }
-            }).success(function(data, status) {
-                
-                document.location.href ='/vehicles/';
-            }).error(function(data, status){
-                $scope.validation_error = data.message;
-            });
+			add_vehicle($scope, $http, '');
 		}
 	}
 
@@ -347,39 +360,9 @@ function EditVehicleController($scope, $http, $location) {
 	$scope.change_vehicle_type = function() {
 		$scope.change_type = true;
 	}
-	$scope.validate_vehicle_form = function() {
-		if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
-			$scope.validation_error = 'Please enter Vehicle No.';
-			return false;
-		} else if ($scope.vehicle.plate_no == '' || $scope.vehicle.plate_no == undefined) {
-			$scope.validation_error = 'Please enter Plate No.';
-			return false;
-		} else if ($scope.vehicle.condition == '' || $scope.vehicle.condition == undefined) {
-			$scope.validation_error = 'Please enter Vehicle Condition';
-			return false;
-		} else if ($scope.vehicle.vehicle_make == '' || $scope.vehicle.vehicle_make == undefined) {
-			$scope.validation_error = 'Please enter Vehicle Make';
-			return false;
-		} else if ($scope.vehicle.vehicle_type == '' || $scope.vehicle.vehicle_type == undefined || $scope.vehicle.vehicle_type == 'other') {
-			$scope.validation_error = 'Please choose Vehicle Type';
-			return false;
-		} else if ($scope.vehicle.color == '' || $scope.vehicle.color == undefined) {
-			$scope.validation_error = 'Please enter Vehicle Color';
-			return false;
-		} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
-			$scope.validation_error = 'Please enter Meter Reading';
-			return false;
-		} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
-			$scope.validation_error = 'Please enter Insurance Type';
-			return false;
-		} else if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
-			$scope.validation_error = 'Please enter Insurance Value';
-			return false;
-		}
-		return true;
-	}
+	
 	$scope.edit_vehicle = function() {
-		$scope.is_valid = $scope.validate_vehicle_form();
+		$scope.is_valid = validate_vehicle_form($scope, $http);
 		if ($scope.is_valid) {
 			$scope.validation_error = '';
 			params = {
@@ -639,6 +622,17 @@ function RentAgreementController($scope, $http, $location) {
 
 	}
 	$scope.add_new_vehicle = function() {
+		$scope.vehicle = {
+			'vehicle_no': '',
+			'plate_no': '',
+			'condition': '',
+			'vehicle_type': '',
+			'color': '',
+			'meter_reading': '',
+			'insurance_type': '',
+			'insurance_value': '',
+			'vehicle_make': '',
+		}
 		$scope.message = '';
 		$scope.popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
@@ -654,9 +648,10 @@ function RentAgreementController($scope, $http, $location) {
         get_vehicle_types($scope, $http);
 	}
 	$scope.add_new_type = function() {
-		$('#new_vehicle').hide();
-		$scope.message = '';
+		
 		if ($scope.vehicle.vehicle_type == 'other') {
+			$('#new_vehicle').hide();
+			$scope.message = '';
 			$scope.type_popup = new DialogueModelWindow({
                 'dialogue_popup_width': '36%',
                 'message_padding': '0px',
@@ -671,6 +666,11 @@ function RentAgreementController($scope, $http, $location) {
 		}
 	}
 	$scope.close_popup = function() {
+		// $scope.type_popup.hide_popup();
+		$('#new_vehicle_type').hide();
+		$('#new_vehicle').show();
+	}
+	$scope.close_popup_add_vehicle =  function() {
 		$scope.popup.hide_popup();
 	}
 	$scope.save_new_vehicle_type = function() {
@@ -684,6 +684,11 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.vehicle = vehicle;
 		$scope.rent_agreement.vehicle_id = $scope.vehicle.id;
 	}
+	$scope.save_vehicle = function() {
+		add_vehicle($scope, $http, 'add_vehicle');
+	}
+
+
 	$scope.with_driver_mode = function(mode) {
 		if (mode == 'yes') {
 			$scope.driver_details_needed = false;

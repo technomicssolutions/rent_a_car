@@ -149,6 +149,7 @@ class AddVehicle(View):
 
     def post(self, request, *args, **kwargs):
 
+        ctx_vehicle_data = []
         if request.is_ajax():
             vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             try:
@@ -171,8 +172,20 @@ class AddVehicle(View):
                 vehicle.type_of_insuranse = vehicle_details['insurance_type']
                 vehicle.vehicle_make = vehicle_details['vehicle_make']
                 vehicle.save()
+                ctx_vehicle_data.append({
+                    'id': vehicle.id,
+                    'vehicle_no': vehicle.vehicle_no,
+                    'plate_no': vehicle.plate_no,
+                    'vehicle_type': vehicle.vehicle_type_name.vehicle_type_name,
+                    'meter_reading': vehicle.meter_reading,
+                    'vehicle_condition': vehicle.vehicle_condition,
+                    'color': vehicle.vehicle_color,
+                    'insuranse_value': vehicle.insuranse_value,
+                    'type_of_insuranse': vehicle.type_of_insuranse,
+                })
                 res = {
                     'result': 'ok',
+                    'vehicle_data': ctx_vehicle_data,
                 }
                 status = 200
 
