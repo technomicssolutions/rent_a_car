@@ -204,6 +204,7 @@ function AddVehicleController($scope, $http, $location) {
 		'meter_reading': '',
 		'insurance_type': '',
 		'insurance_value': '',
+		'vehicle_make': '',
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -242,6 +243,9 @@ function AddVehicleController($scope, $http, $location) {
 		} else if ($scope.vehicle.condition == '' || $scope.vehicle.condition == undefined) {
 			$scope.validation_error = 'Please enter Vehicle Condition';
 			return false;
+		} else if ($scope.vehicle.vehicle_make == '' || $scope.vehicle.vehicle_make == undefined) {
+			$scope.validation_error = 'Please enter Vehicle Make';
+			return false;
 		} else if ($scope.vehicle.vehicle_type == '' || $scope.vehicle.vehicle_type == undefined || $scope.vehicle.vehicle_type == 'other') {
 			$scope.validation_error = 'Please choose Vehicle Type';
 			return false;
@@ -277,7 +281,7 @@ function AddVehicleController($scope, $http, $location) {
                 }
             }).success(function(data, status) {
                 
-                    // document.location.href ='/clients/';
+                document.location.href ='/vehicles/';
             }).error(function(data, status){
                 $scope.validation_error = data.message;
             });
@@ -297,6 +301,7 @@ function EditVehicleController($scope, $http, $location) {
 		'meter_reading': '',
 		'insurance_type': '',
 		'insurance_value': '',
+		'vehicle_make': '',
 	}
 	$scope.change_type = false;
 	$scope.init = function(csrf_token, id) {
@@ -346,6 +351,9 @@ function EditVehicleController($scope, $http, $location) {
 			return false;
 		} else if ($scope.vehicle.condition == '' || $scope.vehicle.condition == undefined) {
 			$scope.validation_error = 'Please enter Vehicle Condition';
+			return false;
+		} else if ($scope.vehicle.vehicle_make == '' || $scope.vehicle.vehicle_make == undefined) {
+			$scope.validation_error = 'Please enter Vehicle Make';
 			return false;
 		} else if ($scope.vehicle.vehicle_type == '' || $scope.vehicle.vehicle_type == undefined || $scope.vehicle.vehicle_type == 'other') {
 			$scope.validation_error = 'Please choose Vehicle Type';
