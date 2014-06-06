@@ -676,6 +676,7 @@ a {
 	width: 50% !important;
 	float: left;
 }
+
 .close_pop {
   width: 32px;
   height: 32px;
@@ -764,9 +765,20 @@ a {
 	margin-top: 45px;
 }
 
-#new_vehicle .formtext {
+#new_vehicle .formtext, #new_client .formtext {
 	width: 52% !important;
 }
-#new_vehicle .forminput {
+#new_vehicle .forminput, #new_client .forminput {
 	width: 44% !important;
 }
+#rent_agreement #dialogue_popup #new_client label {
+    width: 60% !important;
+}
+#new_client p {
+	margin-top: 40px;
+}
+#rent_agreement #overlay, #rent_agreement #dialogue_popup_container, #rent_agreement #dialogue_popup {
+	z-index: 0 !important;
+}
+
+

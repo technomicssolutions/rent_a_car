@@ -8,6 +8,7 @@
 {% block dialogue_popup%}
 	{% include 'popups/add_vehicle.html' %}
 	{% include 'popups/add_vehicle_type.html' %}
+	{% include 'popups/add_client.html' %}
 {% endblock %}
 
 
@@ -41,9 +42,10 @@
 							<label for="name">Customer</label>
 						</div>
 						<div class="forminput">
-							<select>
+							<select ng-model="client_data">
 								<option value="" ng-click="get_customer_details('')">Select</option>
 								<option ng-repeat="client in clients" value="[[client.client_name]]" ng-click="get_customer_details(client)">[[client.client_name]]</option>
+								<option value="other" ng-click="add_client()">Other</option>
 							</select>
 						</div>
 					</div>
@@ -313,7 +315,7 @@
 							<label for="dob">Date of Birth</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.dob" name="dob" id="dob" ng-readonly="driver_details_needed"/>
+							<input type="text" ng-model="rent_agreement.dob" name="dob" id="driver_dob" ng-readonly="driver_details_needed"/>
 
 						</div>
 					</div>
