@@ -835,6 +835,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'sponsar_telephone': '',
 		'sponsar_address': '',
 		'notes': '',
+		'late_message': '',
 	}
 	$scope.receipt = {
 		'receipt_no': '',

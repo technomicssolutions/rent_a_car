@@ -100,6 +100,7 @@
 						<div class="forminput">
 							<input type="text" name="end_date" ng-model="agreement.end_date" readonly>
 						</div>
+						<p class="error_message">[[agreement.late_message]]</p>
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
@@ -201,9 +202,9 @@
 							<label for="receipt_date">With Driver</label>
 						</div>
 						<div class="forminput" id="radio_input">
-							<input type="radio" value="yes" ng-model="agreement.with_driver" name="with_driver">
+							<input type="radio" value="yes" ng-model="agreement.with_driver" name="with_driver" readonly>
 							<label>Yes</label>
-							<input type="radio" value="no" ng-model="agreement.with_driver" name="with_driver">
+							<input type="radio" value="no" ng-model="agreement.with_driver" name="with_driver" readonly>
 							<label>No</label>
 						</div>
 					</div>

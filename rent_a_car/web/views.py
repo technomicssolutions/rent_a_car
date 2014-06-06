@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Max
+from django.utils import timezone
 
 
 from web.models import *
@@ -52,7 +53,6 @@ class AddClient(View):
 
         if request.is_ajax():
             client_details = ast.literal_eval(request.POST['client_details'])
-            print client_details
             client, created = Client.objects.get_or_create(phone_number=client_details['home_ph_no'], passport_no=client_details['passport_no'])
             if created:
                 client.name = client_details['name']
@@ -492,9 +492,7 @@ class ReceiveCarView(View):
             receive_car.save()
             client = rent_agreement.client
             client.rent = float(client.rent) - float(rent_agreement.rent)
-            print "rent amount in client", client.rent
             client.rent = float(client.rent) + float(receive_car.total_amount)
-            print "new rent amount is == ", client.rent
             client.paid = float(client.paid) + float(receive_car.paid)
             client.balance = float(client.rent) - float(client.paid)
             client.save() 
@@ -523,7 +521,13 @@ class AgreementDetails(View):
     def get(self, request, *args, **kwargs):
 
         agreement_no = request.GET.get('agreement_no', '')
-        agreements = RentAgreement.objects.filter(is_completed=False, agreement_no__startswith=agreement_no)
+        # current_date = datetime.now() Generate native error
+        current_date = timezone.now()
+        try:
+            agreements = RentAgreement.objects.filter(is_completed=False, agreement_no__startswith=agreement_no, starting_date_time__lte=current_date)
+        except Exception as ex:
+            print "************************************"
+            print str(ex)
         ctx_agreements = []
         if request.is_ajax():
             if agreements.count() > 0:
@@ -555,7 +559,9 @@ class AgreementDetails(View):
                         'driver_passport_no': agreement.driver_passport_no,
                         'sponsar_name': agreement.sponsar_name,
                         'paid': agreement.paid,
+                        'late_message': 'Late receival' if agreement.end_date_time > current_date else '',
                     })
+                    
             res = {
                 'result': 'ok',
                 'agreements': ctx_agreements,
