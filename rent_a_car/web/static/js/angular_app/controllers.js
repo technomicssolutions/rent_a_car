@@ -183,7 +183,7 @@ function AddClientController($scope, $http, $location) {
                 } else {
                     $scope.error_flag=false;
                     $scope.message = '';
-                    document.location.href ='/rent_agreement/';
+                    document.location.href ='/clients/';
                 }
             }).error(function(data, status){
                 $scope.validation_error = data.message;
@@ -633,7 +633,44 @@ function RentAgreementController($scope, $http, $location) {
         });
 
 	}
-	
+	$scope.add_new_vehicle = function() {
+		$scope.message = '';
+		$scope.popup = new DialogueModelWindow({
+            'dialogue_popup_width': '36%',
+            'message_padding': '0px',
+            'left': '28%',
+            'top': '40px',
+            'height': 'auto',
+            'content_div': '#new_vehicle'
+        });
+        var height = $(document).height();
+        $scope.popup.set_overlay_height(height);
+        $scope.popup.show_content();
+        get_vehicle_types($scope, $http);
+	}
+	$scope.add_new_type = function() {
+		$scope.message = '';
+		if ($scope.vehicle.vehicle_type == 'other') {
+			$scope.popup = new DialogueModelWindow({
+                'dialogue_popup_width': '36%',
+                'message_padding': '0px',
+                'left': '28%',
+                'top': '40px',
+                'height': 'auto',
+                'content_div': '#new_vehicle_type'
+            });
+            var height = $(document).height();
+            $scope.popup.set_overlay_height(height);
+            $scope.popup.show_content();
+		}
+	}
+	$scope.close_popup = function() {
+		$scope.popup.hide_popup();
+	}
+	$scope.save_new_vehicle_type = function() {
+		save_vehicle_type($scope, $http);
+		$scope.popup.show_content();
+	}
 	$scope.get_customer_details = function(client) {
 		$scope.client = client;
 		$scope.rent_agreement.client_id = $scope.client.id;

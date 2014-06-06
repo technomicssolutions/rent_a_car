@@ -763,3 +763,10 @@ a {
 #receive_car .error_message {
 	margin-top: 45px;
 }
+
+#new_vehicle .formtext {
+	width: 52% !important;
+}
+#new_vehicle .forminput {
+	width: 44% !important;
+}

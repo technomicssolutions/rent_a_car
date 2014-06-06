@@ -1,0 +1,101 @@
+<div style='display:none' id="new_vehicle">
+    <div id='vehicle_type' style='padding:10px; background:#fff;'>
+        <div class="sign_box">
+            <div class="row-fluid">
+                <div class="span12 sign_mid">
+                    <span>
+                        <form action="" id="register" name="register" method="post" class="reg_sec">
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Vehicle No</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="vehicle_no" ng-model="vehicle.vehicle_no" />
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Vehicle Plate No</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="vehicle_plate_no" ng-model="vehicle.plate_no" />
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Vehicle Condition</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="vehicle_condition" ng-model="vehicle.condition" />
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Vehicle Make</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="vehicle_make" ng-model="vehicle.vehicle_make" />
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Vehicle Type</label>
+                                </div>
+                                <div class="forminput">  
+                                    <select name="vehicle_type" ng-model="vehicle.vehicle_type" ng-change="add_new_type()">
+										<option value="">Select</option>
+										<option ng-repeat="type in vehicle_types" value="[[type.vehicle_type]]" ng-selected="type.vehicle_type == vehicle.vehicle_type">[[type.vehicle_type]]</option>
+										<!-- <option value="other">Other</option> -->
+									</select>
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Vehicle Color</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="vehicle_color" ng-model="vehicle.color" />
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Meter Reading</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="meter_reading" ng-model="vehicle.meter_reading" />
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Type of Insurance</label>
+                                </div>
+                                <div class="forminput">  
+                                    <select name="type_of_insurance" ng-model="vehicle.insurance_type">
+										<option value="">Select</option>
+										<option value="liability">Liability</option>
+										<option value="collision">Collision</option>
+										<option value="comprehensive">Comprehensive</option>
+									</select>
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label>Insurance Value</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="insurance_value" ng-model="vehicle.insurance_value" />
+                                </div>  
+                            </div>
+                            <div align="center">
+                                <p class="error_message">[[message]]</p>
+                                <input name="submit" type="button" value="Add" ng-click="save_vehicle()">
+                                <input name="cancel" type="button" value="Cancel" ng-click="close_popup()">
+                            </div>
+                        </form>                        
+                    </span>
+                </div>
+            </div>    
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>

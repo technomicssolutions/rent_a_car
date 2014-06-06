@@ -5,6 +5,12 @@
 {% block title %}Rent Agreement{% endblock title %}
 {% block controller %}ng-controller="RentAgreementController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
+{% block dialogue_popup%}
+	{% include 'popups/add_vehicle.html' %}
+	{% include 'popups/add_vehicle_type.html' %}
+{% endblock %}
+
+
 {% block content %}
 	<div id="main-title">
 		<div class="alert alert-info" align="Center"><h4>Rent Agreement</h4></div>
@@ -93,6 +99,7 @@
 							<select>
 								<option value="" ng-click="get_vehicle_details('')">Select</option>
 								<option ng-repeat="vehicle in vehicles" value="[[vehicle.vehicle_no]]" ng-click="get_vehicle_details(vehicle)">[[vehicle.vehicle_no]]</option>
+								<option value="other" ng-click="add_new_vehicle()">Other</option>
 							</select>
 						</div>
 					</div>
