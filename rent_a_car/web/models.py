@@ -150,7 +150,7 @@ class ReceiveCar(models.Model):
     extra_charge = models.DecimalField('Extra Charge', max_digits=25, decimal_places=2, default=0)
     accident_passable = models.DecimalField('Accident Passable', max_digits=25, decimal_places=2, default=0)
     credit_card_no = models.CharField('Credit card no', max_length=20, null=True, blank=True)
-    expiry_date = models.DateField('Expiry Date', null=True, blank=True)
+    expiry_date = models.CharField('Expiry Date', null=True, blank=True, max_length=25)
     cheque_no = models.CharField('Cheque no', null=True, blank=True, max_length=20)
 
     total_amount = models.DecimalField('Total Amount', decimal_places=2, max_digits=25, default=0)

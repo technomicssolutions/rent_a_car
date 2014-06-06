@@ -320,7 +320,7 @@
 							<label for="reduction">Reduction</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="reduction" ng-model="receipt.reduction" id="reduction" ng-change="calculate_balance">
+							<input type="text" name="reduction" ng-model="receipt.reduction" id="reduction" ng-change="calculate_balance()">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -352,7 +352,8 @@
 							<label for="notes">Notes</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="notes" ng-model="receipt.notes" id="notes" readonly>
+							<!-- <input type="text" name="notes" ng-model="receipt.notes" id="notes" readonly> -->
+							<textarea name="notes" ng-model="receipt.notes" id="notes"></textarea>
 						</div>
 					</div>
 				</div>

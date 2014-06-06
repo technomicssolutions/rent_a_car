@@ -476,7 +476,7 @@ class ReceiveCarView(View):
         receive_car_details = ast.literal_eval(request.POST['receipt_car'])
         try:
             receive_car, created = ReceiveCar.objects.get_or_create(receipt_no=receive_car_details['receipt_no'])
-            rent_agreement = RentAgreement.objects.get(id=receive_car['agreement_id'])
+            rent_agreement = RentAgreement.objects.get(id=receive_car_details['agreement_id'])
             receive_car.rent_agreement = rent_agreement
             receive_car.petrol = receive_car_details['petrol']
             receive_car.fine = receive_car_details['fine']
@@ -484,19 +484,38 @@ class ReceiveCarView(View):
             receive_car.accident_passable = receive_car_details['accident_passable']
             receive_car.credit_card_no = receive_car_details['credit_card_no']
             receive_car.cheque_no = receive_car_details['cheque_no']
-            receive_car.expiry_date = datetime.strptime(receive_car_details['card_expiry_date'], '%m/%Y')
+            receive_car.expiry_date = receive_car_details['card_expiry_date']
             receive_car.total_amount = receive_car_details['total_amount']
             receive_car.paid = receive_car_details['paid']
             receive_car.notes = receive_car_details['notes']
+            receive_car.new_meter_reading = receive_car_details['meter_reading']
             receive_car.save()
+            client = rent_agreement.client
+            client.rent = float(client.rent) - float(rent_agreement.rent)
+            print "rent amount in client", client.rent
+            client.rent = float(client.rent) + float(receive_car.total_amount)
+            print "new rent amount is == ", client.rent
+            client.paid = float(client.paid) + float(receive_car.paid)
+            client.balance = float(client.rent) - float(client.paid)
+            client.save() 
+            vehicle = rent_agreement.vehicle
+            vehicle.meter_reading = receive_car.new_meter_reading
+            if receive_car_details['balance'] == 0:
+                vehicle.is_available = True
+                rent_agreement.is_completed = True
+                rent_agreement.save()
+            vehicle.save()
+
             res = {
                 'result': 'ok',
             }
+            status = 200
         except Exception as ex:
             print str(ex)
             res = {
                 'result': 'error',
             }
+            status = 500
         response = simplejson.dumps(res)
         return HttpResponse(response, status=status, mimetype='application/json')
 class AgreementDetails(View):

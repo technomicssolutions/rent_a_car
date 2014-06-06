@@ -837,7 +837,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'notes': '',
 	}
 	$scope.receipt = {
-		'receipt_no': ''
+		'receipt_no': '',
 		'agreement_id': '',
 		'receipt_date': '',
 		'credit_card_no': '',
@@ -918,7 +918,8 @@ function ReceiveCarController($scope, $http, $location) {
 			$scope.receipt.paid = 0;
 		}
 		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
-		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - (parseFloat($scope.receipt.reduction) + parseFloat($scope.agreement.paid))).toFixed(2);
+		$scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
+		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
 		$scope.receipt.balance = parseFloat($scope.receipt.balance) - parseFloat($scope.receipt.paid);
 	}
 
@@ -928,22 +929,57 @@ function ReceiveCarController($scope, $http, $location) {
 		$scope.receipt.receipt_no = $$('#receipt_no')[0].get('value');
 		if ($scope.receipt.agreement_id == '' || $scope.receipt.agreement_id == undefined) {
 			$scope.validation_error = 'Please enter Contract No.';
+			return false;
 		} else if ($scope.receipt.receipt_date == '' || $scope.receipt.receipt_date == undefined) {
 			$scope.validation_error = 'Please choose Receipt Date';
+			return false;
 		} else if (($scope.receipt.credit_card_no == '' || $scope.receipt.credit_card_no == undefined) && ($scope.receipt.cheque_no == '' || $scope.receipt.cheque_no == undefined)) {
 			$scope.validation_error = 'Please enter Credit Card No or Cheque No';
+			return false;
 		} else if ($scope.receipt.credit_card_no != '' && ($scope.receipt.card_expiry_date == '' || $scope.receipt.card_expiry_date == undefined)) {
 			$scope.validation_error = 'Please enter Credit Card Expiry Date';
+			return false;
 		} else if ($scope.receipt.meter_reading == 0 || $scope.receipt.meter_reading == '' || $scope.receipt.meter_reading == undefined) {
 			$scope.validation_error = 'Please enter Meter Reading';
+			return false;
 		} else if ($scope.receipt.paid == 0 || $scope.receipt.paid == '' || $scope.receipt.paid == undefined) {
 			$scope.validation_error = 'Please enter Paid Amount on Receipt';
+			return false;
 		}
+		return true;
 	}
 
 	$scope.receipt_car = function() {
 		$scope.is_valid = $scope.receipt_car_validation();
 		console.log($scope.is_valid);
+		params = {
+			'receipt_car': angular.toJson($scope.receipt),
+			'csrfmiddlewaretoken': $scope.csrf_token,
+		}
+		if ($scope.is_valid) {
+			$http({
+	            method : 'post',
+	            url : '/receive_car/',
+	            data : $.param(params),
+	            headers : {
+	                'Content-Type' : 'application/x-www-form-urlencoded'
+	            }
+	        }).success(function(data, status) {
+	            
+	            if (data.result == 'error'){
+	                $scope.error_flag=true;
+	                $scope.message = data.message;
+	            } else {
+	                $scope.error_flag=false;
+	                $scope.message = '';
+	                // document.location.href ='/receive_car/';
+	                console.log('added');
+	            }
+	        }).error(function(data, status){
+	            $scope.validation_error = data.message;
+	            console.log('error occured');
+	        });
+		}
 	}
 }
 
