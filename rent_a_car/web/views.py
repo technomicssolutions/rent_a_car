@@ -73,50 +73,65 @@ class AddClient(View):
 
         if request.is_ajax():
             client_details = ast.literal_eval(request.POST['client_details'])
-            client, created = Client.objects.get_or_create(phone_number=client_details['home_ph_no'], passport_no=client_details['passport_no'])
-            ctx_client = []
-            if created:
-                client.name = client_details['name']
-                client.address = request.POST['client_home_address']
-                client.nationality = client_details['nationality']
-                client.dob = datetime.strptime(client_details['dob'], '%d/%m/%Y')
-                client.phone_number = client_details['home_ph_no']
-                client.work_address = request.POST['client_work_address']
-                client.work_ph_no = client_details['work_ph_no']
+            try:
+                client, created = Client.objects.get_or_create(phone_number=client_details['home_ph_no'], passport_no=client_details['passport_no'])
+                ctx_client = []
+                if created:
+                    client.name = client_details['name']
+                    client.address = request.POST['client_home_address']
+                    client.nationality = client_details['nationality']
+                    client.dob = datetime.strptime(client_details['dob'], '%d/%m/%Y')
+                    client.phone_number = client_details['home_ph_no']
+                    client.work_address = request.POST['client_work_address']
+                    client.work_ph_no = client_details['work_ph_no']
 
-                client.license_no = client_details['license_no']
-                client.license_type = client_details['license_type']
-                client.date_of_issue = datetime.strptime(client_details['date_of_license_issue'], '%d/%m/%Y')
-                client.issued_by = client_details['issued_by']
-                client.expiry_license_date = datetime.strptime(client_details['expiry_date'], '%d/%m/%Y')
+                    client.license_no = client_details['license_no']
+                    client.license_type = client_details['license_type']
+                    client.date_of_issue = datetime.strptime(client_details['date_of_license_issue'], '%d/%m/%Y')
+                    client.issued_by = client_details['issued_by']
+                    client.expiry_license_date = datetime.strptime(client_details['expiry_date'], '%d/%m/%Y')
+                    
+                    client.passport_no = client_details['passport_no']
+                    client.date_of_passport_issue = datetime.strptime(client_details['passport_issued_date'], '%d/%m/%Y')
+                    client.place_of_issue = client_details['place_of_issue']
+
+                    client.save()
+                    ctx_client.append({
+                        'id': client.id,
+                        'client_name': client.name,
+                        'license_no': client.license_no,
+                        'license_issue_date': client.date_of_issue.strftime('%d/%m/%Y'),
+                        'license_type': client.license_type,
+                        'expiry_date': client.expiry_license_date.strftime('%d/%m/%Y'),
+                        'passport_no': client.passport_no,
+                        'passport_date_of_issue': client.date_of_passport_issue.strftime('%d/%m/%Y'),
+                    })
+                    res = {
+                        'result': 'ok',
+                        'client_data': ctx_client,
+                    }
+                    status = 200
+                else:
+                    res = {
+                        'result': 'error',
+                        'message': 'Client with this passport no or Tel No.(Home) is already existing'
+                    }
+                    status = 500
+
                 
-                client.passport_no = client_details['passport_no']
-                client.date_of_passport_issue = datetime.strptime(client_details['passport_issued_date'], '%d/%m/%Y')
-                client.place_of_issue = client_details['place_of_issue']
-
-                client.save()
-                ctx_client.append({
-                    'id': client.id,
-                    'client_name': client.name,
-                    'license_no': client.license_no,
-                    'license_issue_date': client.date_of_issue.strftime('%d/%m/%Y'),
-                    'license_type': client.license_type,
-                    'expiry_date': client.expiry_license_date.strftime('%d/%m/%Y'),
-                    'passport_no': client.passport_no,
-                    'passport_date_of_issue': client.date_of_passport_issue.strftime('%d/%m/%Y'),
-                })
-                res = {
-                    'result': 'ok',
-                    'client_data': ctx_client,
-                }
-                status = 200
-            else:
+            except Exception as ex:
+                print str(ex)
+                try:
+                    client = Client.objects.get(phone_number=client_details['home_ph_no'])
+                    message = 'Client with this Phone No is already existing'
+                except Exception as ex:
+                    client = Client.objects.get(passport_no=client_details['passport_no'])
+                    message = 'Client with this Passport No is already existing'
                 res = {
                     'result': 'error',
-                    'message': 'Customer with this passport no, Tel No.(Home) is already existing'
+                    'message': message,
                 }
                 status = 500
-
             response = simplejson.dumps(res)
 
             return HttpResponse(response, status=status, mimetype='application/json')
