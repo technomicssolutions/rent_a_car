@@ -712,7 +712,7 @@ class PrintRentAgreement(View):
         p.setFont("Helvetica-Bold", 15)
         p.drawString(410, 1010, 'RENTAL AGREEMENT')
         p.line(50,1000,950,1000)
-        p.line(500,1000,500,100)
+        p.line(500,1000,500,150)
         p.line(250,1000, 250, 900)
         p.line(50, 950, 950,950)
         p.line(50, 900, 950, 900)
@@ -723,6 +723,7 @@ class PrintRentAgreement(View):
         p.line(50, 700, 950, 700)
         p.line(50, 650, 950, 650)
         p.line(50, 575, 950, 575)
+        # p.line(50, 500, 950, 500)
         # p.line(50, 550, 950, 550)
 
         p.drawString(80, 980, 'Vehicle Type')
@@ -745,7 +746,9 @@ class PrintRentAgreement(View):
         p.drawString(60, 670, 'Date Issued: ')
         p.drawString(510, 670, 'Expiry Date:')
         p.drawString(50, 620, 'Home Address:')
-        p.drawString(510, 620, 'Tel No.')
+        p.drawString(510, 620, 'Tel No.:')
+        p.drawString(60, 520, 'Total Amount:')
+
 
 
         p.setFont("Helvetica", 13)
@@ -771,7 +774,16 @@ class PrintRentAgreement(View):
         p.drawString(600, 670, rent_agreement.client.expiry_license_date.strftime('%d/%m/%Y') if rent_agreement.client else '')
         p.drawString(160, 620, rent_agreement.client.address if rent_agreement.client else '')
         p.drawString(600, 620, rent_agreement.client.phone_number if rent_agreement.client else '')
+        p.drawString(160, 520, str(rent_agreement.rent))
+        p.drawString(60, 200, """This vehicle cann't be taken outside the UAE without prior permission""")
+        p.drawString(60, 180, """ of the owner in writing""")
+        p.drawString(503, 400, """I the undersigned agree to rent from the owner the above mentioned vehcile""")
+        p.drawString(503, 380, """for the period set our herein. I have read the terms and conditions det out on""")
+        p.drawString(503, 360, """the reverse of this agreement between my self and the owner. I certify that """)
+        p.drawString(503, 340, """the particualrs which i have given are true""")
         # p.drawString()
+        p.drawString(503, 280, """ In the Event of any Accident The Renter is Liable to pay Hire.""")
+        p.drawString(503, 180,'SIGNATURE :.........................................................................')
         p.showPage()
         p.save()
 
