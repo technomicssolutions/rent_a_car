@@ -433,9 +433,18 @@ class EditClient(View):
                 status = 200
             except Exception as ex:
                 print "Exception == ", str(ex)
+                # try:
+                #     client = Client.objects.get(passport_no=client_details['passport_no'])
+                #     message = 'Client with this Passport No is already existing'
+                #     print "message"
+                # except Exception as ex:
+                #     print "Exception 2 == ", str(ex)
+                #     client = Client.objects.get(phone_number=client_details['home_ph_no'])
+                #     print client
+                    # message = 'Client with this Phone No is already existing'
                 res = {
                     'result': 'error',
-                    'message': 'Client with this Passport No. and Tel No(Home). is already existing'
+                    'message': 'Client with this Phone No or Passport No is already existing',
                 }
                 status = 500
             response = simplejson.dumps(res)
