@@ -73,6 +73,7 @@ class AddClient(View):
 
         if request.is_ajax():
             client_details = ast.literal_eval(request.POST['client_details'])
+
             try:
                 client, created = Client.objects.get_or_create(phone_number=client_details['home_ph_no'], passport_no=client_details['passport_no'])
                 ctx_client = []
@@ -401,12 +402,22 @@ class EditClient(View):
     def post(self, request, *args, **kwargs):
 
         if request.is_ajax():
-
             client_id = kwargs['client_id']
-            client = Client.objects.get(id=int(client_id))
+            status = 200
             client_details = ast.literal_eval(request.POST['client_details'])
             try:
-                client.phone_number = client_details['home_ph_no']
+                client = Client.objects.get(id=int(client_id))                
+                try:
+                    clients = Client.objects.filter(phone_number =client_details['home_ph_no']).exclude(id=client_id).count()
+                    if clients:
+                        res = {
+                            'result': 'error',
+                            'message': 'Client with this phone number exists',
+                        }
+                        response = simplejson.dumps(res)
+                        return HttpResponse(response, status=status, mimetype='application/json')
+                except:
+                    client.phone_number = client_details['home_ph_no']
                 client.passport_no = client_details['passport_no']
                 client.name = client_details['name']
                 client.address = request.POST['client_home_address']
@@ -422,7 +433,17 @@ class EditClient(View):
                 client.issued_by = client_details['issued_by']
                 client.expiry_license_date = datetime.strptime(client_details['expiry_date'], '%d/%m/%Y')
                 
-                client.passport_no = client_details['passport_no']
+                try:
+                    clients = Client.objects.filter(passport_no = client_details['passport_no']).exclude(id=client_id).count()
+                    if clients:
+                        res = {
+                            'result': 'error',
+                            'message': 'Client with this passport number exists',
+                        }
+                        response = simplejson.dumps(res)
+                        return HttpResponse(response, status=status, mimetype='application/json')
+                except:
+                    client.passport_no = client_details['passport_no']
                 client.date_of_passport_issue = datetime.strptime(client_details['passport_issued_date'], '%d/%m/%Y')
                 client.place_of_issue = client_details['place_of_issue']
 
@@ -430,23 +451,10 @@ class EditClient(View):
                 res = {
                     'result': 'ok'
                 }
-                status = 200
+                
             except Exception as ex:
                 print "Exception == ", str(ex)
-                # try:
-                #     client = Client.objects.get(passport_no=client_details['passport_no'])
-                #     message = 'Client with this Passport No is already existing'
-                #     print "message"
-                # except Exception as ex:
-                #     print "Exception 2 == ", str(ex)
-                #     client = Client.objects.get(phone_number=client_details['home_ph_no'])
-                #     print client
-                    # message = 'Client with this Phone No is already existing'
-                res = {
-                    'result': 'error',
-                    'message': 'Client with this Phone No or Passport No is already existing',
-                }
-                status = 500
+                
             response = simplejson.dumps(res)
             return HttpResponse(response, status=status, mimetype='application/json')
 

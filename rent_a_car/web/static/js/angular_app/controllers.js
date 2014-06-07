@@ -187,7 +187,7 @@ add_client = function($scope, $http, from) {
             
             if (data.result == 'error'){
                 $scope.error_flag=true;
-                $scope.message = data.message;
+                $scope.validation_error = data.message;
             } else {
                 $scope.error_flag=false;
                 $scope.message = '';
@@ -520,7 +520,7 @@ function EditClientController($scope, $http, $location) {
                 
                 if (data.result == 'error'){
                     $scope.error_flag=true;
-                    $scope.message = data.message;
+                    $scope.validation_error = data.message;
                 } else {
                     $scope.error_flag=false;
                     $scope.message = '';
