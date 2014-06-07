@@ -164,6 +164,7 @@ class ReceiveCar(models.Model):
 
         verbose_name = 'Receive Car'
         verbose_name_plural = 'Receive Car'
+
 class Driver(models.Model):
 
     driver_name = models.CharField('Driver Name', null=True, blank=True, max_length=25)
@@ -180,3 +181,4 @@ class Driver(models.Model):
     sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=25)
     sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
     sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
+    is_available = models.BooleanField('Driver Available', default=True)

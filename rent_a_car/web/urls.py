@@ -21,4 +21,6 @@ urlpatterns = patterns('',
 	url(r'receive_car/$', login_required(ReceiveCarView.as_view()), name='receive_car'),
 	url(r'agreements/$', login_required(AgreementDetails.as_view()), name='agreements'),
 	url(r'print_rent_agreement/(?P<agreement_id>\d+)/$', login_required(PrintRentAgreement.as_view()), name='print_rent_agreement'),
+	url(r'drivers/$', login_required(DriversList.as_view()), name='drivers'),
+	url(r'add_driver/$', login_required(AddDriver.as_view()), name='add_driver'),
 )

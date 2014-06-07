@@ -122,7 +122,7 @@ class AddClient(View):
                     'result': 'ok',
                     'client_data': ctx_client,
                 }
-            
+
             response = simplejson.dumps(res)
 
             return HttpResponse(response, status=status, mimetype='application/json')
@@ -750,3 +750,93 @@ class AddDriver(View):
 
     def get(self, request, *args, **kwargs):
         return render(request, 'add_driver.html', {})
+
+    def post(self, request, *args, **kwargs):
+
+        if request.is_ajax():
+
+            status = 200
+            ctx_driver = []
+            driver_details = ast.literal_eval(request.POST['driver_details'])
+            try:
+                try:
+                    driver = Driver.objects.get(driver_phone=driver_details['phone'])
+                    message = 'Driver with this Phone No is already existing'
+                except Exception as ex:
+                    driver = Driver.objects.get(driver_passport_no=vehicle_details['passport_no'])
+                    message = 'Driver with this Passport No is already existing'
+                res = {
+                    'result': 'error',
+                    'message': message,
+                }
+            except Exception as ex:
+                print str(ex)
+                driver = Driver.objects.create(driver_phone=driver_details['phone'], driver_passport_no=vehicle_details['passport_no'])
+                driver.driver_name = driver_details['']  
+                driver.driver_address = driver_details[''] 
+                driver.driver_nationality = driver_details['']
+                driver.driver_license_no = driver_details['']
+                driver.driver_license_issue_date = driver_details['']
+                driver.driver_license_issue_place = driver_details['']
+                driver.driver_license_expiry_date = driver_details['']
+                driver.driver_dob = driver_details['']
+                driver.sponsar_name = driver_details['']
+                driver.sponsar_address = driver_details['']
+                driver.sponsar_phone = driver_details['']
+                driver.save()
+                ctx_driver.append({
+                    'id': driver.id,
+                    'driver_name': driver.driver_name,
+                    'driver_address': driver.driver_address,
+                    'driver_nationality': driver.driver_nationality,
+                    'driver_license_no': driver.driver_license_no,
+                    'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y'),
+                    'driver_license_issue_place': driver.driver_license_issue_place,
+                    'driver_license_expiry_date': driver.driver_license_expiry_date.strftime('%d/%m/%Y'),
+                    'driver_dob': driver.driver_dob.strftime('%d/%m/%Y'),
+                    'sponsar_name': driver.sponsar_name,
+                    'sponsar_address': driver.sponsar_address,
+                    'sponsar_phone': driver.sponsar_phone,
+                })
+                res = {
+                    'result': 'ok'
+                }
+
+            response = simplejson.dumps(res)
+
+            return HttpResponse(response, status=status, mimetype='application/json')
+
+class DriversList(View):
+
+    def get(self, request, *args, **kwargs):
+
+        ctx_drivers = []
+        if request.is_ajax():
+            drivers = Driver.objects.filter(is_available=True).order_by('id')
+            for driver in drivers:
+                ctx_drivers.append({
+                    'id': driver.id,
+                    'driver_name': driver.driver_name,
+                    'driver_address': driver.driver_address,
+                    'driver_nationality': driver.driver_nationality,
+                    'driver_license_no': driver.driver_license_no,
+                    'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y'),
+                    'driver_license_issue_place': driver.driver_license_issue_place,
+                    'driver_license_expiry_date': driver.driver_license_expiry_date.strftime('%d/%m/%Y'),
+                    'driver_dob': driver.driver_dob.strftime('%d/%m/%Y'),
+                    'sponsar_name': driver.sponsar_name,
+                    'sponsar_address': driver.sponsar_address,
+                    'sponsar_phone': driver.sponsar_phone,
+                })
+            res = {
+                'result': 'ok',
+                'drivers': ctx_drivers,
+            }
+            response = simplejson.dumps(res)
+            return HttpResponse(response, status=status, mimetype='application/json')
+        else:
+            drivers = Driver.objects.all().order_by('id')
+            context = {
+                'drivers': drivers,
+            }
+            return render(request, 'drivers.html', context)

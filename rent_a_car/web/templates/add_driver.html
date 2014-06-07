@@ -50,8 +50,6 @@
 							
 						</div>
 					</div>
-					
-				
 
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
@@ -61,49 +59,17 @@
 							<input type="text" name="home_ph_no" ng-model="driver.home_ph_no" id="home_ph_no"/>
 						</div>
 					</div>
-
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="workaddress">Work Address</label>
-						</div>
-						<div class="forminput">
-							<textarea ng-model="work_address" name="workaddress"></textarea>
-						</div> 
-					</div>
-
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="work_ph_no">Tel No.(Work)</label>
-						</div>
-						<div class="forminput">
-							<input type="text" name="work_ph_no" ng-model="driver.work_ph_no">
-						</div>
-					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="license_no">License No.</label>
 						</div>
 						
 						<div class="forminput" id="radio_input">
-							<input type="text" name="license_no" ng-model="driver.license_no" value="cash" >
+							<input type="text" name="license_no" ng-model="driver.license_no" value="" >
 							
 						</div>
 					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="license_type">License Type</label>
-						</div>
-						
-						<div class="forminput" >
-							<!-- <input type="text" name="license_type" ng-model="driver.license_type"/> -->
-							<select name="license_type" ng-model="driver.license_type">
-								<option value=''>Select</option>
-								<option value="automatic">Automatic</option>
-								<option value='manual'>Manual</option>
-								<option value='heavy'>Heavy</option>
-							</select>
-						</div>
-					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="date_of_license_issue">Date of License Issued</label>
@@ -141,19 +107,26 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="passport_issued_date">Passport Issued Date</label>
+							<label for="sponsar_name">Sponsar Name.</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="passport_issued_date" ng-model="driver.passport_issued_date" id="passport_issued_date"/>
+							<input type="text" name="sponsar_name" ng-model="driver.sponsar_name"  />
 						</div>
 					</div>
-
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="place_of_issue">Place of Issued</label>
+							<label for="sponsar_ph">Sponsar Telephone.</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="place_of_issue" ng-model="driver.place_of_issue" />
+							<input type="text" name="sponsar_ph" ng-model="driver.sponsar_ph"  />
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_address">Sponsar Address.</label>
+						</div>
+						<div class="forminput">
+							<textarea name="sponsar_address" ng-model="driver.sponsar_address"></textarea>
 						</div>
 					</div>
 					

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block body_id %}drivers{% endblock %}
+
+{% block title %}drivers{% endblock title %}
+
+{% block content %}
+
+	<div class="top_section">
+		
+		<a class="btn btn-info" href="{% url 'add_driver' %}">New driver</a> 
+	</div>
+	{% if drivers|length > 0 %}
+		<table border="0" class="table_list" cellspacing="0">
+			<tr>
+						
+				<th> Name </th>
+				<th> Nationality</th>
+				<th> Home Address </th>
+				<th> Tel No. </th>
+				<th> Work Address </th>
+				<th> Tel No. </th>
+				<th> License No. </th>
+				<th> Expiry Date </th>
+				<th> Passport No. </th>
+				<th> &nbsp;&nbsp;</th>
+			</tr>
+			{% for driver in drivers %}
+				<tr>
+					<td>{{driver.name}}</td>
+					<td>{{driver.nationality}}</td>
+					<td>{{driver.address}}</td>
+					<td>{{driver.phone_number}}</td>
+					<td>{{driver.work_address}}</td>
+					<td>{{driver.work_ph_no}}</td>
+					<td>{{driver.license_no}}</td>
+					<td>{{driver.expiry_license_date| date:'d/m/Y'}}</td>
+					<td>{{driver.passport_no}}</td>
+					{%comment%}<td><a href="{% url 'edit_driver' driver_id=driver.id %}">
+						<img src="/static/images/edit.png">
+					</a></td>
+					{%endcomment%}
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<div class="message"><p>No drivers</p></div>
+	{% endif %}
+
+{% endblock content %}
