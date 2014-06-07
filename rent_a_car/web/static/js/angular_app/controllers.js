@@ -677,6 +677,8 @@ function RentAgreementController($scope, $http, $location) {
 			'passport_issued_date': '',
 			'place_of_issue': '',
 		};
+		$scope.home_address = '';
+		$scope.work_address = '';
 		$scope.client_popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
             'message_padding': '0px',
