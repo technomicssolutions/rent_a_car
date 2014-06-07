@@ -73,7 +73,7 @@ class AddClient(View):
 
         if request.is_ajax():
             client_details = ast.literal_eval(request.POST['client_details'])
-
+            status = 200
             try:
                 client, created = Client.objects.get_or_create(phone_number=client_details['home_ph_no'], passport_no=client_details['passport_no'])
                 ctx_client = []
@@ -111,13 +111,11 @@ class AddClient(View):
                         'result': 'ok',
                         'client_data': ctx_client,
                     }
-                    status = 200
                 else:
                     res = {
                         'result': 'error',
                         'message': 'Client with this passport no or Tel No.(Home) is already existing'
                     }
-                    status = 500
 
                 
             except Exception as ex:
@@ -132,7 +130,6 @@ class AddClient(View):
                     'result': 'error',
                     'message': message,
                 }
-                status = 500
             response = simplejson.dumps(res)
 
             return HttpResponse(response, status=status, mimetype='application/json')
@@ -178,15 +175,21 @@ class AddVehicle(View):
     def post(self, request, *args, **kwargs):
 
         ctx_vehicle_data = []
+        status = 200 
         if request.is_ajax():
             vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             try:
-                vehicle = Vehicle.objects.get(vehicle_no=vehicle_details['vehicle_no'],plate_no=vehicle_details['plate_no'])
+                try:
+                    vehicle = Vehicle.objects.get(vehicle_no=vehicle_details['vehicle_no'])
+                    message = 'Vehicle with this Vehicle No is already existing'
+                except Exception as ex:
+                    vehicle = Vehicle.objects.get(plate_no=vehicle_details['plate_no'])
+                    message = 'Vehicle with this Plate No is already existing'
                 res = {
                     'result': 'error',
-                    'message': 'Vehicle with this Vehicle No. and Plate No. is already existing'
+                    'message': message,
                 }
-                status = 500
+                
             except Exception as ex:
                 print str(ex)
                 vehicle = Vehicle.objects.create(vehicle_no=vehicle_details['vehicle_no'],plate_no=vehicle_details['plate_no'])
