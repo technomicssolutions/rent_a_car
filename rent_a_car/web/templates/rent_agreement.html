@@ -9,6 +9,7 @@
 	{% include 'popups/add_vehicle.html' %}
 	{% include 'popups/add_vehicle_type.html' %}
 	{% include 'popups/add_client.html' %}
+	{% include 'popups/add_driver.html' %}
 {% endblock %}
 
 
@@ -262,7 +263,7 @@
 						<div class="forminput">
 							<select ng-model="driver_data" ng-disabled="driver_details_needed">
 								<option value="" ng-click="get_driver_details('')">Select</option>
-								<option ng-repeat="driver in drivers" value="[[driver.driver_name]]" ng-click="get_vehicle_details(driver)" ng-selected="driver.driver_name == driver_data.driver_name">[[driver.driver_name]]</option>
+								<option ng-repeat="driver in drivers" value="[[driver.driver_name]]" ng-click="get_driver_details(driver)" ng-selected="driver.driver_name == driver_data.driver_name">[[driver.driver_name]]</option>
 								<option value="other" ng-click="add_new_driver()">Other</option>
 							</select>
 						</div>
@@ -328,7 +329,7 @@
 							<label for="license_expiry_date">License Expiry Date</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="driver.driver_license_expiry_date" name="license_expiry_date" id="license_expiry_date" readonly/>
+							<input type="text" ng-model="driver.driver_license_expiry_date" name="license_expiry_date" readonly/>
 
 						</div>
 					</div>

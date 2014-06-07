@@ -650,11 +650,11 @@ class AgreementDetails(View):
                         'insurance_type': agreement.vehicle.type_of_insuranse if agreement.vehicle else '',
                         'plate_no': agreement.vehicle.plate_no if agreement.vehicle else '',
                         'with_driver': 'yes' if agreement.with_driver else 'no',
-                        'driver_name': agreement.driver_name,
-                        'driver_passport_no': agreement.driver_passport_no,
-                        'sponsar_name': agreement.sponsar_name,
+                        'driver_name': agreement.driver.driver_name if agreement.driver else '',
+                        'driver_passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
+                        'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                         'paid': agreement.paid,
-                        'late_message': 'Late receival' if agreement.end_date_time > current_date else '',
+                        'late_message': 'Late receival' if agreement.end_date_time < current_date else '',
                     })
                     
             res = {
@@ -784,6 +784,7 @@ class AddDriver(View):
                     'id': driver.id,
                     'driver_name': driver.driver_name,
                     'driver_address': driver.driver_address,
+                    'driver_phone': driver.driver_phone,
                     'driver_nationality': driver.driver_nationality,
                     'driver_license_no': driver.driver_license_no,
                     'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y'),
@@ -793,9 +794,11 @@ class AddDriver(View):
                     'sponsar_name': driver.sponsar_name,
                     'sponsar_address': driver.sponsar_address,
                     'sponsar_phone': driver.sponsar_phone,
+                    'passport_no': driver.driver_passport_no,
                 })
                 res = {
-                    'result': 'ok'
+                    'result': 'ok',
+                    'driver_data': ctx_driver,
                 }
 
             response = simplejson.dumps(res)

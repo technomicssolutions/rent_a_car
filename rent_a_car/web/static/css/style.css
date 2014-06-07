@@ -765,10 +765,10 @@ a {
 	margin-top: 45px;
 }
 
-#new_vehicle .formtext, #new_client .formtext {
+#new_vehicle .formtext, #new_client .formtext, #new_driver .formtext{
 	width: 52% !important;
 }
-#new_vehicle .forminput, #new_client .forminput {
+#new_vehicle .forminput, #new_client .forminput, #new_driver .forminput {
 	width: 44% !important;
 }
 #rent_agreement #dialogue_popup #new_client label {
@@ -780,5 +780,6 @@ a {
 #rent_agreement #overlay, #rent_agreement #dialogue_popup_container, #rent_agreement #dialogue_popup {
 	z-index: 0 !important;
 }
+
 
 

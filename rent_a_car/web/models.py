@@ -169,3 +169,12 @@ class Driver(models.Model):
     sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
     sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
     is_available = models.BooleanField('Driver Available', default=True)
+
+    def __unicode__(self):
+
+        return self.driver_name
+
+    class Meta:
+
+        verbose_name = 'Driver'
+        verbose_name_plural = 'Driver'
