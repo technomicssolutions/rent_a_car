@@ -18,24 +18,26 @@
 				<th> Nationality</th>
 				<th> Home Address </th>
 				<th> Tel No. </th>
-				<th> Work Address </th>
-				<th> Tel No. </th>
 				<th> License No. </th>
 				<th> Expiry Date </th>
 				<th> Passport No. </th>
+				<th> Sponsar Name</th>
+				<th> Sponsar Address</th>
+				<th> Sponsar Phone</th>
 				<th> &nbsp;&nbsp;</th>
 			</tr>
 			{% for driver in drivers %}
 				<tr>
-					<td>{{driver.name}}</td>
-					<td>{{driver.nationality}}</td>
-					<td>{{driver.address}}</td>
-					<td>{{driver.phone_number}}</td>
-					<td>{{driver.work_address}}</td>
-					<td>{{driver.work_ph_no}}</td>
-					<td>{{driver.license_no}}</td>
-					<td>{{driver.expiry_license_date| date:'d/m/Y'}}</td>
-					<td>{{driver.passport_no}}</td>
+					<td>{{driver.driver_name}}</td>
+					<td>{{driver.driver_nationality}}</td>
+					<td>{{driver.driver_address}}</td>
+					<td>{{driver.driver_phone}}</td>
+					<td>{{driver.driver_license_no}}</td>
+					<td>{{driver.driver_license_expiry_date| date:'d/m/Y'}}</td>
+					<td>{{driver.driver_passport_no}}</td>
+					<td>{{driver.sponsar_name}}</td>
+					<td>{{driver.sponsar_address}}</td>
+					<td>{{driver.driver_phone}}</td>
 					{%comment%}<td><a href="{% url 'edit_driver' driver_id=driver.id %}">
 						<img src="/static/images/edit.png">
 					</a></td>

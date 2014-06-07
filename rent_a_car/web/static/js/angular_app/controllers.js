@@ -17,6 +17,11 @@ get_vehicles = function($scope, $http) {
 		$scope.vehicles = data.vehicles;
 	})
 }
+get_drivers = function($scope, $http) {
+	$http.get('/drivers/').success(function(data){
+		$scope.drivers = data.drivers;
+	})
+}
 
 save_vehicle_type = function($scope, $http, from) {
 	if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
@@ -1075,7 +1080,7 @@ function AddDriverController($scope, $http, $location) {
 		'home_ph_no': '',
 		'license_no': '',
 		'date_of_license_issue': '',
-		'issued_by': '',
+		'issued_place': '',
 		'expiry_date': '',
 		'passport_no': '',
 		'sponsar_name': '',
@@ -1132,8 +1137,8 @@ function AddDriverController($scope, $http, $location) {
 		} else if ($scope.driver.date_of_license_issue == '' || $scope.driver.date_of_license_issue == undefined) {
 			$scope.validation_error = 'Please enter Date of License Issued';
 			return false;
-		} else if ($scope.driver.issued_by == '' || $scope.driver.issued_by == undefined) {
-			$scope.validation_error = 'Please enter Issued By';
+		} else if ($scope.driver.issued_place == '' || $scope.driver.issued_place == undefined) {
+			$scope.validation_error = 'Please enter Issued Place';
 			return false;
 		} else if ($scope.driver.expiry_date == '' || $scope.driver.expiry_date == undefined) {
 			$scope.validation_error = 'Please enter Expiry Date';
@@ -1156,7 +1161,38 @@ function AddDriverController($scope, $http, $location) {
 
 	$scope.add_driver = function() {
 		$scope.is_valid = $scope.validate_driver_form();
-
+		if ($scope.is_valid) {
+			$scope.validation_error = '';
+			params = {
+				'driver_details': angular.toJson($scope.driver),
+				'home_address': $scope.home_address,
+				'sponsar_address': $scope.sponsar_address,
+				"csrfmiddlewaretoken" : $scope.csrf_token,
+			}
+			$http({
+	            method : 'post',
+	            url : "/add_driver/",
+	            data : $.param(params),
+	            headers : {
+	                'Content-Type' : 'application/x-www-form-urlencoded'
+	            }
+	        }).success(function(data, status) {
+	        	if (data.result == 'error') {
+	        		$scope.validation_error = data.message;
+	        	} else {
+		            // if (from != 'add_driver') {
+		            	document.location.href ='/drivers/';
+		            // } else {
+		            // 	$scope.driver_data = data.driver_data[0];
+		            // 	get_drivers($scope, $http);
+		            // 	$scope.driver = data.driver_data[0];
+		            // 	$scope.close_popup_add_driver();
+		            // }
+		        }
+	        }).error(function(data, status){
+	            $scope.validation_error = data.message;
+	        });
+		}
 	}
 }
 
