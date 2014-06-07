@@ -335,14 +335,38 @@ class EditVehicle(View):
     def post(self, request, *args, **kwargs):
 
         if request.is_ajax():
-
+            status = 200
             vehicle_id = kwargs['vehicle_id']
             vehicle = Vehicle.objects.get(id=int(vehicle_id))
             vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             vehicle_type = VehicleType.objects.get(vehicle_type_name=vehicle_details['vehicle_type'])
             try:
-                vehicle.vehicle_no = vehicle_details['vehicle_no']
-                vehicle.plate_no = vehicle_details['plate_no']
+                # try:
+                vehicles = Vehicle.objects.filter(vehicle_no = vehicle_details['vehicle_no']).exclude(id=vehicle_id).count()
+                if vehicles:
+                    res = {
+                        'result': 'error',
+                        'message': 'Vehicle with this vehicle number exists',
+                    }
+                    response = simplejson.dumps(res)
+                    return HttpResponse(response, status=status, mimetype='application/json')
+                else:
+                    vehicle.vehicle_no = vehicle_details['vehicle_no']
+                # except:
+                #     vehicle.vehicle_no = vehicle_details['vehicle_no']
+                # try:
+                vehicles = Vehicle.objects.filter(plate_no = vehicle_details['plate_no']).exclude(id=vehicle_id).count()
+                if vehicles:
+                    res = {
+                        'result': 'error',
+                        'message': 'Vehicle with this plate number exists',
+                    }
+                    response = simplejson.dumps(res)
+                    return HttpResponse(response, status=status, mimetype='application/json')
+                else:
+                    vehicle.plate_no = vehicle_details['plate_no']
+                # except:
+                #     vehicle.plate_no = vehicle_details['plate_no']
                 vehicle.vehicle_type_name = vehicle_type
                 vehicle.vehicle_color = vehicle_details['color']
                 vehicle.meter_reading = vehicle_details['meter_reading']
@@ -354,14 +378,10 @@ class EditVehicle(View):
                 res = {
                     'result': 'ok'
                 }
-                status = 200
+                
             except Exception as ex:
                 print "Exception == ", str(ex)
-                res = {
-                    'result': 'error',
-                    'message': 'Vehicle with this Vehicle No. and Plate No. is already existing'
-                }
-                status = 500
+                
             response = simplejson.dumps(res)
             return HttpResponse(response, status=status, mimetype='application/json')
 
@@ -410,17 +430,19 @@ class EditClient(View):
             client_details = ast.literal_eval(request.POST['client_details'])
             try:
                 client = Client.objects.get(id=int(client_id))                
-                try:
-                    clients = Client.objects.filter(phone_number =client_details['home_ph_no']).exclude(id=client_id).count()
-                    if clients:
-                        res = {
-                            'result': 'error',
-                            'message': 'Client with this phone number exists',
-                        }
-                        response = simplejson.dumps(res)
-                        return HttpResponse(response, status=status, mimetype='application/json')
-                except:
+                # try:
+                clients = Client.objects.filter(phone_number =client_details['home_ph_no']).exclude(id=client_id).count()
+                if clients:
+                    res = {
+                        'result': 'error',
+                        'message': 'Client with this phone number exists',
+                    }
+                    response = simplejson.dumps(res)
+                    return HttpResponse(response, status=status, mimetype='application/json')
+                else:
                     client.phone_number = client_details['home_ph_no']
+                # except:
+                #     client.phone_number = client_details['home_ph_no']
                 client.passport_no = client_details['passport_no']
                 client.name = client_details['name']
                 client.address = request.POST['client_home_address']
@@ -436,17 +458,19 @@ class EditClient(View):
                 client.issued_by = client_details['issued_by']
                 client.expiry_license_date = datetime.strptime(client_details['expiry_date'], '%d/%m/%Y')
                 
-                try:
-                    clients = Client.objects.filter(passport_no = client_details['passport_no']).exclude(id=client_id).count()
-                    if clients:
-                        res = {
-                            'result': 'error',
-                            'message': 'Client with this passport number exists',
-                        }
-                        response = simplejson.dumps(res)
-                        return HttpResponse(response, status=status, mimetype='application/json')
-                except:
+                # try:
+                clients = Client.objects.filter(passport_no = client_details['passport_no']).exclude(id=client_id).count()
+                if clients:
+                    res = {
+                        'result': 'error',
+                        'message': 'Client with this passport number exists',
+                    }
+                    response = simplejson.dumps(res)
+                    return HttpResponse(response, status=status, mimetype='application/json')
+                else:
                     client.passport_no = client_details['passport_no']
+                # except:
+                #     client.passport_no = client_details['passport_no']
                 client.date_of_passport_issue = datetime.strptime(client_details['passport_issued_date'], '%d/%m/%Y')
                 client.place_of_issue = client_details['place_of_issue']
 

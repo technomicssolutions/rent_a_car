@@ -387,7 +387,11 @@ function EditVehicleController($scope, $http, $location) {
                     'Content-Type' : 'application/x-www-form-urlencoded'
                 }
             }).success(function(data, status) {
-                document.location.href ='/vehicles/';
+            	if (data.result == 'error') {
+            		$scope.validation_error = data.message;
+            	} else {
+                	document.location.href ='/vehicles/';
+                }
             }).error(function(data, status){
                 $scope.validation_error = data.message;
             });
