@@ -516,19 +516,10 @@ class RentAgreementView(View):
                 else:
                     rent_agreement.with_driver = False
                 if rent_agreement_details['with_driver'] == 'yes':
-                    rent_agreement.driver_name = rent_agreement_details['driver_name']
-                    rent_agreement.driver_phone = rent_agreement_details['driver_phone']
-                    rent_agreement.driver_address = rent_agreement_details['driver_address']
-                    rent_agreement.driver_nationality = rent_agreement_details['nationality']
-                    rent_agreement.driver_passport_no = rent_agreement_details['passport_no']
-                    rent_agreement.driver_license_no = rent_agreement_details['license_no']
-                    rent_agreement.driver_dob = datetime.strptime(rent_agreement_details['dob'], '%d/%m/%Y')
-                    rent_agreement.driver_license_expiry_date = datetime.strptime(rent_agreement_details['license_expiry_date'], '%d/%m/%Y')
-                    rent_agreement.driver_license_issue_place = rent_agreement_details['license_issued_place']
-                    rent_agreement.driver_license_issue_date = datetime.strptime(rent_agreement_details['license_issued_date'], '%d/%m/%Y')
-                    rent_agreement.sponsar_name = rent_agreement_details['sponsar_name']
-                    rent_agreement.sponsar_address = rent_agreement_details['sponsar_telephone']
-                    rent_agreement.sponsar_phone = rent_agreement_details['sponsar_address']
+                    driver = Driver.objects.get(id=int(rent_agreement_details['driver_id']))
+                    driver.is_available = False
+                    driver.save()
+                    rent_agreement.driver = driver
                 rent_agreement.notes = rent_agreement_details['notes']
                 rent_agreement.total_amount = rent_agreement_details['amount']
                 rent_agreement.commission = rent_agreement_details['commission']
@@ -602,6 +593,10 @@ class ReceiveCarView(View):
                 vehicle.is_available = True
                 rent_agreement.is_completed = True
                 rent_agreement.save()
+                driver = rent_agreement.driver
+                driver.is_available = True
+                driver.save()
+                
             vehicle.save()
 
             res = {
@@ -813,13 +808,16 @@ class DriversList(View):
 
         ctx_drivers = []
         if request.is_ajax():
+            status = 200
             drivers = Driver.objects.filter(is_available=True).order_by('id')
             for driver in drivers:
                 ctx_drivers.append({
                     'id': driver.id,
                     'driver_name': driver.driver_name,
+                    'driver_phone': driver.driver_phone,
                     'driver_address': driver.driver_address,
                     'driver_nationality': driver.driver_nationality,
+                    'passport_no': driver.driver_passport_no,
                     'driver_license_no': driver.driver_license_no,
                     'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y'),
                     'driver_license_issue_place': driver.driver_license_issue_place,

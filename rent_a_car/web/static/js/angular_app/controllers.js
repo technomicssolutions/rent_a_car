@@ -520,9 +520,25 @@ function RentAgreementController($scope, $http, $location) {
 		'insuranse_value': '',
 		'meter_reading': '',
 	}
+	$scope.driver = {
+		'id': '',
+		'driver_name': '',
+		'driver_phone': '',
+		'driver_address': '',
+		'driver_nationality': '',
+		'driver_license_no': '',
+		'driver_license_issue_date': '',
+		'driver_license_issue_place': '',
+		'driver_license_expiry_date': '',
+		'driver_dob': '',
+		'sponsar_name': '',
+		'sponsar_address': '',
+		'sponsar_phone': '',
+	}
 	$scope.rent_agreement = {
 		'client_id': '',
 		'vehicle_id': '',
+		'driver_id': '',
 		'agreement_no': '',
 		'agreement_type': '',
 		'rent_type': '',
@@ -557,6 +573,7 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.csrf_token = csrf_token;
 		get_clients($scope, $http);
 		get_vehicles($scope, $http);
+		get_drivers($scope, $http);
 		
         new Picker.Date($$('#date'), {
             timePicker: false,
@@ -719,6 +736,10 @@ function RentAgreementController($scope, $http, $location) {
 	}
 	$scope.save_vehicle = function() {
 		add_vehicle($scope, $http, 'add_vehicle');
+	}
+	$scope.get_vehicle_details = function(driver) {
+		$scope.driver = driver;
+		$scope.rent_agreement.driver_id = $scope.driver.id;
 	}
 
 

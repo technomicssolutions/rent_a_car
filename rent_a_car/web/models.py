@@ -102,20 +102,7 @@ class RentAgreement(models.Model):
     with_driver = models.BooleanField('With Driver', default=False)
     
     type_of_contract = models.CharField('Type of Contract', null=True, blank=True, max_length=25)
-    driver_name = models.CharField('Driver Name', null=True, blank=True, max_length=25)
-    driver_phone = models.CharField('Driver Phone', null=True, blank=True, max_length=15)
-    driver_address = models.TextField('Driver Address', null=True, blank=True)
-    driver_nationality = models.CharField('Driver Nationality', null=True, blank=True, max_length=25)
-    driver_passport_no = models.CharField('Driver Passport No', null=True, blank=True, max_length=25)
-    driver_license_no = models.CharField('Driver License No', null=True, blank=True, max_length=25)
-    driver_license_issue_date = models.DateField('Driver License Issue Date', null=True, blank=True)
-    driver_license_issue_place = models.CharField('Driver License Issue Place', null=True, blank=True, max_length=25)
-    driver_license_expiry_date = models.DateField('Driver License Expiry Date', null=True, blank=True)
-    driver_dob = models.DateField('Driver DOB', null=True, blank=True)
-
-    sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=25)
-    sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
-    sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
+    driver = models.ForeignKey('Driver', null=True, blank=True)
     notes = models.TextField('Notes', null=True, blank=True)
 
     total_amount = models.DecimalField('Amount', decimal_places=2, max_digits=25, default=0)
