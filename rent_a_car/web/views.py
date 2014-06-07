@@ -714,10 +714,16 @@ class PrintRentAgreement(View):
         p.line(50,1000,950,1000)
         p.line(500,1000,500,100)
         p.line(250,1000, 250, 900)
-        p.line(50, 950, 500,950)
-        p.line(50, 900, 500, 900)
-        p.line(50, 850, 500, 850)
+        p.line(50, 950, 950,950)
+        p.line(50, 900, 950, 900)
+        p.line(50, 850, 950, 850)
         p.line(375,900, 375, 850)
+        p.line(50, 800, 950, 800)
+        p.line(50, 750, 950, 750)
+        p.line(50, 700, 950, 700)
+        p.line(50, 650, 950, 650)
+        p.line(50, 600, 950, 600)
+        p.line(50, 550, 950, 550)
 
         p.drawString(80, 980, 'Vehicle Type')
         p.drawString(280, 980, 'Reg. No.')
@@ -725,6 +731,21 @@ class PrintRentAgreement(View):
         p.drawString(280, 930, 'Vehicle Color')
         p.drawString(170, 880, 'Leaving Date')
         p.drawString(400, 880, 'Time')
+        p.drawString(170, 830, 'Meter Reading on Leaving')
+        p.drawString(170, 780, 'Expecting Returning Date')
+
+        p.setFont("Helvetica", 15)
+        p.drawString(510, 970, 'Rental Name: ')
+        p.drawString(510, 920, 'Nationality: ')
+        p.drawString(510, 870, 'Date of Birth: ')
+        p.drawString(510, 820, 'Passport No: ')
+        p.drawString(510, 770, 'Date & Place of Issue: ')
+        p.drawString(510, 720, 'License No: ')
+        p.drawString(510, 670, 'Issued By: ')
+        p.drawString(510, 620, 'Date Issued: ')
+        p.drawString(510, 570, 'Expiry Date:')
+        p.drawString(510, 520, 'Home Address and Tel. No:')
+
 
         p.setFont("Helvetica", 13)
         vehicle = rent_agreement.vehicle
@@ -734,8 +755,15 @@ class PrintRentAgreement(View):
         p.drawString(300, 910, vehicle.vehicle_color if vehicle else '')
         p.drawString(200, 860, rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
         p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%H:%M'))
+        p.drawString(200, 810, rent_agreement.vehicle.meter_reading)
+        p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
 
-
+        p.drawString(610, 970, rent_agreement.client.name if rent_agreement.client else '')
+        p.drawString(590, 920, rent_agreement.client.nationality if rent_agreement.client else '')
+        p.drawString(600, 870, rent_agreement.client.dob.strftime('%d/%m/%Y') if rent_agreement.client else '')
+        p.drawString(600, 820, rent_agreement.client.passport_no if rent_agreement.client else '')
+        p.drawString(660, 770, (rent_agreement.client.date_of_passport_issue.strftime('%d/%m/%Y') if rent_agreement.client else '') + ' , ')
+        p.drawString(739, 770, rent_agreement.client.place_of_issue if rent_agreement.client else '' )
         p.showPage()
         p.save()
 
