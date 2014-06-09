@@ -1172,6 +1172,30 @@ class CaseEntry(View):
 
         return render(request, 'case_entry.html', {})
 
+    def post(self, request, *args, **kwargs):
+
+        if request.is_ajax():
+
+            case_details = ast.literal_eval(request.POST['case_details'])
+            client = Client.objects.get(id = int(case_details['client_id']))
+            vehicle = Vehicle.objects.get(vehicle_no=case_details['vehicle_no'])
+            case = CaseDetail.objects.create(vehicle=vehicle, client=client)
+            case.fine_amount = case_details['fine']
+            case.type_of_case = case_details['type_of_case']
+            case.penality_date = datetime.strptime(case_details['penality_date'], '%d/%m/%Y')
+            case.penality_no = case_details['penality_no']
+            case.date_author = datetime.strptime(case_details['date_author'], '%d/%m/%Y')
+            case.no_author = case_details['no_author']
+            case.code_author = case_details['code_author']
+            case.save()
+            res = {
+                'result': 'ok',
+            }
+            status = 200
+            response = simplejson.dumps(res)
+            return HttpResponse(response, status=status, mimetype='application/json')
+
+
 class RentAgreementDetails(View):
 
     def get(self, request, *args, **kwargs):
@@ -1201,7 +1225,9 @@ class RentAgreementDetails(View):
 
             res = {
                 'result': 'ok',
-                'client_name': rent_agreements[0].client.name if rent_agreements else ''
+                'client_name': rent_agreements[0].client.name if rent_agreements else '',
+                'client_id': rent_agreements[0].client.id if rent_agreements else '',
+                'vehcile_id': rent_agreements[0].vehicle.id if rent_agreements else '',
             }
             response = simplejson.dumps(res)
             return HttpResponse(response, status=200, mimetype='application/json')

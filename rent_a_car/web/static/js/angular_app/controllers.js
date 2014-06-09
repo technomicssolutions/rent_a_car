@@ -1435,6 +1435,15 @@ function CaseEntryController($scope, $http, $location) {
 		'rent_agreement_id': '',
 		'start_date': '',
 		'end_date': '',
+		'type_of_case': '',
+		'fine': '',
+		'penality_date': '',
+		'penality_no': '',
+		'date_author': '',
+		'no_author': '',
+		'vehicle_id': '',
+		'client_id': '',
+		'code_author': '',
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -1452,12 +1461,28 @@ function CaseEntryController($scope, $http, $location) {
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y',
         });
+        new Picker.Date($$('#penality_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
+        new Picker.Date($$('#date_author'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
+
+        
+
 	}
 	$scope.get_customer_details = function() {
 		$scope.case_details.start_date = $$('#start_date')[0].get('value');
 		$scope.case_details.end_date = $$('#end_date')[0].get('value');
 		var url = '/rent_agreement_details/?start_date='+$scope.case_details.start_date+'&end_date='+$scope.case_details.end_date+'&vehicle_no='+$scope.case_details.vehicle_no;
-		console.log(url);
 		$http.get(url).success(function(data) {
 			console.log(data.client_name);
 			if (data.client_name == '' || data.client_name == undefined) {
@@ -1466,12 +1491,66 @@ function CaseEntryController($scope, $http, $location) {
 			} else {
 				$scope.validation_error = '';
 				$scope.case_details.client_name = data.client_name;
+				$scope.case_details.client_id = data.client_id;
+				$scope.case_details.vehicle_id = data.vehicle_id;
 			}
 			
 		})
 	}
+	$scope.case_form_validation = function() {
+		$scope.case_details.penality_date = $$('#penality_date')[0].get('value');
+		$scope.case_details.date_author = $$('#date_author')[0].get('value');
+		if ($scope.case_details.client_name == '' || $scope.case_details.client_name == undefined) {
+			$scope.validation_error = 'Please enter Correct vehicle No';
+			return false;
+		} else if ($scope.case_details.type_of_case == '' || $scope.case_details.type_of_case == undefined) {
+			$scope.validation_error = 'Please enter Type of Case';
+			return false;
+		} else if ($scope.case_details.fine == '' || $scope.case_details.fine == undefined) {
+			$scope.validation_error = 'Please enter Penality Amount';
+			return false;
+		} else if ($scope.case_details.penality_date == '' || $scope.case_details.penality_date == undefined) {
+			$scope.validation_error = 'Please enter Penality Date';
+			return false;
+		} else if ($scope.case_details.penality_no == '' || $scope.case_details.penality_no == undefined) {
+			$scope.validation_error = 'Please enter Penality No';
+			return false;
+		} else if ($scope.case_details.date_author == '' || $scope.case_details.date_author == undefined) {
+			$scope.validation_error = 'Please enter Date Author';
+			return false;
+		} else if ($scope.case_details.no_author == '' || $scope.case_details.no_author == undefined) {
+			$scope.validation_error = 'Please enter No Author';
+			return false;
+		} else if ($scope.case_details.code_author == '' || $scope.case_details.code_author == undefined) {
+			$scope.validation_error = 'Please enter Code Author';
+			return false;
+		} 
+		return true;
+	}
 	$scope.create_case_entry = function() {
-
+		$scope.is_valid = $scope.case_form_validation();
+		if ($scope.is_valid) {
+			params = {
+				'case_details': angular.toJson($scope.case_details),
+				'csrfmiddlewaretoken': $scope.csrf_token,
+			}
+			$http({
+	            method : 'post',
+	            url : "/case_entry/",
+	            data : $.param(params),
+	            headers : {
+	                'Content-Type' : 'application/x-www-form-urlencoded'
+	            }
+	        }).success(function(data, status) {
+	        	if (data.result == 'error') {
+	        		$scope.validation_error = data.message;
+	        	} else {
+		            document.location.href ='/case_entry/';
+		        }
+	        }).error(function(data, status){
+	            $scope.validation_error = data.message;
+	        });
+	    }
 	}
 }
 

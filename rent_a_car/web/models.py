@@ -193,3 +193,26 @@ class Driver(models.Model):
 
         verbose_name = 'Driver'
         verbose_name_plural = 'Driver'
+
+class CaseDetail(models.Model):
+
+    vehicle = models.ForeignKey(Vehicle, null=True, blank=True)
+    client = models.ForeignKey(Client, null=True, blank=True)
+
+    fine_amount = models.DecimalField('Fine Amount', decimal_places=2, max_digits=25, default=0)
+    type_of_case = models.CharField('Type of Case', max_length=25, null=True, blank=True)
+    penality_date = models.DateField('Penality Date', null=True, blank=True)
+    penality_no = models.CharField('Penality No', null=True, blank=True, max_length=20)
+    date_author = models.DateField('Date Author', null=True, blank=True)
+    no_author = models.CharField('No Author', max_length=30, null=True, blank=True)
+    code_author = models.CharField('Code Author', max_length=30, null=True, blank=True)
+
+    def __unicode__(self):
+
+        return str(self.vehicle.vehicle_no)
+
+
+    class Meta:
+
+        verbose_name = 'Case Details'
+        verbose_name_plural = 'Case Details'
