@@ -171,6 +171,8 @@ validate_client_form = function($scope, $http) {
 	} else if ($scope.client.place_of_issue == '' || $scope.client.place_of_issue == undefined) {
 		$scope.validation_error = 'Please enter the Place of passport issued';
 		return false;
+	} else if ($scope.client.emirates_id == '' || $scope.client.emirates_id == undefined) {
+		$scope.validation_error = 'Please enter Emirates Id';
 	}
 	return true;
 }
@@ -303,6 +305,34 @@ add_driver = function($scope, $http, from) {
             $scope.validation_error = data.message;
         });
 	}
+}
+
+get_agreement_details = function($scope, $http, from) {
+	var url = '/agreements/?agreement_no='+$scope.contract_no;
+	$http.get(url).success(function(data) {
+		console.log(data.agreements.length);
+		var agreement_length = 0;
+		console.log(from);
+		if (from != 'receive_car') {
+			agreement_length = data.agreements.length;
+		} else {
+			agreement_length = data.whole_agreements.length;
+		}
+		if (agreement_length == 0) {
+			$scope.message = 'No Rent Agreement with this  Agreement No.';
+			$scope.agreement_selected = true;
+		} else {
+			$scope.message = '';
+			if (from != 'receive_car') {
+				$scope.agreements = data.agreements;
+			} else {
+				$scope.agreements = data.whole_agreements;
+			}
+			$scope.selecting_agreement = true;
+			$scope.agreement_selected = false;
+			$scope.receipt = data.receival_details;
+		}
+	})
 }
 
 function AddClientController($scope, $http, $location) {
@@ -641,7 +671,6 @@ function RentAgreementController($scope, $http, $location) {
 		'paid': 0,
 		'balance': 0,
 		'type_of_contract': '',
-		'with_driver': 'no',
 		'driver_name': '',
 		'driver_phone': '',
 		'driver_address': '',
@@ -1079,24 +1108,31 @@ function ReceiveCarController($scope, $http, $location) {
         });
 	}
 	$scope.get_agreement_details = function() {
-		var url = '/agreements/?agreement_no='+$scope.contract_no;
-		$http.get(url).success(function(data) {
-			console.log(data.agreements.length);
-			if (data.agreements.length == 0) {
-				$scope.message = 'No Rent Agreement with this  Agreement No.';
-				$scope.agreement_selected = true;
-			} else {
-				$scope.message = '';
-				$scope.agreements = data.agreements;
-				$scope.selecting_agreement = true;
-				$scope.agreement_selected = false;
-			}
-		})
+		
+		get_agreement_details($scope, $http,'');
 	}
 	$scope.add_agreement = function(agreement) {
 		$scope.agreement = agreement;
 		$scope.contract_no = agreement.agreement_no;
 		$scope.agreement_selected = true;
+		$scope.receipt = {
+			'receipt_no': '',
+			'agreement_id': '',
+			'receipt_date': '',
+			'credit_card_no': '',
+			'card_expiry_date': '',
+			'cheque_no': '',
+			'meter_reading': 0,
+			'petrol': 0,
+			'fine': 0,
+			'accident_passable': 0,
+			'extra_charge': 0,
+			'total_amount': 0,
+			'reduction': 0,
+			'balance': 0,
+			'paid': 0,
+			'notes': '',
+		}
 		$scope.receipt.total_amount = agreement.rent;
 		$scope.receipt.agreement_id = agreement.id;
 		$scope.calculate_balance();
@@ -1311,6 +1347,51 @@ function AddDriverController($scope, $http, $location) {
 	        });
 		}
 	}
+}
+
+function PrintReceiptCarController($scope, $http, $location){
+
+
+	$scope.init = function(csrf_token) {
+		$scope.csrf_token = csrf_token;
+	}
+	$scope.get_agreement_details = function() {
+		get_agreement_details($scope, $http, 'receive_car');
+	}
+	$scope.add_agreement = function(agreement) {
+		$scope.agreement = agreement;
+		$scope.contract_no = agreement.agreement_no;
+		$scope.agreement_selected = true;
+		
+		// $scope.calculate_balance();
+		$scope.receipt = {
+			'id': '',
+			'receipt_no': '',
+			'agreement_id': '',
+			'receipt_date': '',
+			'credit_card_no': '',
+			'card_expiry_date': '',
+			'cheque_no': '',
+			'meter_reading': 0,
+			'petrol': 0,
+			'fine': 0,
+			'accident_passable': 0,
+			'extra_charge': 0,
+			'total_amount': 0,
+			'reduction': 0,
+			'balance': 0,
+			'paid': 0,
+			'notes': '',
+		}
+		$scope.receipt.total_amount = agreement.rent;
+		$scope.receipt.agreement_id = agreement.id;
+		console.log(agreement.receival_details);
+		$scope.receipt = agreement.receival_details[0];
+	}
+	$scope.print_receipt = function() {
+		document.location.href = '/print_receipt/?receipt_car_id='+$scope.receipt.id;
+	}
+
 }
 
 

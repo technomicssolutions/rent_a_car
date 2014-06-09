@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 
-{% block body_id %}receive_car{% endblock %}
+{% block body_id %}add_client{% endblock %}
 
-{% block title %}Receive Car{% endblock title %}
-{% block controller %}ng-controller="ReceiveCarController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block title %}Add Client{% endblock title %}
+{% block controller %}ng-controller="PrintReceiptCarController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
 {% block content %}
+
 	<div id="main-title">
-		<div class="alert alert-info" align="Center"><h4>Receive Car</h4></div>
+		<div class="alert alert-info" align="Center"><h4>Print Receival Details</h4></div>
+	</div>
+
+	<div class="top_section">
+		
+		<a class="btn btn-info" href="" ng-click="print_receipt()">Print Receipt</a> 
 	</div>
 
 	<div class="purchase_form_container">
@@ -34,7 +40,7 @@
 							<label for="receipt_no">Receipt No.</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="receipt_no" value="{{receipt_no}}" readonly id="receipt_no">
+							<input type="text" name="receipt_no" ng-model="receipt.receipt_no" readonly id="receipt_no">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -229,7 +235,7 @@
 							<label for="receipt_date">Receipt Date</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="receipt_date" ng-model="receipt.receipt_date" id="receipt_date">
+							<input type="text" name="receipt_date" ng-model="receipt.receipt_date" id="receipt_date" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -237,7 +243,7 @@
 							<label for="credit_card_no">Credit Card No</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="credit_card_no" ng-model="receipt.credit_card_no" id="credit_card_no">
+							<input type="text" name="credit_card_no" ng-model="receipt.credit_card_no" id="credit_card_no" readonly>
 						</div>
 					</div>
 					
@@ -246,7 +252,7 @@
 							<label for="card_expiry_date">Card Expiry Date</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="card_expiry_date" ng-model="receipt.card_expiry_date" id="card_expiry_date">
+							<input type="text" name="card_expiry_date" ng-model="receipt.card_expiry_date" id="card_expiry_date" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -254,7 +260,7 @@
 							<label for="cheque_no">Cheque No</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="cheque_no" ng-model="receipt.cheque_no" id="cheque_no">
+							<input type="text" name="cheque_no" ng-model="receipt.cheque_no" id="cheque_no" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -262,7 +268,7 @@
 							<label for="meter_reading">Meter Reading</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="meter_reading" ng-model="receipt.meter_reading" id="meter_reading">
+							<input type="text" name="meter_reading" ng-model="receipt.meter_reading" id="meter_reading" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -270,7 +276,7 @@
 							<label for="petrol">Petrol</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="petrol" ng-model="receipt.petrol" id="petrol" ng-change="calculate_balance()">
+							<input type="text" name="petrol" ng-model="receipt.petrol" id="petrol" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -278,7 +284,7 @@
 							<label for="fine">Fine</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="fine" ng-model="receipt.fine" id="fine" ng-change="calculate_balance()">
+							<input type="text" name="fine" ng-model="receipt.fine" id="fine" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -286,7 +292,7 @@
 							<label for="accident_passable">Accident Passable</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="accident_passable" ng-model="receipt.accident_passable" id="accident_passable" ng-change="calculate_balance()">
+							<input type="text" name="accident_passable" ng-model="receipt.accident_passable" id="accident_passable" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -294,7 +300,7 @@
 							<label for="extra_charge">Extra Charge</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="extra_charge" ng-model="receipt.extra_charge" id="extra_charge" ng-change="calculate_balance()">
+							<input type="text" name="extra_charge" ng-model="receipt.extra_charge" id="extra_charge" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -311,7 +317,7 @@
 							<label for="reduction">Reduction</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="reduction" ng-model="receipt.reduction" id="reduction" ng-change="calculate_balance()">
+							<input type="text" name="reduction" ng-model="receipt.reduction" id="reduction" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -327,36 +333,14 @@
 							<label for="paid">Paid Amount on Receipt</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="paid" ng-model="receipt.paid" id="paid" ng-change="calculate_balance()">
+							<input type="text" name="paid" ng-model="receipt.paid" id="paid" readonly>
 						</div>
 					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="balance">Balance</label>
-						</div>
-						<div class="forminput">
-							<input type="text" name="balance" ng-model="receipt.balance" id="balance" readonly>
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="notes">Notes</label>
-						</div>
-						<div class="forminput">
-							<!-- <input type="text" name="notes" ng-model="receipt.notes" id="notes" readonly> -->
-							<textarea name="notes" ng-model="receipt.notes" id="notes"></textarea>
-						</div>
-					</div>
-				</div>
-				<div  align="Center">
-					<div class="buttons">
-						<p class="error_message"> [[validation_error]] </p>
-						<input type="button" value="Submit" ng-click="receipt_car();" class="btn btn-info">
-						<a href="{% url 'home' %}"><input type="button" value="Cancel" class="btn btn-info"></a>
-					</div>
+					
 				</div>
 			</div>
 		</form>
 	</div>
+
 
 {% endblock content %}

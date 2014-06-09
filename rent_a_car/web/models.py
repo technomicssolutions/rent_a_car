@@ -7,6 +7,18 @@ LICENSE_TYPE = (
     ('heavy', 'heavy'),
 )
 
+CLIENT_IDENTITY = (
+    ('Emiratesid', 'Emiratesid'),
+    ('Passport', 'Passport'),
+    ('Driving License', 'Driving License'),
+)
+
+RENT_TYPE = (
+    ('Daily', 'Daily'),
+    ('Weekly', 'Weekly'),
+    ('Monthly', 'Monthly'),
+)
+
 class Client(models.Model):
 
     # Personal Details
@@ -29,6 +41,8 @@ class Client(models.Model):
     passport_no = models.CharField('Passport Number', max_length=30, unique=True, null=True, blank=True)
     date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
     place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
+
+    emirates_id = models.CharField('Emiratesid', max_length=25, null=True, blank=True)
 
     # Rent Details
     rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
@@ -95,11 +109,11 @@ class RentAgreement(models.Model):
     agreement_date = models.DateField('Agreement Date', null=True, blank=True)
     starting_date_time = models.DateTimeField('Starting Date and Time', null=True, blank=True)
     end_date_time = models.DateTimeField('End Date and Time', null=True, blank=True)
-    rent_type = models.CharField('Rent Type', null=True, blank=True, max_length=25)
+    rent_type = models.CharField('Rent Type', null=True, blank=True, max_length=25, choices=RENT_TYPE)
     
     identity_driver = models.CharField('Identity Driver', null=True, blank=True, max_length=35)
-    client_identity = models.CharField('Cleint Identity', null=True, blank=True, max_length=25)
-    with_driver = models.BooleanField('With Driver', default=False)
+    client_identity = models.CharField('Cleint Identity', null=True, blank=True, max_length=25, choices=CLIENT_IDENTITY)
+    # with_driver = models.BooleanField('With Driver', default=False)
     
     type_of_contract = models.CharField('Type of Contract', null=True, blank=True, max_length=25)
     driver = models.ForeignKey('Driver', null=True, blank=True)
@@ -129,9 +143,11 @@ class ReceiveCar(models.Model):
     receipt_no = models.CharField('Receipt No', null=True, blank=True, max_length=10)
     new_meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
     type_of_fee = models.CharField('Type of Fee', max_length=40, null=True, blank=True)
+    date = models.DateField('Date', null=True, blank=True)
     
     petrol = models.DecimalField('Petrol', max_digits=25, decimal_places=2, default=0)
     fine = models.DecimalField('Fine', max_digits=25, decimal_places=2, default=0)
+    reduction = models.DecimalField('Reduction', max_digits=25, decimal_places=2, default=0)
     extra_charge = models.DecimalField('Extra Charge', max_digits=25, decimal_places=2, default=0)
     accident_passable = models.DecimalField('Accident Passable', max_digits=25, decimal_places=2, default=0)
     credit_card_no = models.CharField('Credit card no', max_length=20, null=True, blank=True)
