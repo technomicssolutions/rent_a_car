@@ -24,5 +24,8 @@ urlpatterns = patterns('',
 	
 	url(r'drivers/$', login_required(DriversList.as_view()), name='drivers'),
 	url(r'add_driver/$', login_required(AddDriver.as_view()), name='add_driver'),
-	url(r'print_receipt/$', login_required(PrintReceiptCar.as_view()), name='print_receipt')
+	url(r'print_receipt/$', login_required(PrintReceiptCar.as_view()), name='print_receipt'),
+
+	url(r'rent_agreement_details/$', login_required(RentAgreementDetails.as_view()), name='rent_agreement_details'),
+	url(r'case_entry/$', login_required(CaseEntry.as_view()), name='case_entry'),
 )

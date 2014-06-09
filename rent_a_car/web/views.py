@@ -1,6 +1,7 @@
 import simplejson
 import ast
 from datetime import datetime
+import datetime as dt
 
 from django.views.generic.base import View
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -10,6 +11,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Max
 from django.utils import timezone
+from django.db.models import Q
 
 from reportlab.lib.units import cm
 from reportlab.lib.units import inch
@@ -998,12 +1000,6 @@ class DriversList(View):
             }
             return render(request, 'drivers.html', context)
 
-class CaseEntry(View):
-
-    def get(self, request, *args, **kwargs):
-
-        return render(request, 'case_entry.html', {})
-
 class PrintReceiptCar(View):
 
     def get(self, request, *args, **kwargs):
@@ -1169,4 +1165,44 @@ class PrintReceiptCar(View):
             p.save()
 
             return response
+
+class CaseEntry(View):
+
+    def get(self, request, *args, **kwargs):
+
+        return render(request, 'case_entry.html', {})
+
+class RentAgreementDetails(View):
+
+    def get(self, request, *args, **kwargs):
+        ctx_client_details = []
+        start_date = request.GET.get('start_date', '')
+        end_date = request.GET.get('end_date', '')
+        vehicle_no = request.GET.get('vehicle_no', '')
+        rent_agreements = []
+        
+        if start_date and end_date and vehicle_no:
+            start_date = datetime.strptime(start_date, '%d/%m/%Y')
+            start_date = datetime.combine(start_date, dt.time.min)
+            end_date = datetime.strptime(end_date, '%d/%m/%Y')
+            end_date = datetime.combine(end_date, dt.time.max)
+            print start_date, end_date
+
+            # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no=vehicle_no)
+            # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no__contains=vehicle_no, starting_date_time__range=(
+            #             datetime.combine(start_date, dt.time.min),
+            #             datetime.combine(start_date, dt.time.max)), end_date_time__range=(
+            #             datetime.combine(end_date, dt.time.min),
+            #             datetime.combine(end_date, dt.time.max)
+            #             ))
+            rent_agreements = RentAgreement.objects.filter(Q(vehicle__vehicle_no__icontains=vehicle_no),Q(starting_date_time__lte=start_date, end_date_time__gte=end_date))
+            print rent_agreements
+        if request.is_ajax():
+
+            res = {
+                'result': 'ok',
+                'client_name': rent_agreements[0].client.name if rent_agreements else ''
+            }
+            response = simplejson.dumps(res)
+            return HttpResponse(response, status=200, mimetype='application/json')
 

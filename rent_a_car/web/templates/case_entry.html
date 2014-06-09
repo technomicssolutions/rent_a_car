@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body_id %}case_entry{% endblock %}
+
+{% block title %}Case Entry{% endblock title %}
+{% block controller %}ng-controller="CaseEntryController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+
+{% block content %}
+	<div id="main-title">
+		<div class="alert alert-info" align="Center"><h4>Case Entry</h4></div>
+	</div>
+
+	<div class="purchase_form_container">
+		<form name="purchase_entry" method="post">
+			<div class="form_contents_purchase">
+				<div class="section_1_purchase">
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="name">Start Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="start_date" ng-model="case_details.start_date" id="start_date"/>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="name">End Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="end_date" ng-model="case_details.end_date" id="end_date"/>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="name">Vehicle No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="vehicle_no" ng-model="case_details.vehicle_no" ng-change="get_customer_details()"/>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="name">Client Name</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="client_name" ng-model="case_details.client_name"/>
+						</div>
+					</div>
+
+				</div>
+				<div  align="Center">
+					<div class="buttons">
+						<p class="error_message"> [[validation_error]] </p>
+						<input type="button" value="Register Case" ng-click="create_case_entry();" class="btn btn-info">
+						<a href="{% url 'home' %}"><input type="button" value="Cancel" class="btn btn-info"></a>
+					</div>
+				</div>	
+			</div>		
+		</form>
+		<div class="clear"></div>
+	</div>
+
+{% endblock content %}

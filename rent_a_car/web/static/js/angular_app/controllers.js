@@ -1429,5 +1429,51 @@ function PrintRentAgreementController($scope, $http, $location){
 
 }
 
+function CaseEntryController($scope, $http, $location) {
+	$scope.case_details = {
+		'client_name': '',
+		'rent_agreement_id': '',
+		'start_date': '',
+		'end_date': '',
+	}
+	$scope.init = function(csrf_token) {
+		$scope.csrf_token = csrf_token;
+		new Picker.Date($$('#end_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
+        new Picker.Date($$('#start_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
+	}
+	$scope.get_customer_details = function() {
+		$scope.case_details.start_date = $$('#start_date')[0].get('value');
+		$scope.case_details.end_date = $$('#end_date')[0].get('value');
+		var url = '/rent_agreement_details/?start_date='+$scope.case_details.start_date+'&end_date='+$scope.case_details.end_date+'&vehicle_no='+$scope.case_details.vehicle_no;
+		console.log(url);
+		$http.get(url).success(function(data) {
+			console.log(data.client_name);
+			if (data.client_name == '' || data.client_name == undefined) {
+				$scope.case_details.client_name = data.client_name;
+				$scope.validation_error = 'No such client with these details';
+			} else {
+				$scope.validation_error = '';
+				$scope.case_details.client_name = data.client_name;
+			}
+			
+		})
+	}
+	$scope.create_case_entry = function() {
+
+	}
+}
+
 
 
