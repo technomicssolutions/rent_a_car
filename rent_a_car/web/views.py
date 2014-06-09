@@ -506,6 +506,7 @@ class RentAgreementView(View):
                 vehicle = Vehicle.objects.get(id=int(rent_agreement_details['vehicle_id']))
                 rent_agreement.client = client
                 rent_agreement.vehicle = vehicle
+                rent_agreement.client_identity = rent_agreement_details['client_identity']
                 rent_agreement.agreement_type = rent_agreement_details['agreement_type']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
                 rent_agreement.starting_date_time = datetime.strptime(rent_agreement_details['start_date_time'], '%d/%m/%Y %H:%M')

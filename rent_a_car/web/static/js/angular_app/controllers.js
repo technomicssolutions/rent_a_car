@@ -355,6 +355,7 @@ function AddClientController($scope, $http, $location) {
 		'passport_no': '',
 		'passport_issued_date': '',
 		'place_of_issue': '',
+		'emirates_id': '',
 	};
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -689,6 +690,7 @@ function RentAgreementController($scope, $http, $location) {
 		'sponsar_telephone': '',
 		'sponsar_address': '',
 		'notes': '',
+		'client_identity': '',
 	}
 	$scope.driver_details_needed = true;
 	$scope.init = function(csrf_token) {
@@ -820,6 +822,7 @@ function RentAgreementController($scope, $http, $location) {
 			'passport_no': '',
 			'passport_issued_date': '',
 			'place_of_issue': '',
+			'emirates_id': '',
 		};
 		$scope.home_address = '';
 		$scope.work_address = '';
@@ -960,7 +963,7 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.rent_agreement.agreement_no = $$('#agreement_no')[0].get('value');
 		$scope.rent_agreement.dob = $$('#driver_dob')[0].get('value');
 		$scope.rent_agreement.date = $$('#date')[0].get('value');
-		$scope.rent_agreement.license_expiry_date = $$('#license_expiry_date')[0].get('value'); 
+		// $scope.rent_agreement.license_expiry_date = $$('#license_expiry_date')[0].get('value'); 
 		$scope.rent_agreement.license_issued_date = $$('#license_issued_date')[0].get('value');
 		$scope.rent_agreement.start_date_time = $$('#start_date_time')[0].get('value');
 		$scope.rent_agreement.end_date_time = $$('#end_date_time')[0].get('value');
@@ -973,6 +976,9 @@ function RentAgreementController($scope, $http, $location) {
 			return false;
 		} else if ($scope.client.id == '' || $scope.client.id == undefined) {
 			$scope.validation_error = 'Please choose the Customer';
+			return false;
+		} else if ($scope.rent_agreement.client_identity == '' || $scope.rent_agreement.client_identity == undefined) {
+			$scope.validation_error = 'Please choose the client identity';
 			return false;
 		} else if ($scope.vehicle.id == '' || $scope.vehicle.id == undefined) {
 			$scope.validation_error = 'Please choose the Vehicle';
@@ -998,7 +1004,7 @@ function RentAgreementController($scope, $http, $location) {
 		} else if ($scope.rent_agreement.type_of_contract == '' || $scope.rent_agreement.type_of_contract == undefined) {
 			$scope.validation_error = 'Please enter Type of Contract';
 			return false;
-		} else if ($scope.rent_agreement.with_driver == 'yes' && ($scope.rent_agreement.driver_id == '' || $scope.rent_agreement.driver_id == undefined)) {
+		} else if ($scope.rent_agreement.driver_id == '' || $scope.rent_agreement.driver_id == undefined) {
 			$scope.validation_error = 'Please choose Driver name';
 			return false;
 		} 

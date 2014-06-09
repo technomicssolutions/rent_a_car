@@ -40,7 +40,7 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="name">Customer</label>
+							<label for="name">Client</label>
 						</div>
 						<div class="forminput">
 							<select ng-model="client_data">
@@ -59,6 +59,7 @@
 							<input type="text" ng-model="client.license_no" name="license_no" readonly>
 						</div>
 					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="license_type">License Type.</label>
@@ -89,6 +90,19 @@
 						</div>
 						<div class="forminput">
 							<input type="text" ng-model="client.passport_date_of_issue" name="passport_date_of_issue" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="client_identity">Client Identity</label>
+						</div>
+						<div class="forminput">
+							<select ng-model="rent_agreement.client_identity">
+								<option value="">Select</option>
+								<option value="Emiratesid">Emiratesid</option>
+								<option value="Passport">Passport</option>
+								<option value="Driving License">Driving License</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -154,7 +168,12 @@
 							<label for="rent_type">Rent Type</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.rent_type" name="rent_type">
+							<select ng-model="rent_agreement.rent_type">
+								<option value="">Select</option>
+								<option value="Daily">Daily</option>
+								<option value="Weekly">Weekly</option>
+								<option value="Monthly">Monthly</option>
+							</select>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -250,7 +269,7 @@
 							<label for="driver_name">Driver Name</label>
 						</div>
 						<div class="forminput">
-							<select ng-model="driver_data" ng-disabled="driver_details_needed">
+							<select ng-model="driver_data">
 								<option value="" ng-click="get_driver_details('')">Select</option>
 								<option ng-repeat="driver in drivers" value="[[driver.driver_name]]" ng-click="get_driver_details(driver)" ng-selected="driver.driver_name == driver_data.driver_name">[[driver.driver_name]]</option>
 								<option value="other" ng-click="add_new_driver()">Other</option>
