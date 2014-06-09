@@ -770,7 +770,7 @@ function RentAgreementController($scope, $http, $location) {
 			'insurance_value': '',
 			'vehicle_make': '',
 		}
-		$scope.message = '';
+		$scope.validation_error = '';
 		$scope.popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
             'message_padding': '0px',
@@ -826,6 +826,7 @@ function RentAgreementController($scope, $http, $location) {
 		};
 		$scope.home_address = '';
 		$scope.work_address = '';
+		$scope.validation_error = '';
 		$scope.client_popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
             'message_padding': '0px',
@@ -839,6 +840,7 @@ function RentAgreementController($scope, $http, $location) {
         $scope.client_popup.show_content();
 	}
 	$scope.add_new_driver = function() {
+		$scope.validation_error = '';
 		$scope.driver_popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
             'message_padding': '0px',
