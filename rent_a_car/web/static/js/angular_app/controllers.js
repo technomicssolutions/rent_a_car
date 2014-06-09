@@ -1337,14 +1337,7 @@ function AddDriverController($scope, $http, $location) {
 	        	if (data.result == 'error') {
 	        		$scope.validation_error = data.message;
 	        	} else {
-		            // if (from != 'add_driver') {
-		            	document.location.href ='/drivers/';
-		            // } else {
-		            // 	$scope.driver_data = data.driver_data[0];
-		            // 	get_drivers($scope, $http);
-		            // 	$scope.driver = data.driver_data[0];
-		            // 	$scope.close_popup_add_driver();
-		            // }
+		            document.location.href ='/drivers/';
 		        }
 	        }).error(function(data, status){
 	            $scope.validation_error = data.message;

@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-{% block body_id %}add_client{% endblock %}
+{% block body_id %}print_rent
+_agreement{% endblock %}
 
-{% block title %}Add Client{% endblock title %}
+{% block title %}Print Rent Agreement{% endblock title %}
 {% block controller %}ng-controller="PrintRentAgreementController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
 {% block content %}
@@ -13,7 +14,7 @@
 
 	<div class="top_section">
 		
-		<a class="btn btn-info" href="" ng-click="print_rent_agreement()">Print Receipt</a> 
+		<a class="btn btn-info" href="" ng-click="print_rent_agreement()">Print Rent Agreement</a> 
 	</div>
 
 	<div class="purchase_form_container">
