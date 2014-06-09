@@ -620,12 +620,14 @@ class AgreementDetails(View):
         try:
             agreements = RentAgreement.objects.filter(is_completed=False, agreement_no__startswith=agreement_no, starting_date_time__lte=current_date)
             whole_agreements = RentAgreement.objects.filter(is_completed=True)
+            whole_rent_agreements = RentAgreement.objects.filter(agreement_no__startswith=agreement_no)
         except Exception as ex:
             print "************************************"
             print str(ex)
         ctx_agreements = []
         ctx_receival_details = []
         ctx_whole_agreements = []
+        ctx_rent_agreements = []
         if request.is_ajax():
             if agreements.count() > 0:
                 for agreement in agreements:
@@ -724,11 +726,43 @@ class AgreementDetails(View):
                     'receival_details': ctx_receival_details,
                 })
                 ctx_receival_details = []
+            for agreement in whole_rent_agreements:
+                
+                ctx_rent_agreements.append({
+                    'id': agreement.id,
+                    'agreement_no': agreement.agreement_no,
+                    'agreement_type': agreement.agreement_type,
+                    'client': agreement.client.name if agreement.client else '',
+                    'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
+                    'rent': agreement.rent,
+                    'date': agreement.agreement_date.strftime('%d/%m/%Y'),
+                    'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y'),
+                    'begining_time': agreement.starting_date_time.strftime('%H:%M'),
+                    'end_date': agreement.end_date_time.strftime('%d/%m/%Y'),
+                    'end_time': agreement.end_date_time.strftime('%H:%M'),
+                    'license_no': agreement.client.license_no if agreement.client else '',
+                    'license_type': agreement.client.license_type if agreement.client else '',
+                    'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
+                    'passport_no': agreement.client.passport_no if agreement.client else '',
+                    'place_of_issue': agreement.client.place_of_issue if agreement.client else '', 
+                    'vehicle_condition': agreement.vehicle.vehicle_condition if agreement.vehicle else '',
+                    'meter_reading': agreement.vehicle.meter_reading if agreement.vehicle else '',
+                    'insurance_value': agreement.vehicle.insuranse_value if agreement.vehicle else '',
+                    'insurance_type': agreement.vehicle.type_of_insuranse if agreement.vehicle else '',
+                    'plate_no': agreement.vehicle.plate_no if agreement.vehicle else '',
+                    'driver_name': agreement.driver.driver_name if agreement.driver else '',
+                    'driver_passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
+                    'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
+                    'paid': agreement.paid,
+                    'late_message': 'Late receival' if agreement.end_date_time < current_date else '',
+
+                })
             
             res = {
                 'result': 'ok',
                 'agreements': ctx_agreements,
                 'whole_agreements': ctx_whole_agreements,
+                'rent_agreements': ctx_rent_agreements,
             }
             status = 200
             response = simplejson.dumps(res)
@@ -739,124 +773,127 @@ class PrintRentAgreement(View):
 
     def get(self, request, *args, **kwargs):
 
-        agreement_id = kwargs['agreement_id']
-        rent_agreement = RentAgreement.objects.get(id=agreement_id)
+        rent_agreement_id = request.GET.get('rent_agreement_id', '')
+        if not rent_agreement_id:
+            return render(request, 'print_rent_agreement.html', {})
+        else:
+            rent_agreement = RentAgreement.objects.get(id=rent_agreement_id)
 
-        response = HttpResponse(content_type='application/pdf')
-        p = canvas.Canvas(response, pagesize=(1000, 1200))
+            response = HttpResponse(content_type='application/pdf')
+            p = canvas.Canvas(response, pagesize=(1000, 1200))
 
-        status_code = 200
+            status_code = 200
 
-        y = 1200
-        style = [
-            ('FONTSIZE', (0,0), (-1, -1), 20),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
+            y = 1200
+            style = [
+                ('FONTSIZE', (0,0), (-1, -1), 20),
+                ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
+            ]
 
-        new_style = [
-            ('FONTSIZE', (0,0), (-1, -1), 30),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
+            new_style = [
+                ('FONTSIZE', (0,0), (-1, -1), 30),
+                ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
+            ]
 
-        para_style = ParagraphStyle('fancy')
-        para_style.fontSize = 35
-        para_style.fontName = 'Helvetica-Bold'
-        para = Paragraph('Golden Cup Rent A Car', para_style)
+            para_style = ParagraphStyle('fancy')
+            para_style.fontSize = 35
+            para_style.fontName = 'Helvetica-Bold'
+            para = Paragraph('Golden Cup Rent A Car', para_style)
 
-        data =[[ para , '']]
-        
-        table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
-        table.wrapOn(p, 200, 400)
-        table.drawOn(p,50, 1180) 
-        p.setFont("Helvetica", 16)
-        p.drawString(50, 1120, 'Tel : 02-6266634')
-        p.drawString(50, 1100, 'Mob : 055-4087528')
-        p.drawString(50, 1080, 'P.O.Box : 32900')
-        p.drawString(50, 1060, 'Old Passport Road')
-        p.drawString(50, 1040, 'Abu Dhabi - UAE')
-        
-        p.drawString(50, 1010, 'Date : ......................')
-        p.setFont("Helvetica", 13)
-        p.drawString(90, 1015, rent_agreement.agreement_date.strftime('%d/%m/%Y'))
-        p.setFont("Helvetica-Bold", 15)
-        p.drawString(410, 1010, 'RENTAL AGREEMENT')
-        p.line(50,1000,950,1000)
-        p.line(500,1000,500,150)
-        p.line(250,1000, 250, 900)
-        p.line(50, 950, 950,950)
-        p.line(50, 900, 950, 900)
-        p.line(50, 850, 950, 850)
-        p.line(375,900, 375, 850)
-        p.line(50, 800, 950, 800)
-        p.line(50, 750, 950, 750)
-        p.line(50, 700, 950, 700)
-        p.line(50, 650, 950, 650)
-        p.line(50, 575, 950, 575)
-        # p.line(50, 500, 950, 500)
-        # p.line(50, 550, 950, 550)
+            data =[[ para , '']]
+            
+            table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
+            table.wrapOn(p, 200, 400)
+            table.drawOn(p,50, 1180) 
+            p.setFont("Helvetica", 16)
+            p.drawString(50, 1120, 'Tel : 02-6266634')
+            p.drawString(50, 1100, 'Mob : 055-4087528')
+            p.drawString(50, 1080, 'P.O.Box : 32900')
+            p.drawString(50, 1060, 'Old Passport Road')
+            p.drawString(50, 1040, 'Abu Dhabi - UAE')
+            
+            p.drawString(50, 1010, 'Date : ......................')
+            p.setFont("Helvetica", 13)
+            p.drawString(90, 1015, rent_agreement.agreement_date.strftime('%d/%m/%Y'))
+            p.setFont("Helvetica-Bold", 15)
+            p.drawString(410, 1010, 'RENTAL AGREEMENT')
+            p.line(50,1000,950,1000)
+            p.line(500,1000,500,150)
+            p.line(250,1000, 250, 900)
+            p.line(50, 950, 950,950)
+            p.line(50, 900, 950, 900)
+            p.line(50, 850, 950, 850)
+            p.line(375,900, 375, 850)
+            p.line(50, 800, 950, 800)
+            p.line(50, 750, 950, 750)
+            p.line(50, 700, 950, 700)
+            p.line(50, 650, 950, 650)
+            p.line(50, 575, 950, 575)
+            # p.line(50, 500, 950, 500)
+            # p.line(50, 550, 950, 550)
 
-        p.drawString(80, 980, 'Vehicle Type')
-        p.drawString(280, 980, 'Reg. No.')
-        p.drawString(80, 930, 'Vehicle Make')
-        p.drawString(280, 930, 'Vehicle Color')
-        p.drawString(170, 880, 'Leaving Date')
-        p.drawString(400, 880, 'Time')
-        p.drawString(170, 830, 'Meter Reading on Leaving')
-        p.drawString(170, 780, 'Expecting Returning Date')
+            p.drawString(80, 980, 'Vehicle Type')
+            p.drawString(280, 980, 'Reg. No.')
+            p.drawString(80, 930, 'Vehicle Make')
+            p.drawString(280, 930, 'Vehicle Color')
+            p.drawString(170, 880, 'Leaving Date')
+            p.drawString(400, 880, 'Time')
+            p.drawString(170, 830, 'Meter Reading on Leaving')
+            p.drawString(170, 780, 'Expecting Returning Date')
 
-        p.setFont("Helvetica", 15)
-        p.drawString(510, 970, 'Rental Name: ')
-        p.drawString(510, 920, 'Nationality: ')
-        p.drawString(510, 870, 'Date of Birth: ')
-        p.drawString(510, 820, 'Passport No: ')
-        p.drawString(510, 770, 'Date & Place of Issue: ')
-        p.drawString(60, 720, 'License No: ')
-        p.drawString(510, 720, 'Issued By: ')
-        p.drawString(60, 670, 'Date Issued: ')
-        p.drawString(510, 670, 'Expiry Date:')
-        p.drawString(50, 620, 'Home Address:')
-        p.drawString(510, 620, 'Tel No.:')
-        p.drawString(60, 520, 'Total Amount:')
+            p.setFont("Helvetica", 15)
+            p.drawString(510, 970, 'Rental Name: ')
+            p.drawString(510, 920, 'Nationality: ')
+            p.drawString(510, 870, 'Date of Birth: ')
+            p.drawString(510, 820, 'Passport No: ')
+            p.drawString(510, 770, 'Date & Place of Issue: ')
+            p.drawString(60, 720, 'License No: ')
+            p.drawString(510, 720, 'Issued By: ')
+            p.drawString(60, 670, 'Date Issued: ')
+            p.drawString(510, 670, 'Expiry Date:')
+            p.drawString(50, 620, 'Home Address:')
+            p.drawString(510, 620, 'Tel No.:')
+            p.drawString(60, 520, 'Total Amount:')
 
 
 
-        p.setFont("Helvetica", 13)
-        vehicle = rent_agreement.vehicle
-        p.drawString(100, 960, vehicle.vehicle_type_name.vehicle_type_name if vehicle and vehicle.vehicle_type_name else '')
-        p.drawString(300, 960, rent_agreement.agreement_no)
-        p.drawString(100, 910, vehicle.vehicle_make if vehicle else '')
-        p.drawString(300, 910, vehicle.vehicle_color if vehicle else '')
-        p.drawString(200, 860, rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
-        p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%H:%M'))
-        p.drawString(200, 810, rent_agreement.vehicle.meter_reading)
-        p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
+            p.setFont("Helvetica", 13)
+            vehicle = rent_agreement.vehicle
+            p.drawString(100, 960, vehicle.vehicle_type_name.vehicle_type_name if vehicle and vehicle.vehicle_type_name else '')
+            p.drawString(300, 960, rent_agreement.agreement_no)
+            p.drawString(100, 910, vehicle.vehicle_make if vehicle else '')
+            p.drawString(300, 910, vehicle.vehicle_color if vehicle else '')
+            p.drawString(200, 860, rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
+            p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%H:%M'))
+            p.drawString(200, 810, rent_agreement.vehicle.meter_reading)
+            p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
 
-        p.drawString(610, 970, rent_agreement.client.name if rent_agreement.client else '')
-        p.drawString(590, 920, rent_agreement.client.nationality if rent_agreement.client else '')
-        p.drawString(600, 870, rent_agreement.client.dob.strftime('%d/%m/%Y') if rent_agreement.client else '')
-        p.drawString(600, 820, rent_agreement.client.passport_no if rent_agreement.client else '')
-        p.drawString(660, 770, (rent_agreement.client.date_of_passport_issue.strftime('%d/%m/%Y') if rent_agreement.client else '') + ' , ')
-        p.drawString(739, 770, rent_agreement.client.place_of_issue if rent_agreement.client else '' )
-        p.drawString(150, 720, rent_agreement.client.license_no if rent_agreement.client else '')
-        p.drawString(600, 720, rent_agreement.client.issued_by if rent_agreement.client else '')
-        p.drawString(150, 670, rent_agreement.client.date_of_issue.strftime('%d/%m/%Y') if rent_agreement.client else '')
-        p.drawString(600, 670, rent_agreement.client.expiry_license_date.strftime('%d/%m/%Y') if rent_agreement.client else '')
-        p.drawString(160, 620, rent_agreement.client.address if rent_agreement.client else '')
-        p.drawString(600, 620, rent_agreement.client.phone_number if rent_agreement.client else '')
-        p.drawString(160, 520, str(rent_agreement.rent))
-        p.drawString(60, 200, """This vehicle cann't be taken outside the UAE without prior permission""")
-        p.drawString(60, 180, """ of the owner in writing""")
-        p.drawString(503, 400, """I the undersigned agree to rent from the owner the above mentioned vehcile""")
-        p.drawString(503, 380, """for the period set our herein. I have read the terms and conditions det out on""")
-        p.drawString(503, 360, """the reverse of this agreement between my self and the owner. I certify that """)
-        p.drawString(503, 340, """the particualrs which i have given are true""")
-        # p.drawString()
-        p.drawString(503, 280, """ In the Event of any Accident The Renter is Liable to pay Hire.""")
-        p.drawString(503, 180,'SIGNATURE :.........................................................................')
-        p.showPage()
-        p.save()
+            p.drawString(610, 970, rent_agreement.client.name if rent_agreement.client else '')
+            p.drawString(590, 920, rent_agreement.client.nationality if rent_agreement.client else '')
+            p.drawString(600, 870, rent_agreement.client.dob.strftime('%d/%m/%Y') if rent_agreement.client else '')
+            p.drawString(600, 820, rent_agreement.client.passport_no if rent_agreement.client else '')
+            p.drawString(660, 770, (rent_agreement.client.date_of_passport_issue.strftime('%d/%m/%Y') if rent_agreement.client else '') + ' , ')
+            p.drawString(739, 770, rent_agreement.client.place_of_issue if rent_agreement.client else '' )
+            p.drawString(150, 720, rent_agreement.client.license_no if rent_agreement.client else '')
+            p.drawString(600, 720, rent_agreement.client.issued_by if rent_agreement.client else '')
+            p.drawString(150, 670, rent_agreement.client.date_of_issue.strftime('%d/%m/%Y') if rent_agreement.client else '')
+            p.drawString(600, 670, rent_agreement.client.expiry_license_date.strftime('%d/%m/%Y') if rent_agreement.client else '')
+            p.drawString(160, 620, rent_agreement.client.address if rent_agreement.client else '')
+            p.drawString(600, 620, rent_agreement.client.phone_number if rent_agreement.client else '')
+            p.drawString(160, 520, str(rent_agreement.rent))
+            p.drawString(60, 200, """This vehicle cann't be taken outside the UAE without prior permission""")
+            p.drawString(60, 180, """ of the owner in writing""")
+            p.drawString(503, 400, """I the undersigned agree to rent from the owner the above mentioned vehcile""")
+            p.drawString(503, 380, """for the period set our herein. I have read the terms and conditions det out on""")
+            p.drawString(503, 360, """the reverse of this agreement between my self and the owner. I certify that """)
+            p.drawString(503, 340, """the particualrs which i have given are true""")
+            # p.drawString()
+            p.drawString(503, 280, """ In the Event of any Accident The Renter is Liable to pay Hire.""")
+            p.drawString(503, 180,'SIGNATURE :.........................................................................')
+            p.showPage()
+            p.save()
 
-        return response
+            return response
 
 class AddDriver(View):
 

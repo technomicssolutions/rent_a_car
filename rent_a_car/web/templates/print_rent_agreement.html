@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+{% block body_id %}add_client{% endblock %}
+
+{% block title %}Add Client{% endblock title %}
+{% block controller %}ng-controller="PrintRentAgreementController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+
+{% block content %}
+
+	<div id="main-title">
+		<div class="alert alert-info" align="Center"><h4>Print Rent Agreement Details</h4></div>
+	</div>
+
+	<div class="top_section">
+		
+		<a class="btn btn-info" href="" ng-click="print_rent_agreement()">Print Receipt</a> 
+	</div>
+
+	<div class="purchase_form_container">
+		<form name="purchase_entry" method="post">
+			<div class="form_contents_purchase">
+				<div class="section_1_purchase">
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="receipt_no">Contract No.</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="contract_no" id="contract_no" ng-model="contract_no" ng-change="get_agreement_details()">
+						</div>
+						<div class="item_list agreements" ng-show='selecting_agreement' ng-hide="agreement_selected">
+							<div ng-repeat="agreement in agreements" ng-click="add_agreement(agreement)" class="item_list_row">
+								<span>[[agreement.agreement_no]]</span>
+							</div>
+							<div class="clear"></div>
+						</div>
+						<div class="error_message">[[message]]</div>
+					</div>
+					
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="client">Client</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="client" ng-model="agreement.client" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="vehicle_no">Vehicle No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="vehicle_no" ng-model="agreement.vehicle_no" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="agreement_type">Agreement Type</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="agreement_type" ng-model="agreement.agreement_type" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="rent">Agreement Value</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="rent" ng-model="agreement.rent" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="date">Agreement Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="date" ng-model="agreement.date" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="begining_date">Begining Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="begining_date" ng-model="agreement.begining_date" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="begining_time">Begining Time</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="begining_time" ng-model="agreement.begining_time" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="end_date">End Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="end_date" ng-model="agreement.end_date" readonly>
+						</div>
+						<p class="error_message">[[agreement.late_message]]</p>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="end_time">End Time</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="end_time" ng-model="agreement.end_time" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="section_1_purchase">
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_no">License No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="license_no" ng-model="agreement.license_no" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_type">License Type</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="license_type" ng-model="agreement.license_type" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_date">License Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="license_date" ng-model="agreement.license_date" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="passport_no">Passport No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="passport_no" ng-model="agreement.passport_no" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="place_of_issue">Place of Issue</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="place_of_issue" ng-model="agreement.place_of_issue" readonly>
+						</div>
+					</div>
+
+				</div>
+				<div class="section_1_purchase">
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="vehicle_condition">Car Condition</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="vehicle_condition" ng-model="agreement.vehicle_condition" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="insurance_value">Insurance Value</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="insurance_value" ng-model="agreement.insurance_value" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="insurance_type">Type of Insurance</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="insurance_type" ng-model="agreement.insurance_type" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="plate_no">Plate No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="plate_no" ng-model="agreement.plate_no" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="meter_reading">Meter Reading</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="meter_reading" ng-model="agreement.meter_reading" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="section_1_purchase">
+					
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="driver_name">Driver Name</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="driver_name" ng-model="agreement.driver_name" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="driver_passport_no">Driver Passport No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="driver_passport_no" ng-model="agreement.driver_passport_no" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_name">Sponsar Name</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="sponsar_name" ng-model="agreement.sponsar_name" readonly>
+						</div>
+					</div>
+				</div>
+				<div class="section_1_purchase">
+					
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="total_amount">Total Amount</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="total_amount" ng-model="agreement.rent" id="total_amount" readonly>
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="paid">Paid</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="paid" ng-model="agreement.paid" id="paid" readonly>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+{% endblock content %}

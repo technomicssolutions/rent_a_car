@@ -308,29 +308,33 @@ add_driver = function($scope, $http, from) {
 }
 
 get_agreement_details = function($scope, $http, from) {
+	console.log(from);
 	var url = '/agreements/?agreement_no='+$scope.contract_no;
 	$http.get(url).success(function(data) {
 		console.log(data.agreements.length);
 		var agreement_length = 0;
 		console.log(from);
-		if (from != 'receive_car') {
-			agreement_length = data.agreements.length;
-		} else {
+		if (from == 'receive_car') {
 			agreement_length = data.whole_agreements.length;
+		} else if (from == 'rent_agreement') {
+			agreement_length = data.rent_agreements.length;
+		} else {
+			agreement_length = data.agreements.length;
 		}
 		if (agreement_length == 0) {
 			$scope.message = 'No Rent Agreement with this  Agreement No.';
 			$scope.agreement_selected = true;
 		} else {
 			$scope.message = '';
-			if (from != 'receive_car') {
-				$scope.agreements = data.agreements;
-			} else {
+			if (from == 'receive_car') {
 				$scope.agreements = data.whole_agreements;
+			} else if (from == 'rent_agreement') {
+				$scope.agreements = data.rent_agreements;
+			} else {
+				$scope.agreements = data.agreements;
 			}
 			$scope.selecting_agreement = true;
 			$scope.agreement_selected = false;
-			$scope.receipt = data.receival_details;
 		}
 	})
 }
@@ -1393,5 +1397,25 @@ function PrintReceiptCarController($scope, $http, $location){
 	}
 
 }
+
+function PrintRentAgreementController($scope, $http, $location){
+
+	$scope.init = function(csrf_token) {
+		$scope.csrf_token = csrf_token;
+	}
+	$scope.get_agreement_details = function() {
+		get_agreement_details($scope, $http, 'rent_agreement');
+	}
+	$scope.add_agreement = function(agreement) {
+		$scope.agreement = agreement;
+		$scope.contract_no = agreement.agreement_no;
+		$scope.agreement_selected = true;
+	}
+	$scope.print_rent_agreement = function() {
+		document.location.href = '/print_rent_agreement/?rent_agreement_id='+$scope.agreement.id;
+	}
+
+}
+
 
 
