@@ -1348,7 +1348,7 @@ function AddDriverController($scope, $http, $location) {
 
 function PrintReceiptCarController($scope, $http, $location){
 
-
+	$scope.agreement_id = '';
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 	}
@@ -1359,6 +1359,7 @@ function PrintReceiptCarController($scope, $http, $location){
 		$scope.agreement = agreement;
 		$scope.contract_no = agreement.agreement_no;
 		$scope.agreement_selected = true;
+		$scope.agreement_id = agreement.id;
 		
 		// $scope.calculate_balance();
 		$scope.receipt = {
@@ -1386,13 +1387,18 @@ function PrintReceiptCarController($scope, $http, $location){
 		$scope.receipt = agreement.receival_details[0];
 	}
 	$scope.print_receipt = function() {
-		document.location.href = '/print_receipt/?receipt_car_id='+$scope.receipt.id;
+		if ($scope.agreement_id == '' || $scope.agreement_id == undefined) {
+			$scope.validation_error = 'Please enter Contract No';
+		} else {
+			document.location.href = '/print_receipt/?receipt_car_id='+$scope.receipt.id;
+		}
 	}
 
 }
 
 function PrintRentAgreementController($scope, $http, $location){
 
+	$scope.agreement_id = '';
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 	}
@@ -1403,9 +1409,14 @@ function PrintRentAgreementController($scope, $http, $location){
 		$scope.agreement = agreement;
 		$scope.contract_no = agreement.agreement_no;
 		$scope.agreement_selected = true;
+		$scope.agreement_id = agreement.id;
 	}
 	$scope.print_rent_agreement = function() {
-		document.location.href = '/print_rent_agreement/?rent_agreement_id='+$scope.agreement.id;
+		if ($scope.agreement_id == '' || $scope.agreement_id == undefined) {
+			$scope.validation_error = 'Please enter the Contract No.'
+		} else {
+			document.location.href = '/print_rent_agreement/?rent_agreement_id='+$scope.agreement.id;
+		} 
 	}
 
 }

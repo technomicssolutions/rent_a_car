@@ -113,7 +113,6 @@ class RentAgreement(models.Model):
     
     identity_driver = models.CharField('Identity Driver', null=True, blank=True, max_length=35)
     client_identity = models.CharField('Cleint Identity', null=True, blank=True, max_length=25, choices=CLIENT_IDENTITY)
-    # with_driver = models.BooleanField('With Driver', default=False)
     
     type_of_contract = models.CharField('Type of Contract', null=True, blank=True, max_length=25)
     driver = models.ForeignKey('Driver', null=True, blank=True)
