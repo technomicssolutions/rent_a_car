@@ -101,6 +101,10 @@ validate_vehicle_form = function($scope, $http) {
 add_vehicle = function($scope, $http, from) {
 	$scope.is_valid = validate_vehicle_form($scope, $http);
 	if ($scope.is_valid) {
+		var height = $(document).height();
+        height = height + 'px';
+        $('#overlay').css('height', height);
+        $('#spinner').css('height', height);
 		$scope.validation_error = '';
 		params = {
 			'vehicle_details': angular.toJson($scope.vehicle),
@@ -114,6 +118,8 @@ add_vehicle = function($scope, $http, from) {
                 'Content-Type' : 'application/x-www-form-urlencoded'
             }
         }).success(function(data, status) {
+	        $('#overlay').css('height', '0px');
+	        $('#spinner').css('height', '0px');
         	if (data.result == 'error') {
         		$scope.validation_error = data.message;
         	} else {
@@ -128,6 +134,8 @@ add_vehicle = function($scope, $http, from) {
 	            }
 	        }
         }).error(function(data, status){
+	        $('#overlay').css('height', '0px');
+	        $('#spinner').css('height', '0px');
             $scope.validation_error = data.message;
         });
 	}
@@ -192,6 +200,10 @@ add_client = function($scope, $http, from) {
             'client_details': angular.toJson($scope.client),
             "csrfmiddlewaretoken" : $scope.csrf_token,
         }
+        var height = $(document).height();
+        height = height + 'px';
+        $('#overlay').css('height', height);
+        $('#spinner').css('height', height);
         $http({
             method : 'post',
             url : "/add_client/",
@@ -200,11 +212,13 @@ add_client = function($scope, $http, from) {
                 'Content-Type' : 'application/x-www-form-urlencoded'
             }
         }).success(function(data, status) {
-            
+	        $('#overlay').css('height', '0px');
+	        $('#spinner').css('height', '0px');
             if (data.result == 'error'){
                 $scope.error_flag=true;
                 $scope.validation_error = data.message;
             } else {
+
                 $scope.error_flag=false;
                 $scope.message = '';
                 if(from != 'client_popup') {
@@ -218,6 +232,8 @@ add_client = function($scope, $http, from) {
                 	
             }
         }).error(function(data, status){
+	        $('#overlay').css('height', '0px');
+	        $('#spinner').css('height', '0px');
             $scope.validation_error = data.message;
         });
 	}
@@ -286,6 +302,10 @@ add_driver = function($scope, $http, from) {
 			'sponsar_address': $scope.sponsar_address,
 			"csrfmiddlewaretoken" : $scope.csrf_token,
 		}
+		var height = $(document).height();
+        height = height + 'px';
+        $('#overlay').css('height', height);
+        $('#spinner').css('height', height);
 		$http({
             method : 'post',
             url : "/add_driver/",
@@ -294,6 +314,8 @@ add_driver = function($scope, $http, from) {
                 'Content-Type' : 'application/x-www-form-urlencoded'
             }
         }).success(function(data, status) {
+	        $('#overlay').css('height', '0px');
+	        $('#spinner').css('height', '0px');
         	if (data.result == 'error') {
         		$scope.validation_error = data.message;
         	} else {
@@ -308,6 +330,8 @@ add_driver = function($scope, $http, from) {
 	            }
 	        }
         }).error(function(data, status){
+	        $('#overlay').css('height', '0px');
+	        $('#spinner').css('height', '0px');
             $scope.validation_error = data.message;
         });
 	}
@@ -1025,6 +1049,10 @@ function RentAgreementController($scope, $http, $location) {
 			'rent_agreement': angular.toJson($scope.rent_agreement),
 		}
 		if ($scope.is_valid) {
+			var height = $(document).height();
+	        height = height + 'px';
+	        $('#overlay').css('height', height);
+	        $('#spinner').css('height', height);
 			$http({
 	            method : 'post',
 	            url : '/rent_agreement/',
@@ -1038,6 +1066,8 @@ function RentAgreementController($scope, $http, $location) {
 	                $scope.error_flag=true;
 	                $scope.message = data.message;
 	            } else {
+	            	$('#overlay').css('height', '0px');
+	            	$('#spinner').css('height', '0px');
 	                $scope.error_flag=false;
 	                $scope.message = '';
 	                // document.location.href ='/rent_agreement/';
@@ -1218,6 +1248,10 @@ function ReceiveCarController($scope, $http, $location) {
 			'csrfmiddlewaretoken': $scope.csrf_token,
 		}
 		if ($scope.is_valid) {
+			var height = $(document).height();
+	        height = height + 'px';
+	        $('#overlay').css('height', height);
+	        $('#spinner').css('height', height);
 			$http({
 	            method : 'post',
 	            url : '/receive_car/',
@@ -1233,8 +1267,8 @@ function ReceiveCarController($scope, $http, $location) {
 	            } else {
 	                $scope.error_flag=false;
 	                $scope.message = '';
-	                // document.location.href ='/receive_car/';
-	                // console.log('added');
+	                $('#overlay').css('height', '0px');
+	        		$('#spinner').css('height', '0px');
 	                document.location.href = '/print_receipt/?receipt_car_id='+data.receipt_id;
 	            }
 	        }).error(function(data, status){
