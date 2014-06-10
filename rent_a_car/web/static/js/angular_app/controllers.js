@@ -119,6 +119,7 @@ add_vehicle = function($scope, $http, from) {
 	            	$scope.vehicle_data = data.vehicle_data[0];
 	            	get_vehicles($scope, $http);
 	            	$scope.vehicle = data.vehicle_data[0];
+	            	$scope.rent_agreement.vehicle_id = $scope.vehicle.id;
 	            	$scope.close_popup_add_vehicle();
 	            }
 	        }
@@ -714,7 +715,7 @@ function RentAgreementController($scope, $http, $location) {
             positionOffset: {x: 5, y: 0},
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y %H:%M',
+            format:'%d/%m/%Y %X',
             canAlwaysGoUp: ['months', 'years']
         });
         new Picker.Date($$('#end_date_time'), {
@@ -722,7 +723,7 @@ function RentAgreementController($scope, $http, $location) {
             positionOffset: {x: 5, y: 0},
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y %H:%M',
+            format:'%d/%m/%Y %X',
             canAlwaysGoUp: ['months', 'years']
         });
         new Picker.Date($$('#dob'), {

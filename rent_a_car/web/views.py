@@ -2,6 +2,7 @@ import simplejson
 import ast
 from datetime import datetime
 import datetime as dt
+import pytz
 
 from django.views.generic.base import View
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -36,6 +37,8 @@ from reportlab.pdfgen import canvas
 
 
 from web.models import *
+
+utc=pytz.UTC
 
 class Home(View):
 
@@ -512,8 +515,11 @@ class RentAgreementView(View):
                 rent_agreement.client_identity = rent_agreement_details['client_identity']
                 rent_agreement.agreement_type = rent_agreement_details['agreement_type']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
-                rent_agreement.starting_date_time = datetime.strptime(rent_agreement_details['start_date_time'], '%d/%m/%Y %H:%M')
-                rent_agreement.end_date_time = datetime.strptime(rent_agreement_details['end_date_time'], '%d/%m/%Y %H:%M') 
+                print rent_agreement_details['start_date_time']
+                start_date_time = utc.localize(datetime.strptime(rent_agreement_details['start_date_time'], '%d/%m/%Y %I:%M%p'))
+                end_date_time = utc.localize(datetime.strptime(rent_agreement_details['end_date_time'], '%d/%m/%Y %I:%M%p'))
+                rent_agreement.starting_date_time = start_date_time
+                rent_agreement.end_date_time = end_date_time
                 rent_agreement.rent_type = rent_agreement_details['rent_type']
                 rent_agreement.type_of_contract = rent_agreement_details['type_of_contract']
                
@@ -544,7 +550,7 @@ class RentAgreementView(View):
                 res = {
                     'result': 'error',
                 }
-                status = 500
+                status = 200
             response = simplejson.dumps(res)
 
             return HttpResponse(response, status=status, mimetype='application/json')
@@ -666,9 +672,9 @@ class AgreementDetails(View):
                         'rent': agreement.rent,
                         'date': agreement.agreement_date.strftime('%d/%m/%Y') if agreement.agreement_date else '',
                         'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y') if agreement.starting_date_time else '',
-                        'begining_time': agreement.starting_date_time.strftime('%H:%M') if agreement.starting_date_time else '',
+                        'begining_time': agreement.starting_date_time.strftime('%I:%M%p') if agreement.starting_date_time else '',
                         'end_date': agreement.end_date_time.strftime('%d/%m/%Y') if agreement.end_date_time else '',
-                        'end_time': agreement.end_date_time.strftime('%H:%M') if agreement.end_date_time else '',
+                        'end_time': agreement.end_date_time.strftime('%I:%M%p') if agreement.end_date_time else '',
                         'license_no': agreement.client.license_no if agreement.client else '',
                         'license_type': agreement.client.license_type if agreement.client else '',
                         'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
@@ -716,9 +722,9 @@ class AgreementDetails(View):
                     'rent': agreement.rent,
                     'date': agreement.agreement_date.strftime('%d/%m/%Y'),
                     'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y'),
-                    'begining_time': agreement.starting_date_time.strftime('%H:%M'),
+                    'begining_time': agreement.starting_date_time.strftime('%I:%M%p'),
                     'end_date': agreement.end_date_time.strftime('%d/%m/%Y'),
-                    'end_time': agreement.end_date_time.strftime('%H:%M'),
+                    'end_time': agreement.end_date_time.strftime('%I:%M%p'),
                     'license_no': agreement.client.license_no if agreement.client else '',
                     'license_type': agreement.client.license_type if agreement.client else '',
                     'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
@@ -909,10 +915,10 @@ class PrintRentAgreement(View):
             p.drawString(100, 910, vehicle.vehicle_make if vehicle else '')
             p.drawString(300, 910, vehicle.vehicle_color if vehicle else '')
             p.drawString(200, 860, rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
-            p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%H:%M'))
+            p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%I:%M %p'))
             p.drawString(200, 810, rent_agreement.vehicle.meter_reading)
             p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
-            p.drawString(400, 760, rent_agreement.end_date_time.strftime('%H:%M'))
+            p.drawString(400, 760, rent_agreement.end_date_time.strftime('%I:%M %p'))
 
             p.drawString(610, 970, rent_agreement.client.name if rent_agreement.client else '')
             p.drawString(840, 970, rent_agreement.client.nationality if rent_agreement.client else '')
