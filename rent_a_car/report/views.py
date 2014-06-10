@@ -309,3 +309,66 @@ class VehicleReport(View):
         p.save()
 
         return response
+
+class VehicleOutstandingReport(View):
+
+    def get(self, request, *args, **kwargs):
+
+        status_code = 200
+        response = HttpResponse(content_type='application/pdf')
+        p = canvas.Canvas(response, pagesize=(1050, 1200))
+        y = 1160
+        style = [
+            ('FONTSIZE', (0,0), (-1, -1), 20),
+            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
+        ]
+
+        new_style = [
+            ('FONTSIZE', (0,0), (-1, -1), 30),
+            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
+        ]
+
+        p = header(p)
+        p.setFontSize(15)
+        p.drawString(450, 930, 'Outstanding Vehicles Report')
+        p.drawString(50, 875, "Vehicle No")
+        p.drawString(140, 875, "Plate No")
+        p.drawString(240, 875, "Client Name")
+        p.drawString(440, 875, "Total Amount")
+        p.drawString(600, 875, "Paid")
+        # p.drawString(580, 875, "Passport No")
+        p.drawString(700,875, "Balance")
+        # p.drawString(710, 875, "Sponsar Name")
+        # p.drawString(720, 875, "Meter Reading")
+        # p.drawString(840, 875, "Insurance")
+        # p.drawString(950, 875, "Status")
+
+        p.setFontSize(13)
+        agreements = RentAgreement.objects.filter(vehicle__is_available=False, is_completed=False)
+        y = 850
+        if agreements.count() > 0:
+            for agreement in agreements:
+
+                p.drawString(50, y, agreement.vehicle.vehicle_no)
+                p.drawString(150, y, agreement.vehicle.plate_no)
+                p.drawString(240, y, agreement.client.name)
+                p.drawString(440, y, str(agreement.total_amount))
+                p.drawString(600, y, str(agreement.paid))
+                # p.drawString(580, y, agreement.client.passport_no)
+                p.drawString(700, y, str(float(agreement.total_amount) - float(agreement.paid)))
+                # p.drawString(710, y, agreement.driver.sponsar_name)
+                # p.drawString(720, y, str(agreement.vehicle.meter_reading))
+                # p.drawString(840, y, str(agreement.client.name))
+                # p.drawString(950, y, "Inside" if vehicle.is_available else "Outside")
+                y = y - 30
+
+                if y <= 135:
+                    y = 850
+                    p.showPage()
+                    p = header(p)
+
+
+        p.showPage()
+        p.save()
+
+        return response
