@@ -531,7 +531,6 @@ class RentAgreementView(View):
                 rent_agreement.client_identity = rent_agreement_details['client_identity']
                 rent_agreement.agreement_type = rent_agreement_details['agreement_type']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
-                print rent_agreement_details['start_date_time']
                 start_date_time = utc.localize(datetime.strptime(rent_agreement_details['start_date_time'], '%d/%m/%Y %I:%M%p'))
                 end_date_time = utc.localize(datetime.strptime(rent_agreement_details['end_date_time'], '%d/%m/%Y %I:%M%p'))
                 rent_agreement.starting_date_time = start_date_time
