@@ -109,7 +109,6 @@ class RentReport(View):
             end = request.GET['end_date']
            
             if not start:   
-                print "not start date"
                 ctx = {
                     'msg' : 'Please Select Start Date',
                     'start_date' : start,
@@ -118,7 +117,6 @@ class RentReport(View):
                 }
                 return render(request, 'reports/rent_report.html', ctx)
             elif not end:
-                print "not end date"
                 ctx = {
                     'msg' : 'Please Select End Date',
                     'start_date' : start,
@@ -139,7 +137,6 @@ class RentReport(View):
                 p.drawString(440, 875, "Client Name")
                 p.drawString(580, 875, "Passport No")
                 p.drawString(680,875, "Driver Name")
-                # p.drawString(710, 875, "Sponsar Name")
                 p.drawString(780, 875, "Total Amount")
                 p.drawString(880, 875, "Paid")
                 p.drawString(950, 875, "Balance")
@@ -155,7 +152,6 @@ class RentReport(View):
                         p.drawString(440, y, agreement.client.name)
                         p.drawString(580, y, agreement.client.passport_no)
                         p.drawString(680, y, agreement.driver.driver_name)
-                        # p.drawString(710, y, agreement.driver.sponsar_name)
                         p.drawString(780, y, str(agreement.total_amount))
                         p.drawString(880, y, str(agreement.paid))
                         p.drawString(950, y, str(float(agreement.total_amount) - float(agreement.paid)))
@@ -213,9 +209,7 @@ class RentReport(View):
                 p.drawString(240, 875, "Vehicle No")
                 p.drawString(340, 875, "Plate No")
                 p.drawString(440, 875, "Client Name")
-                # p.drawString(580, 875, "Passport No")
                 p.drawString(590,875, "Driver Name")
-                # p.drawString(710, 875, "Sponsar Name")
                 p.drawString(720, 875, "Total Amount")
                 p.drawString(840, 875, "Paid")
                 p.drawString(950, 875, "Balance")
@@ -230,9 +224,7 @@ class RentReport(View):
                         p.drawString(240, y, agreement.vehicle.vehicle_no)
                         p.drawString(340, y, agreement.vehicle.plate_no)
                         p.drawString(440, y, agreement.client.name)
-                        # p.drawString(580, y, agreement.client.passport_no)
                         p.drawString(590, y, agreement.driver.driver_name)
-                        # p.drawString(710, y, agreement.driver.sponsar_name)
                         p.drawString(720, y, str(agreement.total_amount))
                         p.drawString(840, y, str(agreement.paid))
                         p.drawString(950, y, str(float(agreement.total_amount) - float(agreement.paid)))
@@ -273,9 +265,7 @@ class VehicleReport(View):
         p.drawString(240, 875, "Color")
         p.drawString(340, 875, "Made")
         p.drawString(440, 875, "Type")
-        # p.drawString(580, 875, "Passport No")
         p.drawString(590,875, "Condition")
-        # p.drawString(710, 875, "Sponsar Name")
         p.drawString(720, 875, "Meter Reading")
         p.drawString(840, 875, "Insurance")
         p.drawString(950, 875, "Status")
@@ -291,9 +281,7 @@ class VehicleReport(View):
                 p.drawString(240, y, vehicle.vehicle_color)
                 p.drawString(340, y, vehicle.vehicle_make)
                 p.drawString(440, y, vehicle.vehicle_type_name.vehicle_type_name)
-                # p.drawString(580, y, agreement.client.passport_no)
                 p.drawString(590, y, vehicle.vehicle_condition)
-                # p.drawString(710, y, agreement.driver.sponsar_name)
                 p.drawString(720, y, str(vehicle.meter_reading))
                 p.drawString(840, y, str(vehicle.insuranse_value))
                 p.drawString(950, y, "Inside" if vehicle.is_available else "Outside")
@@ -336,12 +324,7 @@ class VehicleOutstandingReport(View):
         p.drawString(240, 875, "Client Name")
         p.drawString(440, 875, "Total Amount")
         p.drawString(600, 875, "Paid")
-        # p.drawString(580, 875, "Passport No")
         p.drawString(700,875, "Balance")
-        # p.drawString(710, 875, "Sponsar Name")
-        # p.drawString(720, 875, "Meter Reading")
-        # p.drawString(840, 875, "Insurance")
-        # p.drawString(950, 875, "Status")
 
         p.setFontSize(13)
         agreements = RentAgreement.objects.filter(vehicle__is_available=False, is_completed=False)
@@ -354,12 +337,7 @@ class VehicleOutstandingReport(View):
                 p.drawString(240, y, agreement.client.name)
                 p.drawString(440, y, str(agreement.total_amount))
                 p.drawString(600, y, str(agreement.paid))
-                # p.drawString(580, y, agreement.client.passport_no)
                 p.drawString(700, y, str(float(agreement.total_amount) - float(agreement.paid)))
-                # p.drawString(710, y, agreement.driver.sponsar_name)
-                # p.drawString(720, y, str(agreement.vehicle.meter_reading))
-                # p.drawString(840, y, str(agreement.client.name))
-                # p.drawString(950, y, "Inside" if vehicle.is_available else "Outside")
                 y = y - 30
 
                 if y <= 135:
