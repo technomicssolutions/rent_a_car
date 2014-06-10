@@ -14,7 +14,7 @@
 	</div>	
 
 	<div class="message">
-		<p>{{msg}}</p>
+		<p class="error_message">{{msg}}</p>
 	</div>
 
 	<form name="salesreport_form" method="get" action="{% url 'rent_report' %}">
@@ -25,47 +25,27 @@
 		<div class="reportinput">
 			<label for="e_date">End Date</label>
 			<input type="text" name="end_date" id="end_date" value="{{end_date}}">
-			<input type="text" name="report_type" value="{{report_type}}">
 		</div>
-		<!-- <div ng-show="report_item_wise">
+		 <div ng-show="report_vehicle_wise">
 				
 			<div class="reportinput">
-				<label>Item</label> 
-				<select name="item" ng-model="item" value="{{item}}">
-				 	<option value="select">Select Item</option>
-				 	<option ng-repeat="item in items" value="[[item.item_code]]">[[item.item_code]]-[[item.item_name]]-[[item.barcode]]</option>
+				<label>Vehicle</label> 
+				<select name="vehicle" ng-model="vehicle" value="{{vehicle}}">
+				 	<option value="select">Select Vehicle</option>
+				 	<option ng-repeat="vehicle in vehicles" value="[[vehicle.id]]">[[vehicle.vehicle_no]]-[[vehicle.plate_no]]</option>
 				</select>
 			</div>	
-		</div>		
-			
-		<div ng-show="report_customer_wise">	
-			<div class="reportinput">
-				<label>Customer</label> 
-				<select name="customer_name" ng-model="customer_name" value="{{customer}}">
-				 	<option value="select">Select Customer</option>
-				 	<option ng-repeat="customer in customers" value="[[customer.customer_name]]">[[customer.customer_name]]</option>
-				</select>
-			</div>						
-		</div>
-		<div ng-show="report_salesman_wise">	
-			<div class="reportinput">
-				<label> Salesman</label> 
-				<select name="salesman_name" ng-model="salesman_name" value="{{salesman}}">
-				 	<option value="select" >Select Salesman</option>
-				 	<option ng-repeat="salesman in salesmen" value="[[salesman.salesman_name]]">[[salesman.salesman_name]]</option>
-				</select>		
-			</div>			
 		</div>		 	
+		{{report_type}}
 		
 		<div class="reportinput">
 		    <label>  Select report type </label>		
 			<select name="report_type" ng-change="get_report_type()" ng-model="report_type" >		
 				<option value="date" {% if report_type == 'date' %} selected="true"{% endif %}>Date Wise Report</option>
-				<option value="item" {% if report_type == 'item' %} selected="true"{% endif %}>Item Wise Report</option>
-				<option value="customer" {% if report_type == 'customer' %} selected="true"{% endif %} >Customer Wise Report</option>
-				<option value="salesman" {% if report_type == 'salesman'%}selected="true"{%endif%}>Salesman Wise Report</option>
+				<option value="vehicle" {% if report_type == 'vehicle' %} selected="true"{% endif %}>Vehicle Wise Report</option>
+				
 			</select>
-		</div>-->
+		</div>
 		<div class="reportinput">
 			<label> &nbsp; &nbsp;</label>
 			<input type="submit" value="View Report" class="btn btn-info report_button " style="border-top-width: 0px; margin-top: 3px;">

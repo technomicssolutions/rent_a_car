@@ -230,7 +230,9 @@ class VehicleList(View):
     def get(self, request, *args, **kwargs):
 
         ctx_vehicles = []
+        ctx_whole_vehicles = []
         if request.is_ajax():
+            whole_vehicles = Vehicle.objects.all().order_by('id')
             vehicles = Vehicle.objects.filter(is_available=True).order_by('id')
             if vehicles.count() > 0:
                 for vehicle in vehicles:
@@ -245,8 +247,22 @@ class VehicleList(View):
                         'insuranse_value': vehicle.insuranse_value,
                         'type_of_insuranse': vehicle.type_of_insuranse,
                     })
+            if whole_vehicles.count() > 0:
+                for vehicle in whole_vehicles:
+                    ctx_whole_vehicles.append({
+                        'id': vehicle.id,
+                        'vehicle_no': vehicle.vehicle_no,
+                        'plate_no': vehicle.plate_no,
+                        'vehicle_type': vehicle.vehicle_type_name.vehicle_type_name,
+                        'meter_reading': vehicle.meter_reading,
+                        'vehicle_condition': vehicle.vehicle_condition,
+                        'color': vehicle.vehicle_color,
+                        'insuranse_value': vehicle.insuranse_value,
+                        'type_of_insuranse': vehicle.type_of_insuranse,
+                    })
             res = {
-                'vehicles': ctx_vehicles
+                'vehicles': ctx_vehicles,
+                'whole_vehicles': ctx_whole_vehicles,
             }
             response = simplejson.dumps(res)
             status = 200

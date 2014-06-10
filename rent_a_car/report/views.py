@@ -99,15 +99,12 @@ class RentReport(View):
         p.setFontSize(15)
 
         report_type = request.GET.get('report_type', '')
-        print "report_type == ", report_type
         if not report_type:
-            print 'hi'
             return render(request, 'reports/rent_report.html', {
                 'report_type' : 'date',
                 })
 
         if report_type == 'date': 
-            print 'date'
             start = request.GET['start_date']
             end = request.GET['end_date']
            
@@ -172,4 +169,80 @@ class RentReport(View):
                 p.showPage()
                 p.save()
                 return response
+        elif report_type == 'vehicle':
 
+            start = request.GET['start_date']
+            end = request.GET['end_date']
+            vehicle_id = request.GET['vehicle']          
+            if not start:            
+                ctx = {
+                    'msg' : 'Please Select Start Date ',
+                    'start_date' : start,
+                    'end_date' : end,
+                    'vehicle' : vehicle_id,                    
+                    'report_type' : 'vehicle',
+                }
+                return render(request, 'reports/rent_report.html', ctx)
+            elif not end:
+                ctx = {
+                    'msg' : 'Please Select End Date',
+                    'start_date' : start,
+                    'end_date' : end,
+                    'vehicle' : vehicle_id,
+                    'report_type' : 'vehicle',
+                }
+                return render(request, 'reports/rent_report.html', ctx) 
+            elif vehicle_id == 'select':
+                ctx = {
+                    'msg' : 'Please Select Vehicle',
+                    'start_date' : start,
+                    'end_date' : end,
+                    'vehicle' : vehicle_id,
+                    'report_type' : 'vehicle',
+                }
+                return render(request, 'reports/rent_report.html', ctx) 
+            else:
+                start_date = datetime.strptime(start, '%d/%m/%Y')
+                end_date = datetime.strptime(end, '%d/%m/%Y')
+                vehicle = Vehicle.objects.get(id=int(vehicle_id))
+                p.setFontSize(17)
+                p.drawString(350, 930, 'Date Wise Rent Report')
+                p.setFontSize(13)
+                p.drawString(50, 875, "Date")
+                p.drawString(140, 875, "Agreement No")
+                p.drawString(240, 875, "Vehicle No")
+                p.drawString(340, 875, "Plate No")
+                p.drawString(440, 875, "Client Name")
+                # p.drawString(580, 875, "Passport No")
+                p.drawString(590,875, "Driver Name")
+                # p.drawString(710, 875, "Sponsar Name")
+                p.drawString(720, 875, "Total Amount")
+                p.drawString(840, 875, "Paid")
+                p.drawString(950, 875, "Balance")
+
+                agreements = RentAgreement.objects.filter(agreement_date__gte=start_date, agreement_date__lte=end_date, vehicle=vehicle).order_by('agreement_date')
+
+                if agreements.count() > 0:
+                    y = 850
+                    for agreement in agreements:
+                        p.drawString(50, y, agreement.agreement_date.strftime('%d/%m/%Y'))
+                        p.drawString(150, y, agreement.agreement_no)
+                        p.drawString(240, y, agreement.vehicle.vehicle_no)
+                        p.drawString(340, y, agreement.vehicle.plate_no)
+                        p.drawString(440, y, agreement.client.name)
+                        # p.drawString(580, y, agreement.client.passport_no)
+                        p.drawString(590, y, agreement.driver.driver_name)
+                        # p.drawString(710, y, agreement.driver.sponsar_name)
+                        p.drawString(720, y, str(agreement.total_amount))
+                        p.drawString(840, y, str(agreement.paid))
+                        p.drawString(950, y, str(float(agreement.total_amount) - float(agreement.paid)))
+                        y = y - 30
+
+                        if y <= 135:
+                            y = 850
+                            p.showPage()
+                            p = header(p)
+
+                p.showPage()
+                p.save()
+                return response

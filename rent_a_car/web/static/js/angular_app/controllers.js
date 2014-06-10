@@ -12,9 +12,13 @@ get_vehicle_types = function($scope, $http) {
 	})
 }
 
-get_vehicles = function($scope, $http) {
+get_vehicles = function($scope, $http, list_type) {
 	$http.get('/vehicles/').success(function(data){
-		$scope.vehicles = data.vehicles;
+		if (list_type != 'whole_vehicle_list') {
+			$scope.vehicles = data.vehicles;
+		} else {
+			$scope.vehicles = data.whole_vehicles;
+		}
 	})
 }
 get_drivers = function($scope, $http) {
@@ -117,7 +121,7 @@ add_vehicle = function($scope, $http, from) {
 	            	document.location.href ='/vehicles/';
 	            } else {
 	            	$scope.vehicle_data = data.vehicle_data[0];
-	            	get_vehicles($scope, $http);
+	            	get_vehicles($scope, $http, '');
 	            	$scope.vehicle = data.vehicle_data[0];
 	            	$scope.rent_agreement.vehicle_id = $scope.vehicle.id;
 	            	$scope.close_popup_add_vehicle();
@@ -698,7 +702,7 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 		get_clients($scope, $http);
-		get_vehicles($scope, $http);
+		get_vehicles($scope, $http, '');
 		get_drivers($scope, $http);
 		
         new Picker.Date($$('#date'), {
@@ -1559,9 +1563,19 @@ function CaseEntryController($scope, $http, $location) {
 }
 
 function RentReportController($scope, $http, $location) {
+	$scope.report_vehicle_wise = false;   
+	$scope.report_date_wise = false;
 	$scope.init = function(csrf_token, report_type) {
 		$scope.csrf_token = csrf_token;
 		$scope.report_type = report_type;
+		if ($scope.report_type == 'vehicle'){
+            $scope.report_date_wise = false;
+            $scope.report_vehicle_wise = true;  
+            $scope.vehicle = 'select';
+        } else {
+        	$scope.report_date_wise = true;
+            $scope.report_vehicle_wise = false;  
+        }
 		new Picker.Date($$('#start_date'), {
             timePicker: false,
             positionOffset: {x: 5, y: 0},
@@ -1576,7 +1590,20 @@ function RentReportController($scope, $http, $location) {
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y',
         });
-
+        get_vehicles($scope, $http, 'whole_vehicle_list');
 	}
+	$scope.get_report_type =function() {
+        if($scope.report_type == 'date'){
+            $scope.error_flag = false;
+            $scope.report_date_wise = true;
+            $scope.report_vehicle_wise = false;         
+            
+        } else if($scope.report_type == 'vehicle'){
+            $scope.error_flag = false;
+            $scope.report_date_wise = false;
+            $scope.report_vehicle_wise = true;  
+            $scope.vehicle = 'select';
+        }
+    }
 }
 
