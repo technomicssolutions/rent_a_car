@@ -216,3 +216,16 @@ class CaseDetail(models.Model):
 
         verbose_name = 'Case Details'
         verbose_name_plural = 'Case Details'
+
+class TypeOfCase(models.Model):
+
+    case_type = models.CharField('Case Type', max_length=40, null=True, blank=True)
+
+    def __unicode__(self):
+
+        return self.case_type
+
+    class Meta:
+
+        verbose_name = 'Case Type'
+        verbose_name_plural = 'Case Type'

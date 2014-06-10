@@ -1315,3 +1315,39 @@ class RentAgreementDetails(View):
             response = simplejson.dumps(res)
             return HttpResponse(response, status=200, mimetype='application/json')
 
+class TypeOfCaseList(View):
+
+    def get(self, request, *args, **kwargs):
+
+        type_of_cases = TypeOfCase.objects.all().order_by('id')
+        ctx_type_of_case = []
+        if type_of_cases.count() > 0:
+
+            for case_type in type_of_cases:
+                ctx_type_of_case.append(case_type.case_type)
+        if request.is_ajax():
+            status = 200
+            res = {
+                'result': 'ok',
+            }
+            response = simplejson.dumps(res)
+
+            return HttpResponse(response, status=status, mimetype='application/json')
+
+class AddTypeOfCase(View):
+
+    def post(self, request, *args, **kwargs):
+
+        if request.is_ajax():
+            type_of_case, created = TypeOfCase.objects.get_or_create(case_type=request.POST['case_type'])
+            status = 200
+            res = {
+                'result': 'ok',
+                'case_name': type_of_case.case_type,
+            }
+            response = simplejson.dumps(res)
+
+            return HttpResponse(response, status=status, mimetype='application/json')
+
+
+
