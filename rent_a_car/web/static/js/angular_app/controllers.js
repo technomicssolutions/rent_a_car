@@ -1558,5 +1558,25 @@ function CaseEntryController($scope, $http, $location) {
 	}
 }
 
+function RentReportController($scope, $http, $location) {
+	$scope.init = function(csrf_token, report_type) {
+		$scope.csrf_token = csrf_token;
+		$scope.report_type = report_type;
+		new Picker.Date($$('#start_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
+        new Picker.Date($$('#end_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
 
+	}
+}
 
