@@ -1296,8 +1296,6 @@ class RentAgreementDetails(View):
             start_date = datetime.combine(start_date, dt.time.min)
             end_date = datetime.strptime(end_date, '%d/%m/%Y')
             end_date = datetime.combine(end_date, dt.time.max)
-            print start_date, end_date
-
             # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no=vehicle_no)
             # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no__contains=vehicle_no, starting_date_time__range=(
             #             datetime.combine(start_date, dt.time.min),
@@ -1306,9 +1304,8 @@ class RentAgreementDetails(View):
             #             datetime.combine(end_date, dt.time.max)
             #             ))
             rent_agreements = RentAgreement.objects.filter(Q(vehicle__vehicle_no__icontains=vehicle_no),Q(starting_date_time__lte=start_date, end_date_time__gte=end_date))
-            print rent_agreements
+            
         if request.is_ajax():
-
             res = {
                 'result': 'ok',
                 'client_name': rent_agreements[0].client.name if rent_agreements else '',
