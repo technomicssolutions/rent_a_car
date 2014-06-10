@@ -1061,13 +1061,12 @@ function RentAgreementController($scope, $http, $location) {
 	                'Content-Type' : 'application/x-www-form-urlencoded'
 	            }
 	        }).success(function(data, status) {
-	            
+	            $('#overlay').css('height', '0px');
+            	$('#spinner').css('height', '0px');
 	            if (data.result == 'error'){
 	                $scope.error_flag=true;
 	                $scope.message = data.message;
 	            } else {
-	            	$('#overlay').css('height', '0px');
-	            	$('#spinner').css('height', '0px');
 	                $scope.error_flag=false;
 	                $scope.message = '';
 	                // document.location.href ='/rent_agreement/';
@@ -1075,6 +1074,8 @@ function RentAgreementController($scope, $http, $location) {
 	                console.log('added');
 	            }
 	        }).error(function(data, status){
+	        	$('#overlay').css('height', '0px');
+	            $('#spinner').css('height', '0px');
 	            $scope.validation_error = data.message;
 	            console.log('error occured');
 	        });
@@ -1260,18 +1261,19 @@ function ReceiveCarController($scope, $http, $location) {
 	                'Content-Type' : 'application/x-www-form-urlencoded'
 	            }
 	        }).success(function(data, status) {
-	            
+	            $('#overlay').css('height', '0px');
+	        	$('#spinner').css('height', '0px');
 	            if (data.result == 'error'){
 	                $scope.error_flag=true;
 	                $scope.message = data.message;
 	            } else {
 	                $scope.error_flag=false;
 	                $scope.message = '';
-	                $('#overlay').css('height', '0px');
-	        		$('#spinner').css('height', '0px');
 	                document.location.href = '/print_receipt/?receipt_car_id='+data.receipt_id;
 	            }
 	        }).error(function(data, status){
+        		$('#overlay').css('height', '0px');
+	        	$('#spinner').css('height', '0px');
 	            $scope.validation_error = data.message;
 	            console.log('error occured');
 	        });
