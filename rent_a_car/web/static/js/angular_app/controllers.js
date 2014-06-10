@@ -298,6 +298,7 @@ add_driver = function($scope, $http, from) {
 	            	$scope.driver_data = data.driver_data[0];
 	            	get_drivers($scope, $http);
 	            	$scope.driver = data.driver_data[0];
+	            	$scope.rent_agreement.driver_id = $scope.driver.id;
 	            	$scope.close_popup_add_driver();
 	            }
 	        }
@@ -803,7 +804,6 @@ function RentAgreementController($scope, $http, $location) {
 		}
 	}
 	$scope.close_popup = function() {
-		// $scope.type_popup.hide_popup();
 		$('#new_vehicle_type').hide();
 		$('#new_vehicle').show();
 	}
@@ -904,6 +904,7 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.get_driver_details = function(driver) {
 		$scope.driver = driver;
 		$scope.rent_agreement.driver_id = $scope.driver.id;
+		console.log($scope.rent_agreement.driver_id);
 	}
 	$scope.save_driver = function() {
 		add_driver($scope, $http, 'add_driver');
@@ -969,7 +970,7 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.rent_agreement.license_issued_date = $$('#license_issued_date')[0].get('value');
 		$scope.rent_agreement.start_date_time = $$('#start_date_time')[0].get('value');
 		$scope.rent_agreement.end_date_time = $$('#end_date_time')[0].get('value');
-		
+		console.log($scope.rent_agreement.driver_id);
 		if ($scope.rent_agreement.agreement_no == '' || $scope.rent_agreement.agreement_no == undefined) {
 			$scope.validation_error = 'Please enter the Agreement No.';
 			return false;
@@ -1034,7 +1035,8 @@ function RentAgreementController($scope, $http, $location) {
 	            } else {
 	                $scope.error_flag=false;
 	                $scope.message = '';
-	                document.location.href ='/rent_agreement/';
+	                // document.location.href ='/rent_agreement/';
+	                document.location.href = '/print_rent_agreement/?rent_agreement_id='+data.agreement_id;
 	                console.log('added');
 	            }
 	        }).error(function(data, status){
@@ -1227,7 +1229,8 @@ function ReceiveCarController($scope, $http, $location) {
 	                $scope.error_flag=false;
 	                $scope.message = '';
 	                // document.location.href ='/receive_car/';
-	                console.log('added');
+	                // console.log('added');
+	                document.location.href = '/print_receipt/?receipt_car_id='+data.receipt_id;
 	            }
 	        }).error(function(data, status){
 	            $scope.validation_error = data.message;

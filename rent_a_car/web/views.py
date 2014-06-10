@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404, render
 from django.db.models import Max
 from django.utils import timezone
 from django.db.models import Q
+from django.conf import settings
 
 from reportlab.lib.units import cm
 from reportlab.lib.units import inch
@@ -535,6 +536,7 @@ class RentAgreementView(View):
                 vehicle.save()
                 res = {
                     'result': 'ok',
+                    'agreement_id': rent_agreement.id,
                 }
                 status = 200
             except Exception as ex:
@@ -603,6 +605,7 @@ class ReceiveCarView(View):
 
             res = {
                 'result': 'ok',
+                'receipt_id': receive_car.id,
             }
             status = 200
         except Exception as ex:
@@ -613,6 +616,7 @@ class ReceiveCarView(View):
             status = 500
         response = simplejson.dumps(res)
         return HttpResponse(response, status=status, mimetype='application/json')
+
 class AgreementDetails(View):
 
     def get(self, request, *args, **kwargs):
@@ -621,7 +625,7 @@ class AgreementDetails(View):
         # current_date = datetime.now() Generate native error
         current_date = timezone.now()
         try:
-            agreements = RentAgreement.objects.filter(is_completed=False, agreement_no__startswith=agreement_no, starting_date_time__lte=current_date)
+            agreements = RentAgreement.objects.filter(is_completed=False, agreement_no__startswith=agreement_no)
             whole_agreements = RentAgreement.objects.filter(is_completed=True)
             whole_rent_agreements = RentAgreement.objects.filter(agreement_no__startswith=agreement_no)
         except Exception as ex:
@@ -648,7 +652,11 @@ class AgreementDetails(View):
                             'reduction': agreement.receivecar_set.all()[0].reduction if agreement.receivecar_set.all().count() > 0 else '',
                             'paid': agreement.receivecar_set.all()[0].paid if agreement.receivecar_set.all().count() > 0 else '',
                         })
-                
+                    late_message = ''
+                    if agreement.end_date_time:
+                        if agreement.end_date_time < current_date:
+                            late_message = 'Late Receival' 
+
                     ctx_agreements.append({
                         'id': agreement.id,
                         'agreement_no': agreement.agreement_no,
@@ -656,11 +664,11 @@ class AgreementDetails(View):
                         'client': agreement.client.name if agreement.client else '',
                         'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                         'rent': agreement.rent,
-                        'date': agreement.agreement_date.strftime('%d/%m/%Y'),
-                        'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y'),
-                        'begining_time': agreement.starting_date_time.strftime('%H:%M'),
-                        'end_date': agreement.end_date_time.strftime('%d/%m/%Y'),
-                        'end_time': agreement.end_date_time.strftime('%H:%M'),
+                        'date': agreement.agreement_date.strftime('%d/%m/%Y') if agreement.agreement_date else '',
+                        'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y') if agreement.starting_date_time else '',
+                        'begining_time': agreement.starting_date_time.strftime('%H:%M') if agreement.starting_date_time else '',
+                        'end_date': agreement.end_date_time.strftime('%d/%m/%Y') if agreement.end_date_time else '',
+                        'end_time': agreement.end_date_time.strftime('%H:%M') if agreement.end_date_time else '',
                         'license_no': agreement.client.license_no if agreement.client else '',
                         'license_type': agreement.client.license_type if agreement.client else '',
                         'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
@@ -675,7 +683,7 @@ class AgreementDetails(View):
                         'driver_passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
                         'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                         'paid': agreement.paid,
-                        'late_message': 'Late receival' if agreement.end_date_time < current_date else '',
+                        'late_message': late_message,
                         'receival_details': ctx_receival_details,
                     })
                     ctx_receival_details = []
@@ -730,7 +738,10 @@ class AgreementDetails(View):
                 })
                 ctx_receival_details = []
             for agreement in whole_rent_agreements:
-                
+                late_message = ''
+                if agreement.end_date_time:
+                    if agreement.end_date_time < current_date:
+                        late_message = 'Late Receival'
                 ctx_rent_agreements.append({
                     'id': agreement.id,
                     'agreement_no': agreement.agreement_no,
@@ -738,11 +749,11 @@ class AgreementDetails(View):
                     'client': agreement.client.name if agreement.client else '',
                     'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                     'rent': agreement.rent,
-                    'date': agreement.agreement_date.strftime('%d/%m/%Y'),
-                    'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y'),
-                    'begining_time': agreement.starting_date_time.strftime('%H:%M'),
-                    'end_date': agreement.end_date_time.strftime('%d/%m/%Y'),
-                    'end_time': agreement.end_date_time.strftime('%H:%M'),
+                    'date': agreement.agreement_date.strftime('%d/%m/%Y') if agreement.agreement_date else '',
+                    'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y') if agreement.starting_date_time else '',
+                    'begining_time': agreement.starting_date_time.strftime('%H:%M') if agreement.starting_date_time else '',
+                    'end_date': agreement.end_date_time.strftime('%d/%m/%Y') if agreement.end_date_time else '',
+                    'end_time': agreement.end_date_time.strftime('%H:%M') if agreement.end_date_time else '',
                     'license_no': agreement.client.license_no if agreement.client else '',
                     'license_type': agreement.client.license_type if agreement.client else '',
                     'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
@@ -757,7 +768,7 @@ class AgreementDetails(View):
                     'driver_passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
                     'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                     'paid': agreement.paid,
-                    'late_message': 'Late receival' if agreement.end_date_time < current_date else '',
+                    'late_message': late_message,
 
                 })
             
@@ -809,6 +820,10 @@ class PrintRentAgreement(View):
             table.wrapOn(p, 200, 400)
             table.drawOn(p,50, 1180) 
             p.setFont("Helvetica", 16)
+
+            path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpeg"
+            p.drawImage(path, 70, 1100, width=30*cm, preserveAspectRatio=True)
+
             p.drawString(50, 1120, 'Tel : 02-6266634')
             p.drawString(50, 1100, 'Mob : 055-4087528')
             p.drawString(50, 1080, 'P.O.Box : 32900')
@@ -1027,13 +1042,17 @@ class PrintReceiptCar(View):
             para_style = ParagraphStyle('fancy')
             para_style.fontSize = 35
             para_style.fontName = 'Helvetica-Bold'
-            para = Paragraph('Al Hamim Rent A Car', para_style)
+            para = Paragraph('Golden Cup Rent A Car', para_style)
 
             data =[[ para , '']]
             
             table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
             table.wrapOn(p, 200, 400)
             table.drawOn(p,50, 1180) 
+
+            path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpeg"
+            p.drawImage(path, 70, 1100, width=30*cm, preserveAspectRatio=True)
+            
             p.setFont("Helvetica", 16)
             p.drawString(50, 1120, 'Tel : 02-6266634')
             p.drawString(50, 1100, 'Mob : 055-4087528')
@@ -1045,7 +1064,7 @@ class PrintReceiptCar(View):
             p.setFont("Helvetica", 13)
             p.drawString(100, 1015,receive_car.date.strftime('%d/%m/%Y'))
             p.setFont("Helvetica-Bold", 15)
-            p.drawString(410, 1010, 'CAR RENT CONTRACT')
+            p.drawString(410, 1010, 'RENTAL CAR RECEIPT')
             p.line(50,1000,950,1000)
             p.line(500,1000,500,100)
             # p.line(250,1000, 250, 900)
@@ -1107,7 +1126,7 @@ class PrintReceiptCar(View):
             p.drawString(260, 530, 'Car Color: ')
             p.drawString(50, 480, 'Model: ')
             p.drawString(260, 480, 'Made: ')
-            p.drawString(510, 530, 'Meter Reading: ')
+            p.drawString(510, 530, 'Return Meter Reading: ')
             p.drawString(510, 480, 'Insurance Value: ')
 
             p.drawString(760, 430, 'Deposit')
