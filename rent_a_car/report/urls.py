@@ -7,4 +7,5 @@ from report.views import *
 
 urlpatterns = patterns('',
     url(r'^rent_report/$', RentReport.as_view(), name='rent_report'),
+    url(r'^vehicle_report/$', VehicleReport.as_view(), name='vehicle_report'),
 )
