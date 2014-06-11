@@ -145,6 +145,14 @@ class RentReport(View):
                 if agreements.count() > 0:
                     y = 850
                     for agreement in agreements:
+                        
+                        if agreement.receivecar_set.all().count() > 0:
+                            total_amount = agreement.receivecar_set.all()[0].total_amount
+                            paid = float(agreement.receivecar_set.all()[0].paid) + float(agreement.paid)
+                        else:
+                            total_amount = agreement.total_amount
+                            paid = agreement.paid
+                        balance = float(total_amount) - float(paid)
                         p.drawString(50, y, agreement.agreement_date.strftime('%d/%m/%Y'))
                         p.drawString(150, y, agreement.agreement_no)
                         p.drawString(240, y, agreement.vehicle.vehicle_no)
@@ -152,11 +160,13 @@ class RentReport(View):
                         p.drawString(440, y, agreement.client.name)
                         p.drawString(580, y, agreement.client.passport_no)
                         p.drawString(680, y, agreement.driver.driver_name)
-                        p.drawString(780, y, str(agreement.total_amount))
-                        p.drawString(880, y, str(agreement.paid))
-                        p.drawString(950, y, str(float(agreement.total_amount) - float(agreement.paid)))
+                        p.drawString(780, y, str(total_amount))
+                        p.drawString(880, y, str(paid))
+                        p.drawString(950, y, str(balance))
                         y = y - 30
-
+                        total_amount = 0
+                        paid = 0
+                        balance = 0
                         if y <= 135:
                             y = 850
                             p.showPage()
