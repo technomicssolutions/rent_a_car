@@ -1149,9 +1149,10 @@ class PrintReceiptCar(View):
             p.line(50, 550, 950, 550)
             p.line(50, 500, 950, 500)
             p.line(50, 450, 950, 450)
-            p.line(500, 400, 950, 400)
-            p.line(500, 350, 950, 350)
-            p.line(500, 300, 950, 300)
+            p.line(500, 410, 950, 410)
+            p.line(500, 370, 950, 370)
+            p.line(500, 330, 950, 330)
+            p.line(500, 290, 950, 290)
             p.line(500, 250, 950, 250)
             p.line(500, 200, 950, 200)
             p.line(500, 150, 950, 150)
@@ -1198,8 +1199,9 @@ class PrintReceiptCar(View):
 
             p.drawString(760, 430, 'Deposit')
             p.drawString(760, 380, 'Fine')
-            p.drawString(760, 330, 'Petrol')
-            p.drawString(760, 280, 'Extra Charge')
+            p.drawString(760, 340, 'Petrol')
+            p.drawString(760, 310, 'Accident Passable')
+            p.drawString(760, 270, 'Extra Charge')
             p.drawString(760, 230, 'Reduction')
             p.drawString(760, 180, 'Rent')
             p.drawString(760, 130, 'Total Amount')
@@ -1241,8 +1243,9 @@ class PrintReceiptCar(View):
 
             p.drawString(550, 430, str(receive_car.rent_agreement.paid))
             p.drawString(550, 380, str(receive_car.fine))
-            p.drawString(550, 330, str(receive_car.petrol))
-            p.drawString(550, 280, str(receive_car.extra_charge))
+            p.drawString(550, 340, str(receive_car.petrol))
+            p.drawString(550, 270, str(receive_car.extra_charge))
+            p.drawString(550, 310, str(receive_car.accident_passable))
             p.drawString(550, 230, str(receive_car.reduction))
             p.drawString(550, 180, str(receive_car.rent_agreement.rent))
             p.drawString(550, 130, str(receive_car.total_amount))
@@ -1293,9 +1296,9 @@ class RentAgreementDetails(View):
         
         if start_date and end_date and vehicle_no:
             start_date = datetime.strptime(start_date, '%d/%m/%Y')
-            start_date = datetime.combine(start_date, dt.time.min)
+            start_date = datetime.combine(start_date, dt.time.max)
             end_date = datetime.strptime(end_date, '%d/%m/%Y')
-            end_date = datetime.combine(end_date, dt.time.max)
+            end_date = datetime.combine(end_date, dt.time.min)
             # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no=vehicle_no)
             # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no__contains=vehicle_no, starting_date_time__range=(
             #             datetime.combine(start_date, dt.time.min),
