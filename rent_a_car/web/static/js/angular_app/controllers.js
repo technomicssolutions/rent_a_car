@@ -124,8 +124,10 @@ add_vehicle = function($scope, $http, from) {
                 'Content-Type' : 'application/x-www-form-urlencoded'
             }
         }).success(function(data, status) {
-	        $('#overlay').css('height', '0px');
-	        $('#spinner').css('height', '0px');
+        	if (from != 'add_vehicle') {
+        		$('#overlay').css('height', '0px');
+        	}
+	       $('#spinner').css('height', '0px');
         	if (data.result == 'error') {
         		$scope.validation_error = data.message;
         	} else {
@@ -218,7 +220,9 @@ add_client = function($scope, $http, from) {
                 'Content-Type' : 'application/x-www-form-urlencoded'
             }
         }).success(function(data, status) {
-	        $('#overlay').css('height', '0px');
+        	if (from != 'client_popup') {
+        		$('#overlay').css('height', '0px');
+        	}
 	        $('#spinner').css('height', '0px');
             if (data.result == 'error'){
                 $scope.error_flag=true;
@@ -320,7 +324,9 @@ add_driver = function($scope, $http, from) {
                 'Content-Type' : 'application/x-www-form-urlencoded'
             }
         }).success(function(data, status) {
-	        $('#overlay').css('height', '0px');
+        	if (from != 'add_driver') {
+	        	$('#overlay').css('height', '0px');
+	        }
 	        $('#spinner').css('height', '0px');
         	if (data.result == 'error') {
         		$scope.validation_error = data.message;
@@ -876,6 +882,22 @@ function RentAgreementController($scope, $http, $location) {
 	}
 	$scope.add_new_driver = function() {
 		$scope.validation_error = '';
+		$scope.home_address = '';
+		$scope.driver = {
+			'id': '',
+			'driver_name': '',
+			'driver_phone': '',
+			'driver_address': '',
+			'driver_nationality': '',
+			'driver_license_no': '',
+			'driver_license_issue_date': '',
+			'driver_license_issue_place': '',
+			'driver_license_expiry_date': '',
+			'driver_dob': '',
+			'sponsar_name': '',
+			'sponsar_address': '',
+			'sponsar_phone': '',
+		}
 		$scope.driver_popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
             'message_padding': '0px',
@@ -946,39 +968,6 @@ function RentAgreementController($scope, $http, $location) {
 	}
 	$scope.close_popup_add_driver =function() {
 		$scope.driver_popup.hide_popup();
-	}
-
-
-	$scope.with_driver_mode = function(mode) {
-		if (mode == 'yes') {
-			$scope.driver_details_needed = false;
-			new Picker.Date($$('#driver_dob'), {
-	            timePicker: false,
-	            positionOffset: {x: 5, y: 0},
-	            pickerClass: 'datepicker_bootstrap',
-	            useFadeInOut: !Browser.ie,
-	            format:'%d/%m/%Y',
-	            canAlwaysGoUp: ['months', 'years']
-	        });
-			new Picker.Date($$('#license_expiry_date'), {
-	            timePicker: false,
-	            positionOffset: {x: 5, y: 0},
-	            pickerClass: 'datepicker_bootstrap',
-	            useFadeInOut: !Browser.ie,
-	            format:'%d/%m/%Y',
-	            canAlwaysGoUp: ['months', 'years']
-	        });
-	        new Picker.Date($$('#license_issued_date'), {
-	            timePicker: false,
-	            positionOffset: {x: 5, y: 0},
-	            pickerClass: 'datepicker_bootstrap',
-	            useFadeInOut: !Browser.ie,
-	            format:'%d/%m/%Y',
-	            canAlwaysGoUp: ['months', 'years']
-	        });
-		} else {
-			$scope.driver_details_needed = true;
-		}
 	}
 	$scope.calculate_rent_amount = function() {
 		if ($scope.rent_agreement.amount != Number($scope.rent_agreement.amount) || $scope.rent_agreement.amount == '') {
