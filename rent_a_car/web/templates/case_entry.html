@@ -5,6 +5,10 @@
 {% block title %}Case Entry{% endblock title %}
 {% block controller %}ng-controller="CaseEntryController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
+{% block dialogue_popup %}
+	{% include 'popups/add_case_type.html' %}
+{% endblock dialogue_popup %}
+
 {% block content %}
 	<div id="main-title">
 		<div class="alert alert-info" align="Center"><h4>Case Entry</h4></div>
@@ -53,7 +57,12 @@
 							<label for="name">Type of Case</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="type_of_case" ng-model="case_details.type_of_case"/>
+							<!-- <input type="text" name="type_of_case" ng-model="case_details.type_of_case"/> -->
+							<select ng-model="case_details.type_of_case" ng-change="add_case_type()">
+								<option value="">Select</option>
+								<option value="[[case_type]]" ng-repeat="case_type in case_types" ng-selected="case_type == case_details.type_of_case">[[case_type]]</option>
+								<option value="other">Other</option>
+							</select>
 						</div>
 					</div>
 					<div class="formrow_purchase">

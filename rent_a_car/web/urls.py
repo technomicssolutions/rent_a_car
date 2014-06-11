@@ -28,4 +28,6 @@ urlpatterns = patterns('',
 
 	url(r'^rent_agreement_details/$', login_required(RentAgreementDetails.as_view()), name='rent_agreement_details'),
 	url(r'^case_entry/$', login_required(CaseEntry.as_view()), name='case_entry'),
+	url(r'^case_types/$', login_required(TypeOfCaseList.as_view()), name='case_types'),
+	url(r'^add_case_type/$', login_required(AddTypeOfCase.as_view()), name='add_case_type'),
 )

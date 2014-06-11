@@ -27,6 +27,12 @@ get_drivers = function($scope, $http) {
 	})
 }
 
+get_case_types = function($scope, $http) {
+	$http.get('/case_types/').success(function(data){
+		$scope.case_types = data.case_types;
+	})
+}
+
 save_vehicle_type = function($scope, $http, from) {
 	if ($scope.vehicle_type == '' || $scope.vehicle_type == undefined) {
 		$scope.message = 'Please enter the vehicle type';
@@ -1413,7 +1419,6 @@ function PrintReceiptCarController($scope, $http, $location){
 		$scope.agreement_selected = true;
 		$scope.agreement_id = agreement.id;
 		
-		// $scope.calculate_balance();
 		$scope.receipt = {
 			'id': '',
 			'receipt_no': '',
@@ -1435,7 +1440,6 @@ function PrintReceiptCarController($scope, $http, $location){
 		}
 		$scope.receipt.total_amount = agreement.rent;
 		$scope.receipt.agreement_id = agreement.id;
-		console.log(agreement.receival_details);
 		$scope.receipt = agreement.receival_details[0];
 	}
 	$scope.print_receipt = function() {
@@ -1470,7 +1474,6 @@ function PrintRentAgreementController($scope, $http, $location){
 			document.location.href = '/print_rent_agreement/?rent_agreement_id='+$scope.agreement.id;
 		} 
 	}
-
 }
 
 function CaseEntryController($scope, $http, $location) {
@@ -1519,16 +1522,60 @@ function CaseEntryController($scope, $http, $location) {
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y',
         });
-
-        
-
+        get_case_types($scope, $http);
 	}
+	$scope.add_case_type = function() {
+		console.log($scope.case_details.type_of_case);
+		if ($scope.case_details.type_of_case == 'other') {
+			$scope.popup = new DialogueModelWindow({
+	            'dialogue_popup_width': '36%',
+	            'message_padding': '0px',
+	            'left': '28%',
+	            'top': '40px',
+	            'height': 'auto',
+	            'content_div': '#add_case_type'
+	        });
+	        var height = $(document).height();
+	        $scope.popup.set_overlay_height(height);
+	        $scope.popup.show_content();
+	    }
+    }
+    $scope.save_case_type = function() {
+    	if ($scope.case_type == '' || $scope.case_type == undefined) {
+    		$scope.error_message = 'Please enter Case Type';
+    	} else {
+    		params = {
+				'case_type': $scope.case_type,
+				"csrfmiddlewaretoken" : $scope.csrf_token,
+			}
+			$http({
+	            method : 'post',
+	            url : "/add_case_type/",
+	            data : $.param(params),
+	            headers : {
+	                'Content-Type' : 'application/x-www-form-urlencoded'
+	            }
+	        }).success(function(data, status) {
+	        	if (data.result == 'error') {
+	        		$scope.error_message = data.message;
+	        	} else {
+		            get_case_types($scope, $http);
+		            $scope.case_details.type_of_case = data.case_name;
+		            $scope.close_popup();
+		        }
+	        }).error(function(data, status){
+	            $scope.error_message = data.message;
+	        });
+    	}
+    }
+    $scope.close_popup = function() {
+    	$scope.popup.hide_popup();
+    }
 	$scope.get_customer_details = function() {
 		$scope.case_details.start_date = $$('#start_date')[0].get('value');
 		$scope.case_details.end_date = $$('#end_date')[0].get('value');
 		var url = '/rent_agreement_details/?start_date='+$scope.case_details.start_date+'&end_date='+$scope.case_details.end_date+'&vehicle_no='+$scope.case_details.vehicle_no;
 		$http.get(url).success(function(data) {
-			console.log(data.client_name);
 			if (data.client_name == '' || data.client_name == undefined) {
 				$scope.case_details.client_name = data.client_name;
 				$scope.validation_error = 'No such client with these details';
@@ -1538,7 +1585,6 @@ function CaseEntryController($scope, $http, $location) {
 				$scope.case_details.client_id = data.client_id;
 				$scope.case_details.vehicle_id = data.vehicle_id;
 			}
-			
 		})
 	}
 	$scope.case_form_validation = function() {
@@ -1547,10 +1593,10 @@ function CaseEntryController($scope, $http, $location) {
 		if ($scope.case_details.client_name == '' || $scope.case_details.client_name == undefined) {
 			$scope.validation_error = 'Please enter Correct vehicle No';
 			return false;
-		} else if ($scope.case_details.type_of_case == '' || $scope.case_details.type_of_case == undefined) {
-			$scope.validation_error = 'Please enter Type of Case';
+		} else if ($scope.case_details.type_of_case == '' || $scope.case_details.type_of_case == undefined || $scope.case_details.type_of_case == 'other') {
+			$scope.validation_error = 'Please choose Type of Case';
 			return false;
-		} else if ($scope.case_details.fine == '' || $scope.case_details.fine == undefined) {
+		} else if ($scope.case_details.fine == '' || $scope.case_details.fine == undefined || $scope.case_details.fine != Number($scope.case_details.fine)) {
 			$scope.validation_error = 'Please enter Penality Amount';
 			return false;
 		} else if ($scope.case_details.penality_date == '' || $scope.case_details.penality_date == undefined) {
