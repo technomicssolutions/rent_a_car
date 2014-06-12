@@ -126,7 +126,7 @@ class RentAgreement(models.Model):
     paid = models.DecimalField('Paid', max_digits=25, decimal_places=2, default=0)
 
     leaving_meterreading = models.CharField('Meter Reading', null=True, blank=True, max_length=20)
-    leaving_petrol = models.DecimalField('Leaving Petrol', max_digits=25, decimal_places=2, default=0)
+    leaving_petrol = models.CharField('Leaving Petrol', max_length=25, null=True, blank=True)
 
     is_completed = models.BooleanField('Completed', default=False)
 
@@ -161,7 +161,7 @@ class ReceiveCar(models.Model):
     total_amount = models.DecimalField('Total Amount', decimal_places=2, max_digits=25, default=0)
     paid = models.DecimalField('Paid on receipt', decimal_places=2, max_digits=25, default=0)
 
-    returning_petrol = models.DecimalField('Returning Petrol', max_digits=25, default=0, decimal_places=2)
+    returning_petrol = models.CharField('Returning Petrol', max_length=25, null=True, blank=True)
 
     notes = models.TextField('Notes', null=True, blank=True)
 

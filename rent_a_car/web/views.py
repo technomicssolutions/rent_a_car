@@ -535,6 +535,7 @@ class RentAgreementView(View):
                 rent_agreement.client = client
                 rent_agreement.vehicle = vehicle
                 rent_agreement.leaving_meterreading = vehicle.meter_reading
+                rent_agreement.leaving_petrol = vehicle.petrol
                 rent_agreement.client_identity = rent_agreement_details['client_identity']
                 rent_agreement.agreement_type = rent_agreement_details['agreement_type']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
@@ -600,6 +601,11 @@ class ReceiveCarView(View):
             rent_agreement = RentAgreement.objects.get(id=receive_car_details['agreement_id'])
             receive_car.rent_agreement = rent_agreement
             receive_car.petrol = receive_car_details['petrol']
+            receive_car.returning_petrol = receival_details['returning_petrol']
+            vehicle = rent_agreement.vehicle
+            vehcile.petrol = receival_details['returning_petrol']
+            vehicle.save()
+            receive_car.vehicle_scratch = receival_details['vehicle_scratch']
             receive_car.fine = receive_car_details['fine']
             receive_car.extra_charge = receive_car_details['extra_charge']
             receive_car.accident_passable = receive_car_details['accident_passable']
@@ -882,6 +888,7 @@ class PrintRentAgreement(View):
             p.line(750, 800, 750, 850)
 
             p.line(250, 300, 250, 750)
+            p.line(300, 850, 300, 800)
             p.line(50, 500, 500, 500)
             p.line(50, 550, 500, 550)
             p.line(50, 450, 500, 450)
@@ -895,7 +902,8 @@ class PrintRentAgreement(View):
             p.drawString(280, 930, 'Vehicle Color')
             p.drawString(170, 880, 'Leaving Date')
             p.drawString(400, 880, 'Time')
-            p.drawString(170, 830, 'Meter Reading on Leaving')
+            p.drawString(60, 830, 'Meter Reading on Leaving')
+            p.drawString(310, 830, 'Petrol on Leaving')
             p.drawString(170, 780, 'Expecting Returning Date')
             p.drawString(400, 780, 'Time')
 
@@ -938,7 +946,8 @@ class PrintRentAgreement(View):
             p.drawString(300, 910, vehicle.vehicle_color if vehicle else '')
             p.drawString(200, 860, rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
             p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%I:%M %p'))
-            p.drawString(200, 810, rent_agreement.leaving_meterreading)
+            p.drawString(150, 810, rent_agreement.leaving_meterreading)
+            p.drawString(380, 810, rent_agreement.leaving_petrol)
             p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
             p.drawString(400, 760, rent_agreement.end_date_time.strftime('%I:%M %p'))
 
