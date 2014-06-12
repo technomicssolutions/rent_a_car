@@ -189,10 +189,18 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="meter_reading">Meter Reading</label>
+							<label for="meter_reading">Meter Reading on Leaving</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="meter_reading" ng-model="agreement.meter_reading" readonly>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="meter_reading">Petrol on Leaving</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="meter_reading" ng-model="agreement.petrol" readonly>
 						</div>
 					</div>
 				</div>
@@ -259,10 +267,18 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="meter_reading">Meter Reading</label>
+							<label for="meter_reading">Meter Reading on Returning</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="meter_reading" ng-model="receipt.meter_reading" id="meter_reading">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="returning_petrol">Petrol on Returning</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="returning_petrol" ng-model="receipt.returning_petrol" id="returning_petrol">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -287,6 +303,14 @@
 						</div>
 						<div class="forminput">
 							<input type="text" name="accident_passable" ng-model="receipt.accident_passable" id="accident_passable" ng-change="calculate_balance()">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="vehicle_scratch">Vehicle Scratch</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="vehicle_scratch" ng-model="receipt.vehicle_scratch" id="vehicle_scratch" ng-change="calculate_balance()">
 						</div>
 					</div>
 					<div class="formrow_purchase">

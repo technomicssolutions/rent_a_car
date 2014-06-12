@@ -358,7 +358,6 @@ get_agreement_details = function($scope, $http, from) {
 	$http.get(url).success(function(data) {
 		console.log(data.agreements.length);
 		var agreement_length = 0;
-		console.log(from);
 		if (from == 'receive_car') {
 			agreement_length = data.whole_agreements.length;
 		} else if (from == 'rent_agreement') {
@@ -1123,6 +1122,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'sponsar_address': '',
 		'notes': '',
 		'late_message': '',
+		'petrol': '',
 	}
 	$scope.receipt = {
 		'receipt_no': '',
@@ -1141,6 +1141,8 @@ function ReceiveCarController($scope, $http, $location) {
 		'balance': 0,
 		'paid': 0,
 		'notes': '',
+		'vehicle_scratch': 0,
+		'returning_petrol': 0,
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -1185,6 +1187,8 @@ function ReceiveCarController($scope, $http, $location) {
 			'balance': 0,
 			'paid': 0,
 			'notes': '',
+			'vehicle_scratch': 0,
+			'returning_petrol': 0,
 		}
 		$scope.receipt.total_amount = agreement.rent;
 		$scope.receipt.agreement_id = agreement.id;
@@ -1212,7 +1216,11 @@ function ReceiveCarController($scope, $http, $location) {
 		if ($scope.receipt.paid == '' || $scope.receipt.paid != Number($scope.receipt.paid)) {
 			$scope.receipt.paid = 0;
 		}
-		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
+		if ($scope.receipt.vehicle_scratch == '' || $scope.receipt.vehicle_scratch != Number($scope.receipt.vehicle_scratch)) {
+			$scope.receipt.vehicle_scratch = 0;
+		}
+		console.log($scope.receipt.vehicle_scratch);
+		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.vehicle_scratch) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
 		$scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
 		$scope.receipt.balance = parseFloat($scope.receipt.balance) - parseFloat($scope.receipt.paid);
@@ -1235,7 +1243,10 @@ function ReceiveCarController($scope, $http, $location) {
 			$scope.validation_error = 'Please enter Credit Card Expiry Date';
 			return false;
 		} else if ($scope.receipt.meter_reading == 0 || $scope.receipt.meter_reading == '' || $scope.receipt.meter_reading == undefined) {
-			$scope.validation_error = 'Please enter Meter Reading';
+			$scope.validation_error = 'Please enter Meter Reading on Returning';
+			return false;
+		} else if ($scope.receipt.returning_petrol == 0 || $scope.receipt.returning_petrol == '' || $scope.receipt.returning_petrol == undefined) {
+			$scope.validation_error = 'Please enter Petrol on Returning';
 			return false;
 		} else if ($scope.receipt.paid == 0 || $scope.receipt.paid == '' || $scope.receipt.paid == undefined) {
 			$scope.validation_error = 'Please enter Paid Amount on Receipt';

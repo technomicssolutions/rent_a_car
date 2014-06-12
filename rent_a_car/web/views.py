@@ -601,11 +601,11 @@ class ReceiveCarView(View):
             rent_agreement = RentAgreement.objects.get(id=receive_car_details['agreement_id'])
             receive_car.rent_agreement = rent_agreement
             receive_car.petrol = receive_car_details['petrol']
-            receive_car.returning_petrol = receival_details['returning_petrol']
+            receive_car.returning_petrol = receive_car_details['returning_petrol']
             vehicle = rent_agreement.vehicle
-            vehcile.petrol = receival_details['returning_petrol']
+            vehicle.petrol = receive_car_details['returning_petrol']
             vehicle.save()
-            receive_car.vehicle_scratch = receival_details['vehicle_scratch']
+            receive_car.vehicle_scratch = receive_car_details['vehicle_scratch']
             receive_car.fine = receive_car_details['fine']
             receive_car.extra_charge = receive_car_details['extra_charge']
             receive_car.accident_passable = receive_car_details['accident_passable']
@@ -617,6 +617,8 @@ class ReceiveCarView(View):
             receive_car.reduction = receive_car_details['reduction']
             receive_car.notes = receive_car_details['notes']
             receive_car.new_meter_reading = receive_car_details['meter_reading']
+            receive_car.leaving_petrol = receive_car_details['returning_petrol']
+            receive_car.vehicle_scratch = receive_car_details['vehicle_scratch']
             receive_car.date = datetime.strptime(receive_car_details['receipt_date'], '%d/%m/%Y') 
             receive_car.save()
             client = rent_agreement.client
@@ -685,6 +687,8 @@ class AgreementDetails(View):
                             'extra_charge': agreement.receivecar_set.all()[0].extra_charge if agreement.receivecar_set.all().count() > 0 else '',
                             'reduction': agreement.receivecar_set.all()[0].reduction if agreement.receivecar_set.all().count() > 0 else '',
                             'paid': agreement.receivecar_set.all()[0].paid if agreement.receivecar_set.all().count() > 0 else '',
+                            'vehicle_scratch': agreement.receivecar_set.all()[0].vehicle_scratch if agreement.receivecar_set.all().count() > 0 else '',
+                            'petrol_on_return': agreement.receive_car_set.all()[0].returning_petrol if agreement.receivecar_set.all().count() > 0 else '',
                         })
                     late_message = ''
                     if agreement.end_date_time:
@@ -718,6 +722,7 @@ class AgreementDetails(View):
                         'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                         'paid': agreement.paid,
                         'late_message': late_message,
+                        'petrol': agreement.leaving_petrol,
                         'receival_details': ctx_receival_details,
                     })
                     ctx_receival_details = []
@@ -1175,6 +1180,7 @@ class PrintReceiptCar(View):
             p.line(500, 100, 950, 100)
             p.line(250, 550, 250, 500)
             p.line(250, 500, 250, 450)
+            p.line(750, 500, 750, 550)
             
             p.line(750, 450, 750, 100)
             # p.line(750, 600, 750, 550)
@@ -1211,6 +1217,7 @@ class PrintReceiptCar(View):
             p.drawString(50, 480, 'Model: ')
             p.drawString(260, 480, 'Made: ')
             p.drawString(510, 530, 'Return Meter Reading: ')
+            p.drawString(760, 530, 'Petrol on Returning ')
             p.drawString(510, 480, 'Insurance Value: ')
 
             p.drawString(760, 430, 'Deposit')
@@ -1254,7 +1261,8 @@ class PrintReceiptCar(View):
             p.drawString(340, 530, receive_car.rent_agreement.vehicle.vehicle_color)
             p.drawString(110, 480, receive_car.rent_agreement.vehicle.vehicle_type_name.vehicle_type_name)
             p.drawString(330, 480, receive_car.rent_agreement.vehicle.vehicle_make)
-            p.drawString(660, 530, str(receive_car.new_meter_reading))
+            p.drawString(560, 510, str(receive_car.new_meter_reading))
+            p.drawString(760, 510, receive_car.returning_petrol)
             p.drawString(650, 480, str(receive_car.rent_agreement.vehicle.insuranse_value))
 
             p.drawString(550, 430, str(receive_car.rent_agreement.paid))
