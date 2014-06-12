@@ -1175,8 +1175,9 @@ class PrintReceiptCar(View):
             p.line(500, 330, 950, 330)
             p.line(500, 290, 950, 290)
             p.line(500, 250, 950, 250)
-            p.line(500, 200, 950, 200)
-            p.line(500, 150, 950, 150)
+            p.line(500, 210, 950, 210)
+            p.line(500, 170, 950, 170)
+            p.line(500, 130, 950, 130)
             p.line(500, 100, 950, 100)
             p.line(250, 550, 250, 500)
             p.line(250, 500, 250, 450)
@@ -1224,10 +1225,11 @@ class PrintReceiptCar(View):
             p.drawString(760, 380, 'Fine')
             p.drawString(760, 340, 'Petrol')
             p.drawString(760, 310, 'Accident Passable')
-            p.drawString(760, 270, 'Extra Charge')
-            p.drawString(760, 230, 'Reduction')
-            p.drawString(760, 180, 'Rent')
-            p.drawString(760, 130, 'Total Amount')
+            p.drawString(760, 270, 'Vehicle Scrtach')
+            p.drawString(760, 230, 'Extra Charge')
+            p.drawString(760, 190, 'Reduction')
+            p.drawString(760, 150, 'Rent')
+            p.drawString(760, 110, 'Total Amount')
 
             p.drawString(60, 420, "We don't receipt the car in Thursday, Friday the formal holiday")
             p.drawString(60, 380, "Acknowledge that I have read the above and reverse method")
@@ -1268,17 +1270,19 @@ class PrintReceiptCar(View):
             p.drawString(550, 430, str(receive_car.rent_agreement.paid))
             p.drawString(550, 380, str(receive_car.fine))
             p.drawString(550, 340, str(receive_car.petrol))
-            p.drawString(550, 270, str(receive_car.extra_charge))
             p.drawString(550, 310, str(receive_car.accident_passable))
-            p.drawString(550, 230, str(receive_car.reduction))
-            p.drawString(550, 180, str(receive_car.rent_agreement.rent))
-            p.drawString(550, 130, str(receive_car.total_amount))
+            p.drawString(550, 270, str(receive_car.vehicle_scratch))
+            p.drawString(550, 230, str(receive_car.extra_charge))
+            
+            p.drawString(550, 190, str(receive_car.reduction))
+            p.drawString(550, 150, str(receive_car.rent_agreement.rent))
+            p.drawString(550, 110, str(receive_car.total_amount))
 
             p.showPage()
             p.save()
 
             return response
-
+            
 class CaseEntry(View):
 
     def get(self, request, *args, **kwargs):
