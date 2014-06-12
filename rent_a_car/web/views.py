@@ -674,6 +674,7 @@ class AgreementDetails(View):
         if request.is_ajax():
             if agreements.count() > 0:
                 for agreement in agreements:
+                    print agreement.receivecar_set.all().count()
                     if agreement.receivecar_set.all().count() > 0:
                         ctx_receival_details.append({
                             'receipt_no': agreement.receivecar_set.all()[0].receipt_no if agreement.receivecar_set.all().count() > 0 else '',
@@ -688,7 +689,7 @@ class AgreementDetails(View):
                             'reduction': agreement.receivecar_set.all()[0].reduction if agreement.receivecar_set.all().count() > 0 else '',
                             'paid': agreement.receivecar_set.all()[0].paid if agreement.receivecar_set.all().count() > 0 else '',
                             'vehicle_scratch': agreement.receivecar_set.all()[0].vehicle_scratch if agreement.receivecar_set.all().count() > 0 else '',
-                            'petrol_on_return': agreement.receive_car_set.all()[0].returning_petrol if agreement.receivecar_set.all().count() > 0 else '',
+                            'petrol_on_return': agreement.receivecar_set.all()[0].returning_petrol if agreement.receivecar_set.all().count() > 0 else '',
                         })
                     late_message = ''
                     if agreement.end_date_time:
@@ -1282,7 +1283,7 @@ class PrintReceiptCar(View):
             p.save()
 
             return response
-            
+
 class CaseEntry(View):
 
     def get(self, request, *args, **kwargs):

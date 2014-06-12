@@ -1251,6 +1251,9 @@ function ReceiveCarController($scope, $http, $location) {
 		} else if ($scope.receipt.paid == 0 || $scope.receipt.paid == '' || $scope.receipt.paid == undefined) {
 			$scope.validation_error = 'Please enter Paid Amount on Receipt';
 			return false;
+		} else if ($scope.receipt.balance < 0) {
+			$scope.validation_error = 'Please enter valid Paid Amount on Receipt';
+			return false;
 		}
 		return true;
 	}
