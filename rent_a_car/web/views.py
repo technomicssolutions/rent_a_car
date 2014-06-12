@@ -202,6 +202,7 @@ class AddVehicle(View):
                 vehicle.insuranse_value = float(vehicle_details['insurance_value'])
                 vehicle.type_of_insuranse = vehicle_details['insurance_type']
                 vehicle.vehicle_make = vehicle_details['vehicle_make']
+                vehicle.petrol = vehicle_details['petrol']
                 vehicle.save()
                 ctx_vehicle_data.append({
                     'id': vehicle.id,
@@ -213,6 +214,7 @@ class AddVehicle(View):
                     'color': vehicle.vehicle_color,
                     'insuranse_value': vehicle.insuranse_value,
                     'type_of_insuranse': vehicle.type_of_insuranse,
+                    'petrol': vehicle.petrol,
                 })
                 res = {
                     'result': 'ok',
@@ -246,6 +248,7 @@ class VehicleList(View):
                         'color': vehicle.vehicle_color,
                         'insuranse_value': vehicle.insuranse_value,
                         'type_of_insuranse': vehicle.type_of_insuranse,
+                        'petrol': vehicle.petrol,
                     })
             if whole_vehicles.count() > 0:
                 for vehicle in whole_vehicles:
@@ -259,6 +262,7 @@ class VehicleList(View):
                         'color': vehicle.vehicle_color,
                         'insuranse_value': vehicle.insuranse_value,
                         'type_of_insuranse': vehicle.type_of_insuranse,
+                        'petrol': vehicle.petrol,
                     })
             res = {
                 'vehicles': ctx_vehicles,
@@ -335,6 +339,7 @@ class EditVehicle(View):
                 'insurance_type': vehicle.type_of_insuranse,
                 'insurance_value': vehicle.insuranse_value,
                 'vehicle_make': vehicle.vehicle_make,
+                'petrol': vehicle.petrol,
             })
             res = {
                 'vehicle': ctx_vehicle,
@@ -390,6 +395,7 @@ class EditVehicle(View):
                 vehicle.insuranse_value = vehicle_details['insurance_value']
                 vehicle.type_of_insuranse = vehicle_details['insurance_type']
                 vehicle.vehicle_make = vehicle_details['vehicle_make']
+                vehicle.petrol = vehicle_details['petrol']
                 vehicle.save()
                 res = {
                     'result': 'ok'
@@ -528,6 +534,7 @@ class RentAgreementView(View):
                 vehicle = Vehicle.objects.get(id=int(rent_agreement_details['vehicle_id']))
                 rent_agreement.client = client
                 rent_agreement.vehicle = vehicle
+                rent_agreement.leaving_meterreading = vehicle.meter_reading
                 rent_agreement.client_identity = rent_agreement_details['client_identity']
                 rent_agreement.agreement_type = rent_agreement_details['agreement_type']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
@@ -931,7 +938,7 @@ class PrintRentAgreement(View):
             p.drawString(300, 910, vehicle.vehicle_color if vehicle else '')
             p.drawString(200, 860, rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
             p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%I:%M %p'))
-            p.drawString(200, 810, rent_agreement.vehicle.meter_reading)
+            p.drawString(200, 810, rent_agreement.leaving_meterreading)
             p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
             p.drawString(400, 760, rent_agreement.end_date_time.strftime('%I:%M %p'))
 

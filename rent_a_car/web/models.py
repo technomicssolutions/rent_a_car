@@ -83,6 +83,7 @@ class Vehicle(models.Model):
     vehicle_color = models.CharField('Vehicle Color', null=True, blank=True, max_length=25)
     meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
     vehicle_condition = models.CharField('Vehicle Condition', null=True, blank=True, max_length=30)
+    petrol = models.CharField('Petrol', max_length=20, null=True, blank=True)
 
     # Insurance Details 
     insuranse_value = models.DecimalField('Insurance Value', default=0, max_digits=14, decimal_places=2)
@@ -124,6 +125,9 @@ class RentAgreement(models.Model):
     rent = models.DecimalField('Rent', max_digits=25, decimal_places=2, default=0)
     paid = models.DecimalField('Paid', max_digits=25, decimal_places=2, default=0)
 
+    leaving_meterreading = models.CharField('Meter Reading', null=True, blank=True, max_length=20)
+    leaving_petrol = models.DecimalField('Leaving Petrol', max_digits=25, decimal_places=2, default=0)
+
     is_completed = models.BooleanField('Completed', default=False)
 
     def __unicode__(self):
@@ -145,6 +149,7 @@ class ReceiveCar(models.Model):
     date = models.DateField('Date', null=True, blank=True)
     
     petrol = models.DecimalField('Petrol', max_digits=25, decimal_places=2, default=0)
+    vehicle_scratch = models.DecimalField('Vehicle Scratch', max_digits=25, decimal_places=2, default=0)
     fine = models.DecimalField('Fine', max_digits=25, decimal_places=2, default=0)
     reduction = models.DecimalField('Reduction', max_digits=25, decimal_places=2, default=0)
     extra_charge = models.DecimalField('Extra Charge', max_digits=25, decimal_places=2, default=0)
@@ -155,6 +160,8 @@ class ReceiveCar(models.Model):
 
     total_amount = models.DecimalField('Total Amount', decimal_places=2, max_digits=25, default=0)
     paid = models.DecimalField('Paid on receipt', decimal_places=2, max_digits=25, default=0)
+
+    returning_petrol = models.DecimalField('Returning Petrol', max_digits=25, default=0, decimal_places=2)
 
     notes = models.TextField('Notes', null=True, blank=True)
 

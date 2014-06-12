@@ -95,6 +95,9 @@ validate_vehicle_form = function($scope, $http) {
 	} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
 		$scope.validation_error = 'Please enter Meter Reading';
 		return false;
+	} else if ($scope.vehicle.petrol == '' || $scope.vehicle.petrol == undefined) {
+		$scope.validation_error = 'Please enter Petrol';
+		return false;
 	} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
 		$scope.validation_error = 'Please enter Insurance Type';
 		return false;
@@ -450,6 +453,7 @@ function AddVehicleController($scope, $http, $location) {
 		'insurance_type': '',
 		'insurance_value': '',
 		'vehicle_make': '',
+		'petrol': '',
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -499,6 +503,7 @@ function EditVehicleController($scope, $http, $location) {
 		'insurance_type': '',
 		'insurance_value': '',
 		'vehicle_make': '',
+		'petrol': '',
 	}
 	$scope.change_type = false;
 	$scope.init = function(csrf_token, id) {
@@ -685,6 +690,7 @@ function RentAgreementController($scope, $http, $location) {
 		'type_of_insuranse': '',
 		'insuranse_value': '',
 		'meter_reading': '',
+		'petrol': '',
 	}
 	$scope.driver = {
 		'id': '',
@@ -733,6 +739,7 @@ function RentAgreementController($scope, $http, $location) {
 		'sponsar_address': '',
 		'notes': '',
 		'client_identity': '',
+		'petrol': '',
 	}
 	$scope.driver_details_needed = true;
 	$scope.init = function(csrf_token) {
@@ -811,6 +818,7 @@ function RentAgreementController($scope, $http, $location) {
 			'insurance_type': '',
 			'insurance_value': '',
 			'vehicle_make': '',
+			'petrol': '',
 		}
 		$scope.validation_error = '';
 		$scope.popup = new DialogueModelWindow({
