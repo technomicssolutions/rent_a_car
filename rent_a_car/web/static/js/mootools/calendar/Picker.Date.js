@@ -126,7 +126,7 @@ this.DatePicker = Picker.Date = new Class({
 	getInputDate: function(input){
 		this.date = new Date();
 		if (!input) return;
-		if(this.options.format == '%d/%m/%Y' || this.options.format == '%d/%m/%Y %H:%M' ) {
+		if(this.options.format == '%d/%m/%Y' || this.options.format == '%d/%m/%Y %X' ) {
 			var date_string = input.get('value').split('/')
 			date_string = date_string[1]+'/'+date_string[0]+'/'+date_string[2];
 

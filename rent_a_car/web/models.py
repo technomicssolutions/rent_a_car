@@ -106,7 +106,6 @@ class RentAgreement(models.Model):
     client = models.ForeignKey(Client, null=True, blank=True)
     
     agreement_no = models.CharField('Agreement No.', null=True, blank=True, max_length=25)
-    agreement_type = models.CharField('Agreement Type', null=True, blank=True, max_length=30)
     agreement_date = models.DateField('Agreement Date', null=True, blank=True)
     starting_date_time = models.DateTimeField('Starting Date and Time', null=True, blank=True)
     end_date_time = models.DateTimeField('End Date and Time', null=True, blank=True)
@@ -115,15 +114,12 @@ class RentAgreement(models.Model):
     identity_driver = models.CharField('Identity Driver', null=True, blank=True, max_length=35)
     client_identity = models.CharField('Cleint Identity', null=True, blank=True, max_length=25, choices=CLIENT_IDENTITY)
     
-    type_of_contract = models.CharField('Type of Contract', null=True, blank=True, max_length=25)
     driver = models.ForeignKey('Driver', null=True, blank=True)
     notes = models.TextField('Notes', null=True, blank=True)
 
     total_amount = models.DecimalField('Amount', decimal_places=2, max_digits=25, default=0)
-    commission = models.DecimalField('Commission', max_digits=25, decimal_places=2, default=0)
-    reduction = models.DecimalField('Reduction', max_digits=25, decimal_places=2, default=0)
     rent = models.DecimalField('Rent', max_digits=25, decimal_places=2, default=0)
-    paid = models.DecimalField('Paid', max_digits=25, decimal_places=2, default=0)
+    paid = models.DecimalField('Deposit', max_digits=25, decimal_places=2, default=0)
 
     leaving_meterreading = models.CharField('Meter Reading', null=True, blank=True, max_length=20)
     leaving_petrol = models.CharField('Leaving Petrol', max_length=25, null=True, blank=True)
@@ -186,6 +182,8 @@ class Driver(models.Model):
     driver_license_issue_place = models.CharField('Driver License Issue Place', null=True, blank=True, max_length=25)
     driver_license_expiry_date = models.DateField('Driver License Expiry Date', null=True, blank=True)
     driver_dob = models.DateField('Driver DOB', null=True, blank=True)
+    driver_working_address = models.TextField('Driver Working address', null=True, blank=True)
+    driver_working_ph = models.CharField('Driver Working Ph No.', null=True, blank=True, max_length=15)
 
     sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=25)
     sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)

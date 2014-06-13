@@ -527,6 +527,7 @@ class RentAgreementView(View):
 
         if request.is_ajax():
             rent_agreement_details = ast.literal_eval(request.POST['rent_agreement'])
+            vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             try:
                 rent_agreement, agreement_created = RentAgreement.objects.get_or_create(agreement_no=rent_agreement_details['agreement_no'])
                 # if agreement_created:
@@ -534,17 +535,20 @@ class RentAgreementView(View):
                 vehicle = Vehicle.objects.get(id=int(rent_agreement_details['vehicle_id']))
                 rent_agreement.client = client
                 rent_agreement.vehicle = vehicle
-                rent_agreement.leaving_meterreading = vehicle.meter_reading
+                if int(vehicle.meter_reading) != int(vehicle_details['meter_reading']):
+                    vehicle.meter_reading = vehicle_details['meter_reading']
+                    vehicle.save()
+                rent_agreement.leaving_meterreading = vehicle_details['meter_reading']
                 rent_agreement.leaving_petrol = vehicle.petrol
                 rent_agreement.client_identity = rent_agreement_details['client_identity']
-                rent_agreement.agreement_type = rent_agreement_details['agreement_type']
+                # rent_agreement.agreement_type = rent_agreement_details['agreement_type']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
                 start_date_time = utc.localize(datetime.strptime(rent_agreement_details['start_date_time'], '%d/%m/%Y %I:%M%p'))
                 end_date_time = utc.localize(datetime.strptime(rent_agreement_details['end_date_time'], '%d/%m/%Y %I:%M%p'))
                 rent_agreement.starting_date_time = start_date_time
                 rent_agreement.end_date_time = end_date_time
                 rent_agreement.rent_type = rent_agreement_details['rent_type']
-                rent_agreement.type_of_contract = rent_agreement_details['type_of_contract']
+                # rent_agreement.type_of_contract = rent_agreement_details['type_of_contract']
                
                 driver = Driver.objects.get(id=int(rent_agreement_details['driver_id']))
                 driver.is_available = False
@@ -552,8 +556,8 @@ class RentAgreementView(View):
                 rent_agreement.driver = driver
                 rent_agreement.notes = rent_agreement_details['notes']
                 rent_agreement.total_amount = rent_agreement_details['amount']
-                rent_agreement.commission = rent_agreement_details['commission']
-                rent_agreement.reduction = rent_agreement_details['reduction']
+                # rent_agreement.commission = rent_agreement_details['commission']
+                # rent_agreement.reduction = rent_agreement_details['reduction']
                 rent_agreement.rent = rent_agreement_details['rent']
                 rent_agreement.paid = rent_agreement_details['paid']
                 rent_agreement.save()
@@ -901,6 +905,8 @@ class PrintRentAgreement(View):
             p.line(50, 400, 500, 400)
             p.line(50, 350, 500, 350)
             p.line(50, 300, 500, 300)
+            p.line(500, 550, 950, 550)
+            p.line(500, 500, 950, 500)
 
             p.drawString(80, 980, 'Vehicle Type')
             p.drawString(280, 980, 'Reg. No.')
@@ -942,6 +948,8 @@ class PrintRentAgreement(View):
             p.drawString(100, 630, 'Sponsar Name')
             p.drawString(300, 630, 'Sponsar Tel.')
             p.drawString(610, 630, 'Sponsar Address')
+            p.drawString(610, 580, 'Driver Working Address')
+            p.drawString(610, 530, 'Driver Tel. No')
 
 
             p.setFont("Helvetica", 13)
@@ -982,11 +990,13 @@ class PrintRentAgreement(View):
             p.drawString(550, 610, rent_agreement.driver.sponsar_address)
 
             p.drawString(260, 570, str(rent_agreement.rent))
-            p.drawString(260, 520, str(rent_agreement.commission))
-            p.drawString(260, 470, str(rent_agreement.reduction))
+            # p.drawString(260, 520, str(rent_agreement.commission))
+            # p.drawString(260, 470, str(rent_agreement.reduction))
             p.drawString(260, 420, str(rent_agreement.total_amount))
             p.drawString(260, 370, str(rent_agreement.paid))
             p.drawString(260, 320, str(float(rent_agreement.total_amount) - float(rent_agreement.paid)))
+            p.drawString(610, 560, str(rent_agreement.driver.driver_working_address))
+            p.drawString(610, 510, str(rent_agreement.driver.driver_working_ph))
 
             p.drawString(60, 200, """This vehicle cann't be taken outside the UAE without prior permission""")
             p.drawString(60, 180, """ of the owner in writing""")

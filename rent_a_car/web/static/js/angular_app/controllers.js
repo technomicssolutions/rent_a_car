@@ -711,7 +711,6 @@ function RentAgreementController($scope, $http, $location) {
 		'vehicle_id': '',
 		'driver_id': '',
 		'agreement_no': '',
-		'agreement_type': '',
 		'rent_type': '',
 		'amount': 0,
 		'date': '',
@@ -722,7 +721,6 @@ function RentAgreementController($scope, $http, $location) {
 		'rent': 0,
 		'paid': 0,
 		'balance': 0,
-		'type_of_contract': '',
 		'driver_name': '',
 		'driver_phone': '',
 		'driver_address': '',
@@ -980,16 +978,11 @@ function RentAgreementController($scope, $http, $location) {
 		if ($scope.rent_agreement.amount != Number($scope.rent_agreement.amount) || $scope.rent_agreement.amount == '') {
 			$scope.rent_agreement.amount = 0;
 		}
-		if ($scope.rent_agreement.commission != Number($scope.rent_agreement.commission) || $scope.rent_agreement.commission == '') {
-			$scope.rent_agreement.commission = 0;
-		}
-		if ($scope.rent_agreement.reduction != Number($scope.rent_agreement.reduction) || $scope.rent_agreement.reduction == '') {
-			$scope.rent_agreement.reduction = 0;
-		}
+		
 		if ($scope.rent_agreement.paid != Number($scope.rent_agreement.paid) || $scope.rent_agreement.paid == '') {
 			$scope.rent_agreement.paid = 0;
 		}
-		$scope.rent_agreement.rent = ((parseFloat($scope.rent_agreement.amount) + parseFloat($scope.rent_agreement.commission)) - parseFloat($scope.rent_agreement.reduction)).toFixed(2);
+		$scope.rent_agreement.rent = (parseFloat($scope.rent_agreement.amount)).toFixed(2);
 		$scope.rent_agreement.balance = (parseFloat($scope.rent_agreement.rent) - parseFloat($scope.rent_agreement.paid)).toFixed(2);
 	}
 	$scope.rent_agreement_validation = function() {
@@ -1004,9 +997,6 @@ function RentAgreementController($scope, $http, $location) {
 		console.log($scope.rent_agreement.driver_id);
 		if ($scope.rent_agreement.agreement_no == '' || $scope.rent_agreement.agreement_no == undefined) {
 			$scope.validation_error = 'Please enter the Agreement No.';
-			return false;
-		} else if ($scope.rent_agreement.agreement_type == '' || $scope.rent_agreement.agreement_type == undefined) {
-			$scope.validation_error = 'Please enter the Agreement Type';
 			return false;
 		} else if ($scope.client.id == '' || $scope.client.id == undefined) {
 			$scope.validation_error = 'Please choose the Customer';
@@ -1035,9 +1025,6 @@ function RentAgreementController($scope, $http, $location) {
 		} else if ($scope.rent_agreement.paid == undefined || $scope.rent_agreement.paid == '') {
 			$scope.validation_error = 'Please enter the Paid';
 			return false;
-		} else if ($scope.rent_agreement.type_of_contract == '' || $scope.rent_agreement.type_of_contract == undefined) {
-			$scope.validation_error = 'Please enter Type of Contract';
-			return false;
 		} else if ($scope.rent_agreement.driver_id == '' || $scope.rent_agreement.driver_id == undefined) {
 			$scope.validation_error = 'Please choose Driver name';
 			return false;
@@ -1049,6 +1036,7 @@ function RentAgreementController($scope, $http, $location) {
 		params = {
 			"csrfmiddlewaretoken": $scope.csrf_token,
 			'rent_agreement': angular.toJson($scope.rent_agreement),
+			'vehicle_details': angular.toJson($scope.vehicle),
 		}
 		if ($scope.is_valid) {
 			var height = $(document).height();
