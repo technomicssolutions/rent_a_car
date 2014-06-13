@@ -544,7 +544,7 @@ class RentAgreementView(View):
                 # rent_agreement.agreement_type = rent_agreement_details['agreement_type']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
                 start_date_time = utc.localize(datetime.strptime(rent_agreement_details['start_date_time'], '%d/%m/%Y %I:%M%p'))
-                end_date_time = utc.localize(datetime.strptime(rent_agreement_details['end_date_time'], '%d/%m/%Y %I:%M%p'))
+                end_date_time = utc.localize(datetime.strptime(rent_agreement_details['end_date_time'], '%d/%m/%Y %I:%M%p' ))
                 rent_agreement.starting_date_time = start_date_time
                 rent_agreement.end_date_time = end_date_time
                 rent_agreement.rent_type = rent_agreement_details['rent_type']
@@ -1190,12 +1190,14 @@ class PrintReceiptCar(View):
             p.line(500, 170, 950, 170)
             p.line(500, 130, 950, 130)
             p.line(500, 100, 950, 100)
+            p.line(500, 70, 950, 70)
             p.line(250, 550, 250, 500)
             p.line(250, 500, 250, 450)
             p.line(750, 500, 750, 550)
             
             p.line(750, 450, 750, 100)
-            # p.line(750, 600, 750, 550)
+            p.line(500, 70, 500, 100)
+            p.line(750, 70, 750, 100)
 
             p.setFont("Helvetica", 15)
             p.drawString(50, 980, 'Driver Name: ')
@@ -1241,6 +1243,7 @@ class PrintReceiptCar(View):
             p.drawString(760, 190, 'Reduction')
             p.drawString(760, 150, 'Rent')
             p.drawString(760, 110, 'Total Amount')
+            p.drawString(760, 80, 'Balance')
 
             p.drawString(60, 420, "We don't receipt the car in Thursday, Friday the formal holiday")
             p.drawString(60, 380, "Acknowledge that I have read the above and reverse method")
@@ -1288,6 +1291,7 @@ class PrintReceiptCar(View):
             p.drawString(550, 190, str(receive_car.reduction))
             p.drawString(550, 150, str(receive_car.rent_agreement.rent))
             p.drawString(550, 110, str(receive_car.total_amount))
+            p.drawString(550, 80, str(float(receive_car.total_amount) - (float(receive_car.paid) + float(receive_car.rent_agreement.paid))))
 
             p.showPage()
             p.save()
