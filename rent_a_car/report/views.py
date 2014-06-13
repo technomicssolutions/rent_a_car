@@ -458,7 +458,9 @@ class RevenueReport(View):
                     y = 850
                     p.showPage()
                     p = header(p)
+                p.drawString(165, y, 'Agreement - Total : ')
                 p.drawString(280, y, str(agreement_total))
+                p.drawString(525, y, 'Receipt - Total : ')
                 p.drawString(620, y, str(receive_total))
 
                 p.showPage()

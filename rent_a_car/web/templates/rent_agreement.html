@@ -186,18 +186,28 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="paid">Deposit</label>
+							<label for="amount">Amount</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.paid" name="paid" ng-change="calculate_rent_amount()">
+							<input type="text" ng-model="rent_agreement.amount" name="amount" ng-change="calculate_rent_amount()">
 						</div>
 					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="date">Agreement Date</label>
 						</div>
 						<div class="forminput">
 							<input type="text" ng-model="rent_agreement.date" name="date" id="date">
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="paid">Deposit</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="rent_agreement.paid" name="paid" ng-change="calculate_rent_amount()">
 						</div>
 					</div>
 
@@ -210,14 +220,7 @@
 						</div>
 					</div>
 
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="end_date_time ">Expected Return Date and Time</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.end_date_time" name="end_date_time" id="end_date_time">
-						</div>
-					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="rent">Rent</label>
@@ -228,12 +231,13 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="amount">Amount</label>
+							<label for="end_date_time ">Expected Return Date and Time</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.amount" name="amount" ng-change="calculate_rent_amount()">
+							<input type="text" ng-model="rent_agreement.end_date_time" name="end_date_time" id="end_date_time">
 						</div>
 					</div>
+					
 					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">

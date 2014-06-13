@@ -1002,7 +1002,7 @@ function RentAgreementController($scope, $http, $location) {
 			$scope.validation_error = 'Please enter the Agreement No.';
 			return false;
 		} else if ($scope.client.id == '' || $scope.client.id == undefined) {
-			$scope.validation_error = 'Please choose the Customer';
+			$scope.validation_error = 'Please choose the Client';
 			return false;
 		} else if ($scope.rent_agreement.client_identity == '' || $scope.rent_agreement.client_identity == undefined) {
 			$scope.validation_error = 'Please choose the client identity';
@@ -1026,7 +1026,7 @@ function RentAgreementController($scope, $http, $location) {
 			$scope.validation_error = 'Please enter the Amount';
 			return false;
 		} else if ($scope.rent_agreement.paid == undefined || $scope.rent_agreement.paid == '') {
-			$scope.validation_error = 'Please enter the Paid';
+			$scope.validation_error = 'Please enter the Deposit';
 			return false;
 		} else if ($scope.rent_agreement.driver_id == '' || $scope.rent_agreement.driver_id == undefined) {
 			$scope.validation_error = 'Please choose Driver name';

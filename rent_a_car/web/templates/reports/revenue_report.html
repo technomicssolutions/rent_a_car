@@ -18,7 +18,7 @@
 	</div>
 
 	<form name="salesreport_form" method="get" action="{% url 'revenue_report' %}">
-		<input type="text" name="report_type" id="report_type" ng-model="report_type">
+		<input type="hidden" name="report_type" id="report_type" value="{{report_type}}">
 		<div class="reportinput">
 			<label for="s_date">Start Date</label>
 			<input type="text" name="start_date" id="start_date" value="{{start_date}}">
