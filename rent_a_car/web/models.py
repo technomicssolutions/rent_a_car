@@ -192,7 +192,7 @@ class Driver(models.Model):
 
     def __unicode__(self):
 
-        return self.driver_name
+        return str(self.driver_name)
 
     class Meta:
 

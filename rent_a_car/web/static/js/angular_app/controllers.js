@@ -313,6 +313,7 @@ add_driver = function($scope, $http, from) {
 			'driver_details': angular.toJson($scope.driver),
 			'home_address': $scope.home_address,
 			'sponsar_address': $scope.sponsar_address,
+			'driver_working_address': $scope.driver_working_address,
 			"csrfmiddlewaretoken" : $scope.csrf_token,
 		}
 		var height = $(document).height();
@@ -888,6 +889,7 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.add_new_driver = function() {
 		$scope.validation_error = '';
 		$scope.home_address = '';
+		$scope.driver_working_address = '';
 		$scope.driver = {
 			'id': '',
 			'driver_name': '',
@@ -902,6 +904,7 @@ function RentAgreementController($scope, $http, $location) {
 			'sponsar_name': '',
 			'sponsar_address': '',
 			'sponsar_phone': '',
+			'working_tel_no': '',
 		}
 		$scope.driver_popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',
@@ -1299,9 +1302,11 @@ function AddDriverController($scope, $http, $location) {
 		'passport_no': '',
 		'sponsar_name': '',
 		'sponsar_ph': '',
+		'working_tel_no': '',
 	}
 	$scope.sponsar_address = '';
 	$scope.home_address = '';
+	$scope.driver_working_address = '';
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 		new Picker.Date($$('#dob'), {
@@ -1381,6 +1386,7 @@ function AddDriverController($scope, $http, $location) {
 				'driver_details': angular.toJson($scope.driver),
 				'home_address': $scope.home_address,
 				'sponsar_address': $scope.sponsar_address,
+				'driver_working_address': $scope.driver_working_address,
 				"csrfmiddlewaretoken" : $scope.csrf_token,
 			}
 			$http({

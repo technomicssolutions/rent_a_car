@@ -897,14 +897,12 @@ class PrintRentAgreement(View):
             p.line(750, 900, 750, 1000)
             p.line(750, 800, 750, 850)
 
-            p.line(250, 300, 250, 750)
+            p.line(250, 400, 250, 750)
             p.line(300, 850, 300, 800)
             p.line(50, 500, 500, 500)
             p.line(50, 550, 500, 550)
             p.line(50, 450, 500, 450)
             p.line(50, 400, 500, 400)
-            p.line(50, 350, 500, 350)
-            p.line(50, 300, 500, 300)
             p.line(500, 550, 950, 550)
             p.line(500, 500, 950, 500)
 
@@ -934,11 +932,11 @@ class PrintRentAgreement(View):
             p.drawString(760, 830, 'Client Identity:')
 
             p.drawString(100, 570, 'Amount')
-            p.drawString(100, 520, 'Commission')
-            p.drawString(100, 470, 'Reduction')
-            p.drawString(100, 420, 'Total Amount')
-            p.drawString(100, 370, 'Paid')
-            p.drawString(100, 320, 'Balance')
+            # p.drawString(100, 520, 'Commission')
+            # p.drawString(100, 470, 'Reduction')
+            p.drawString(100, 520, 'Total Amount')
+            p.drawString(100, 470, 'Paid')
+            p.drawString(100, 420, 'Balance')
 
             p.drawString(100, 730, 'Driver Name')
             p.drawString(300, 730, 'License No')
@@ -992,9 +990,9 @@ class PrintRentAgreement(View):
             p.drawString(260, 570, str(rent_agreement.rent))
             # p.drawString(260, 520, str(rent_agreement.commission))
             # p.drawString(260, 470, str(rent_agreement.reduction))
-            p.drawString(260, 420, str(rent_agreement.total_amount))
-            p.drawString(260, 370, str(rent_agreement.paid))
-            p.drawString(260, 320, str(float(rent_agreement.total_amount) - float(rent_agreement.paid)))
+            p.drawString(260, 520, str(rent_agreement.total_amount))
+            p.drawString(260, 470, str(rent_agreement.paid))
+            p.drawString(260, 420, str(float(rent_agreement.total_amount) - float(rent_agreement.paid)))
             p.drawString(610, 560, str(rent_agreement.driver.driver_working_address))
             p.drawString(610, 510, str(rent_agreement.driver.driver_working_ph))
 
@@ -1050,6 +1048,8 @@ class AddDriver(View):
                 driver.sponsar_name = driver_details['sponsar_name']
                 driver.sponsar_address = request.POST['sponsar_address']
                 driver.sponsar_phone = driver_details['sponsar_ph']
+                driver.driver_working_address = request.POST['driver_working_address']
+                driver.driver_working_ph = driver_details['working_tel_no']
                 driver.save()
                 ctx_driver.append({
                     'id': driver.id,
@@ -1066,6 +1066,8 @@ class AddDriver(View):
                     'sponsar_address': driver.sponsar_address,
                     'sponsar_phone': driver.sponsar_phone,
                     'passport_no': driver.driver_passport_no,
+                    'driver_working_address': driver.driver_working_address,
+                    'working_tel_no': driver.driver_working_ph
                 })
                 res = {
                     'result': 'ok',
@@ -1093,13 +1095,15 @@ class DriversList(View):
                     'driver_nationality': driver.driver_nationality,
                     'passport_no': driver.driver_passport_no,
                     'driver_license_no': driver.driver_license_no,
-                    'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y'),
+                    'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y') if driver.driver_license_issue_date else '',
                     'driver_license_issue_place': driver.driver_license_issue_place,
-                    'driver_license_expiry_date': driver.driver_license_expiry_date.strftime('%d/%m/%Y'),
-                    'driver_dob': driver.driver_dob.strftime('%d/%m/%Y'),
+                    'driver_license_expiry_date': driver.driver_license_expiry_date.strftime('%d/%m/%Y') if driver.driver_license_expiry_date else '',
+                    'driver_dob': driver.driver_dob.strftime('%d/%m/%Y') if driver.driver_dob else '',
                     'sponsar_name': driver.sponsar_name,
                     'sponsar_address': driver.sponsar_address,
                     'sponsar_phone': driver.sponsar_phone,
+                    'driver_working_address': driver.driver_working_address,
+                    'working_tel_no': driver.driver_working_ph
                 })
             res = {
                 'result': 'ok',
