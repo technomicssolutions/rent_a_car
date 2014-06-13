@@ -368,3 +368,99 @@ class VehicleOutstandingReport(View):
         p.save()
 
         return response
+
+class RevenueReport(View):
+
+    def get(self, request, *args, **kwargs):
+
+        status_code = 200
+        response = HttpResponse(content_type='application/pdf')
+        p = canvas.Canvas(response, pagesize=(1050, 1200))
+        y = 1160
+        style = [
+            ('FONTSIZE', (0,0), (-1, -1), 20),
+            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
+        ]
+
+        new_style = [
+            ('FONTSIZE', (0,0), (-1, -1), 30),
+            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
+        ]
+
+        p = header(p)
+        p.setFontSize(15)
+
+        report_type = request.GET.get('report_type', '')
+        if not report_type:
+            return render(request, 'reports/revenue_report.html', {
+                'report_type' : 'date',
+                })
+
+        if report_type == 'date': 
+            start = request.GET['start_date']
+            end = request.GET['end_date']
+            if not start:   
+                ctx = {
+                    'msg' : 'Please Select Start Date',
+                    'start_date' : start,
+                    'end_date' : end,
+                    'report_type' : 'date',
+                }
+                return render(request, 'reports/revenue_report.html', ctx)             
+            else:
+                start_date = datetime.strptime(start, '%d/%m/%Y')
+                if not end:
+                    agreements = RentAgreement.objects.filter(agreement_date=start_date).order_by('agreement_date')
+                    date_range = start
+                else:
+                    end_date = datetime.strptime(end, '%d/%m/%Y')
+                    agreements = RentAgreement.objects.filter(agreement_date__gte=start_date, agreement_date__lte=end_date).order_by('agreement_date')
+                    date_range = str(start) + ' - ' + str(end)
+
+                p.setFontSize(17)
+                title_name = 'Date Wise Revenue Report - ' + str(date_range)
+                p.drawString(350, 930, title_name)
+                p.setFontSize(13)
+                p.drawString(50, 875, "Date")
+                p.drawString(140, 875, "Agreement No")
+                p.drawString(240, 875, "Agreement - Total Amount")
+                p.drawString(420, 875, "Agreement - Paid")
+                p.drawString(530, 875, "Receipt No")
+                p.drawString(620, 875, "Receipt - Total Amount")
+                p.drawString(770, 875, "Receipt - Paid")
+                p.drawString(865, 875, "Client Name")
+                
+                if agreements.count() > 0:
+                    y = 850
+                    agreement_total = 0
+                    receive_total = 0
+                    for agreement in agreements:
+                        agreement_total = float(agreement_total) + float(agreement.total_amount)
+                        if agreement.receivecar_set.all().count() > 0:
+                            receive_total = float(receive_total) + float(agreement.receivecar_set.all()[0].total_amount)
+                        p.drawString(50, y, agreement.agreement_date.strftime('%d/%m/%Y'))
+                        p.drawString(150, y, agreement.agreement_no)
+                        p.drawString(280, y, str(agreement.total_amount))
+                        p.drawString(430, y, str(agreement.paid))
+                        p.drawString(540, y, str(agreement.receivecar_set.all()[0].receipt_no) if agreement.receivecar_set.all().count() > 0 else '')
+                        p.drawString(620, y, str(agreement.receivecar_set.all()[0].total_amount) if agreement.receivecar_set.all().count() > 0 else '')
+                        p.drawString(780, y, str(agreement.receivecar_set.all()[0].paid) if agreement.receivecar_set.all().count() > 0 else '')
+                        p.drawString(865, y, agreement.client.name)
+                        y = y - 30
+                        total_amount = 0
+                        paid = 0
+                        balance = 0
+                        if y <= 135:
+                            y = 850
+                            p.showPage()
+                            p = header(p)
+                if y <= 135:
+                    y = 850
+                    p.showPage()
+                    p = header(p)
+                p.drawString(280, y, str(agreement_total))
+                p.drawString(620, y, str(receive_total))
+
+                p.showPage()
+                p.save()
+                return response
