@@ -615,7 +615,6 @@ class ReceiveCarView(View):
             receive_car.accident_passable = receive_car_details['accident_passable']
             receive_car.credit_card_no = receive_car_details['credit_card_no']
             receive_car.cheque_no = receive_car_details['cheque_no']
-            receive_car.expiry_date = receive_car_details['card_expiry_date']
             receive_car.total_amount = receive_car_details['total_amount']
             receive_car.paid = receive_car_details['paid']
             receive_car.reduction = receive_car_details['reduction']
@@ -624,6 +623,7 @@ class ReceiveCarView(View):
             receive_car.leaving_petrol = receive_car_details['returning_petrol']
             receive_car.vehicle_scratch = receive_car_details['vehicle_scratch']
             receive_car.date = datetime.strptime(receive_car_details['receipt_date'], '%d/%m/%Y') 
+            receive_car.returning_date_time = datetime.strptime(receive_car_details['receipt_date'], '%d/%m/%Y') 
             receive_car.save()
             client = rent_agreement.client
             client.rent = float(client.rent) - float(rent_agreement.rent)
@@ -703,7 +703,6 @@ class AgreementDetails(View):
                     ctx_agreements.append({
                         'id': agreement.id,
                         'agreement_no': agreement.agreement_no,
-                        'agreement_type': agreement.agreement_type,
                         'client': agreement.client.name if agreement.client else '',
                         'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                         'rent': agreement.rent,
@@ -747,14 +746,12 @@ class AgreementDetails(View):
                         'reduction': agreement.receivecar_set.all()[0].reduction if agreement.receivecar_set.all().count() > 0 else '',
                         'paid': agreement.receivecar_set.all()[0].paid if agreement.receivecar_set.all().count() > 0 else '',
                         'credit_card_no': agreement.receivecar_set.all()[0].credit_card_no if agreement.receivecar_set.all().count() > 0 else '',
-                        'card_expiry_date': agreement.receivecar_set.all()[0].expiry_date if agreement.receivecar_set.all().count() > 0 else '',
                         'cheque_no': agreement.receivecar_set.all()[0].cheque_no if agreement.receivecar_set.all().count() > 0 else '',
                     })
             
                 ctx_whole_agreements.append({
                     'id': agreement.id,
                     'agreement_no': agreement.agreement_no,
-                    'agreement_type': agreement.agreement_type,
                     'client': agreement.client.name if agreement.client else '',
                     'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                     'rent': agreement.rent,
@@ -789,7 +786,6 @@ class AgreementDetails(View):
                 ctx_rent_agreements.append({
                     'id': agreement.id,
                     'agreement_no': agreement.agreement_no,
-                    'agreement_type': agreement.agreement_type,
                     'client': agreement.client.name if agreement.client else '',
                     'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                     'rent': agreement.rent,

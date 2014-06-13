@@ -1120,7 +1120,6 @@ function ReceiveCarController($scope, $http, $location) {
 		'agreement_id': '',
 		'receipt_date': '',
 		'credit_card_no': '',
-		'card_expiry_date': '',
 		'cheque_no': '',
 		'meter_reading': 0,
 		'petrol': 0,
@@ -1152,6 +1151,14 @@ function ReceiveCarController($scope, $http, $location) {
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y',
         });
+        new Picker.Date($$('#returning_date'), {
+            timePicker: true,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y %X',
+            canAlwaysGoUp: ['months', 'years']
+        });
 	}
 	$scope.get_agreement_details = function() {
 		
@@ -1166,7 +1173,6 @@ function ReceiveCarController($scope, $http, $location) {
 			'agreement_id': '',
 			'receipt_date': '',
 			'credit_card_no': '',
-			'card_expiry_date': '',
 			'cheque_no': '',
 			'meter_reading': 0,
 			'petrol': 0,
@@ -1180,6 +1186,7 @@ function ReceiveCarController($scope, $http, $location) {
 			'notes': '',
 			'vehicle_scratch': 0,
 			'returning_petrol': 0,
+			'returning_date': ''
 		}
 		$scope.receipt.total_amount = agreement.rent;
 		$scope.receipt.agreement_id = agreement.id;
@@ -1219,7 +1226,7 @@ function ReceiveCarController($scope, $http, $location) {
 
 	$scope.receipt_car_validation = function() {
 		$scope.receipt.receipt_date = $$('#receipt_date')[0].get('value');
-		$scope.receipt.card_expiry_date = $$('#card_expiry_date')[0].get('value');
+		$scope.receipt.returning_date = $$('#returning_date')[0].get('value');
 		$scope.receipt.receipt_no = $$('#receipt_no')[0].get('value');
 		if ($scope.receipt.agreement_id == '' || $scope.receipt.agreement_id == undefined) {
 			$scope.validation_error = 'Please enter Contract No.';
@@ -1227,17 +1234,11 @@ function ReceiveCarController($scope, $http, $location) {
 		} else if ($scope.receipt.receipt_date == '' || $scope.receipt.receipt_date == undefined) {
 			$scope.validation_error = 'Please choose Receipt Date';
 			return false;
-		} else if (($scope.receipt.credit_card_no == '' || $scope.receipt.credit_card_no == undefined) && ($scope.receipt.cheque_no == '' || $scope.receipt.cheque_no == undefined)) {
-			$scope.validation_error = 'Please enter Credit Card No or Cheque No';
-			return false;
-		} else if ($scope.receipt.credit_card_no != '' && ($scope.receipt.card_expiry_date == '' || $scope.receipt.card_expiry_date == undefined)) {
-			$scope.validation_error = 'Please enter Credit Card Expiry Date';
+		} else if ($scope.receipt.returning_date == '' || $scope.receipt.returning_date == undefined) {
+			$scope.validation_error = 'Please choose Returning Date';
 			return false;
 		} else if ($scope.receipt.meter_reading == 0 || $scope.receipt.meter_reading == '' || $scope.receipt.meter_reading == undefined) {
 			$scope.validation_error = 'Please enter Meter Reading on Returning';
-			return false;
-		} else if ($scope.receipt.returning_petrol == 0 || $scope.receipt.returning_petrol == '' || $scope.receipt.returning_petrol == undefined) {
-			$scope.validation_error = 'Please enter Petrol on Returning';
 			return false;
 		} else if ($scope.receipt.paid == 0 || $scope.receipt.paid == '' || $scope.receipt.paid == undefined) {
 			$scope.validation_error = 'Please enter Paid Amount on Receipt';
