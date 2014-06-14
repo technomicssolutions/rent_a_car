@@ -879,8 +879,8 @@ class PrintRentAgreement(View):
             table.drawOn(p,50, 1180) 
             p.setFont("Helvetica", 16)
 
-            path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpeg"
-            p.drawImage(path, 70, 1100, width=30*cm, preserveAspectRatio=True)
+            path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
+            p.drawImage(path, 70, 1100, width=30*cm, height=3*cm, preserveAspectRatio=True)
 
             p.drawString(50, 1120, 'Tel : 02-6266634')
             p.drawString(50, 1100, 'Mob : 055-4087528')
@@ -1230,8 +1230,8 @@ class PrintReceiptCar(View):
             table.wrapOn(p, 200, 400)
             table.drawOn(p,50, 1180) 
 
-            path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpeg"
-            p.drawImage(path, 70, 1100, width=30*cm, preserveAspectRatio=True)
+            path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
+            p.drawImage(path, 70, 1100, width=30*cm, height=3*cm, preserveAspectRatio=True)
 
             p.setFont("Helvetica", 16)
             p.drawString(50, 1120, 'Tel : 02-6266634')
