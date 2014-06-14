@@ -891,6 +891,7 @@ class PrintRentAgreement(View):
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
             p.drawString(90, 1015, rent_agreement.agreement_date.strftime('%d/%m/%Y'))
+            p.drawString(750, 1015, rent_agreement.agreement_date.strftime('%d/%m/%Y'))
             p.setFont("Helvetica-Bold", 15)
             p.drawString(410, 1010, 'RENTAL AGREEMENT')
             p.line(50, 1000, 950, 1000)
@@ -1014,7 +1015,6 @@ class PrintRentAgreement(View):
             p.drawString(503, 380, """for the period set our herein. I have read the terms and conditions det out on""")
             p.drawString(503, 360, """the reverse of this agreement between my self and the owner. I certify that """)
             p.drawString(503, 340, """the particualrs which i have given are true""")
-            # p.drawString()
             p.drawString(503, 280, """ In the Event of any Accident The Renter is Liable to pay Hire.""")
             p.drawString(503, 180,'SIGNATURE :.........................................................................')
             
@@ -1075,6 +1075,12 @@ class PrintRentAgreement(View):
             p.drawString(760, 630, 'عنوان الكفيل')
             p.drawString(760, 580, 'السائق Working عنوان')
             p.drawString(660, 530, 'رقم تلفون السائق')
+	    p.setFont('Arabic', 10)
+            p.drawString(503, 470, 'أناالموقع ادناه اوافق على استئجار السياراة المزكورة اعلاه من المالك وللمعدة المشرليها كما وأصرح')
+            
+            p.drawString(503, 450, 'بأننى قرأت الشروط المدنة على ظهر هذه الا تفاقة المعقودة بينى وبين المالك كما واقربأن البيانات التى')
+            p.drawString(850, 430, 'اعطيتها فى صحية')
+            p.drawString(503, 300, 'بدفع للستأجر قيمة الوقت التانج عن الحادث خروج السيارات من الكراج ')
 
             p.showPage()
             p.save()
@@ -1237,6 +1243,7 @@ class PrintReceiptCar(View):
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
             p.drawString(100, 1015,receive_car.date.strftime('%d/%m/%Y'))
+            p.drawString(750, 1015,receive_car.date.strftime('%d/%m/%Y'))
             p.setFont("Helvetica-Bold", 15)
             p.drawString(410, 1010, 'RENTAL CAR RECEIPT')
             p.line(50,1000,950,1000)
