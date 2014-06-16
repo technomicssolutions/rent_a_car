@@ -874,17 +874,15 @@ class PrintRentAgreement(View):
             
             table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
             table.wrapOn(p, 200, 400)
-            table.drawOn(p,50, 1180) 
-            p.setFont("Helvetica", 16)
+            table.drawOn(p, 300, 1180)
 
-            p.drawImage(path, 70, 1100, width=30*cm, height=3*cm, preserveAspectRatio=True)
+            p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
 
-            p.drawString(50, 1120, 'Tel : 02-6266634')
-            p.drawString(50, 1100, 'Mob : 055-4087528')
-            p.drawString(50, 1080, 'P.O.Box : 32900')
-            p.drawString(50, 1060, 'Old Passport Road')
-            p.drawString(50, 1040, 'Abu Dhabi - UAE')
+            p.setFont("Helvetica", 12)
+            p.drawString(350, 1050, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
             
+            p.drawString(400, 1036, 'Old Passport Road , Abu Dhabi - UAE')
+            p.setFont("Helvetica", 16)
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
             p.drawString(90, 1015, rent_agreement.agreement_date.strftime('%d/%m/%Y'))
