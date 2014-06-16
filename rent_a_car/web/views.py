@@ -637,8 +637,9 @@ class ReceiveCarView(View):
             receive_car.new_meter_reading = receive_car_details['meter_reading']
             receive_car.leaving_petrol = receive_car_details['returning_petrol']
             receive_car.vehicle_scratch = receive_car_details['vehicle_scratch']
-            receive_car.date = datetime.strptime(receive_car_details['receipt_date'], '%d/%m/%Y %I:%M%p') 
-            receive_car.returning_date_time = datetime.strptime(receive_car_details['returning_date'], '%d/%m/%Y %I:%M%p') 
+            receive_car.receipt_datetime = utc.localize(datetime.strptime(receive_car_details['receipt_date'], '%d/%m/%Y %I:%M%p'))
+
+            receive_car.returning_date_time = utc.localize(datetime.strptime(receive_car_details['returning_date'], '%d/%m/%Y %I:%M%p'))
             receive_car.save()
             client = rent_agreement.client
             client.rent = float(client.rent) - float(rent_agreement.rent)
@@ -750,7 +751,7 @@ class AgreementDetails(View):
                     ctx_receival_details.append({
                         'id': agreement.receivecar_set.all()[0].id if agreement.receivecar_set.all().count() > 0 else '',
                         'receipt_no': agreement.receivecar_set.all()[0].receipt_no if agreement.receivecar_set.all().count() > 0 else '',
-                        'receipt_date': agreement.receivecar_set.all()[0].receipt_datetime.strftime('%d/%m/%Y') if agreement.receivecar_set.all().count() and agreement.receivecar_set.all()[0].receipt_datetime > 0 else '',
+                        'receipt_date': agreement.receivecar_set.all()[0].receipt_datetime.strftime('%d/%m/%Y') if agreement.receivecar_set.all().count() and agreement.receivecar_set.all()[0].receipt_datetime else '',
                         'total_amount': agreement.receivecar_set.all()[0].total_amount if agreement.receivecar_set.all().count() > 0 else '',
                         'deposit': agreement.paid,
                         'meter_reading': agreement.receivecar_set.all()[0].new_meter_reading if agreement.receivecar_set.all().count() > 0 else '',
@@ -1259,7 +1260,8 @@ class PrintReceiptCar(View):
             p.drawString(150, 980, receive_car.rent_agreement.driver.driver_name)
             p.drawString(140, 930, receive_car.rent_agreement.driver.driver_nationality)
             p.drawString(140, 880, receive_car.rent_agreement.driver.driver_passport_no)
-            p.drawString(120, 830, receive_car.rent_agreement.driver.driver_address)
+            p.drawString(120, 830, receive_car.rent_agreement.driver.driver_address.replace('\n', ' '))
+            
             p.drawString(150, 780, receive_car.rent_agreement.driver.driver_license_no)
             p.drawString(280, 730, receive_car.rent_agreement.driver.driver_license_issue_date.strftime('%d/%m/%Y') + ' - ' + receive_car.rent_agreement.driver.driver_license_expiry_date.strftime('%d/%m/%Y'))
 
@@ -1277,7 +1279,7 @@ class PrintReceiptCar(View):
             p.drawString(590, 620, receive_car.rent_agreement.client.phone_number)
             p.drawString(150, 580, receive_car.receipt_datetime.strftime('%d/%m/%Y') if receive_car.receipt_datetime else '')
             p.drawString(300, 580, receive_car.receipt_datetime.strftime('%H:%M%p') if receive_car.receipt_datetime else '')
-            p.drawString(580, 580, receive_car.rent_agreement.client.address)
+            p.drawString(580, 580, receive_car.rent_agreement.client.address.replace('\n', ' '))
             p.drawString(140, 530, receive_car.rent_agreement.vehicle.plate_no)
             p.drawString(340, 530, receive_car.rent_agreement.vehicle.vehicle_color)
             p.drawString(110, 480, receive_car.rent_agreement.vehicle.vehicle_type_name.vehicle_type_name)

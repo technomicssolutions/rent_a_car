@@ -425,11 +425,11 @@ class RevenueReport(View):
                 p.drawString(620, 875, "Receipt - Total Amount")
                 p.drawString(770, 875, "Receipt - Paid")
                 p.drawString(865, 875, "Client Name")
-                
+                agreement_total = 0
+                receive_total = 0
+                y = 850
                 if agreements.count() > 0:
-                    y = 850
-                    agreement_total = 0
-                    receive_total = 0
+                    
                     for agreement in agreements:
                         agreement_total = float(agreement_total) + float(agreement.total_amount)
                         if agreement.receivecar_set.all().count() > 0:
