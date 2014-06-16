@@ -142,7 +142,7 @@ class ReceiveCar(models.Model):
     receipt_no = models.CharField('Receipt No', null=True, blank=True, max_length=10)
     new_meter_reading = models.CharField('Meter Reading', null=True, blank=True, max_length=25)
     type_of_fee = models.CharField('Type of Fee', max_length=40, null=True, blank=True)
-    date = models.DateField('Date', null=True, blank=True)
+    receipt_datetime = models.DateTimeField('Receipt Date Time', null=True, blank=True)
     returning_date_time = models.DateTimeField('Returning Date Time', null=True, blank=True)
     
     petrol = models.DecimalField('Petrol', max_digits=25, decimal_places=2, default=0)

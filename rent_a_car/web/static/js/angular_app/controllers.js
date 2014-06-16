@@ -1136,20 +1136,14 @@ function ReceiveCarController($scope, $http, $location) {
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
-		new Picker.Date($$('#card_expiry_date'), {
-            timePicker: false,
-            positionOffset: {x: 5, y: 0},
-            pickerClass: 'datepicker_bootstrap',
-            useFadeInOut: !Browser.ie,
-            pickOnly: 'months',
-            format:'%m/%Y',
-        });
+		
         new Picker.Date($$('#receipt_date'), {
-            timePicker: false,
+            timePicker: true,
             positionOffset: {x: 5, y: 0},
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y',
+            format:'%d/%m/%Y %X',
+            canAlwaysGoUp: ['months', 'years']
         });
         new Picker.Date($$('#returning_date'), {
             timePicker: true,

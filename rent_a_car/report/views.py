@@ -62,17 +62,13 @@ def header(canvas):
     
     table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
     table.wrapOn(p, 200, 400)
-    table.drawOn(p,50, 1120) 
+    table.drawOn(p, 300, 1160) 
 
-    path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpeg"
-    p.drawImage(path, 70, 1060, width=30*cm, preserveAspectRatio=True)
-
-    p.setFont("Helvetica", 16)
-    p.drawString(50, 1060, 'Tel : 02-6266634')
-    p.drawString(50, 1040, 'Mob : 055-4087528')
-    p.drawString(50, 1020, 'P.O.Box : 32900')
-    p.drawString(50, 1000, 'Old Passport Road')
-    p.drawString(50, 980, 'Abu Dhabi - UAE')
+    path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
+    p.drawImage(path, 70, 1045, width=30*cm, height=3*cm, preserveAspectRatio=True)
+    p.setFont("Helvetica", 12)
+    p.drawString(350, 1020, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+    p.drawString(400, 1006, 'Old Passport Road , Abu Dhabi - UAE')
     p.line(50, 960, 1000, 960)
 
     return p
