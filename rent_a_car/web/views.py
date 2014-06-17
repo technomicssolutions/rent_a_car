@@ -1125,9 +1125,9 @@ class CaseEntry(View):
         if request.is_ajax():
 
             case_details = ast.literal_eval(request.POST['case_details'])
-            client = Client.objects.get(id = int(case_details['client_id']))
+            driver = Driver.objects.get(id = int(case_details['client_id']))
             vehicle = Vehicle.objects.get(id=case_details['vehicle_id'])
-            case = CaseDetail.objects.create(vehicle=vehicle, client=client)
+            case = CaseDetail.objects.create(vehicle=vehicle, client=driver)
             case.fine_amount = case_details['fine']
             case.type_of_case = case_details['type_of_case']
             case.penality_date = datetime.strptime(case_details['penality_date'], '%d/%m/%Y')
@@ -1170,7 +1170,7 @@ class RentAgreementDetails(View):
         if request.is_ajax():
             res = {
                 'result': 'ok',
-                'client_name': rent_agreements[0].driver.driver_names if rent_agreements else '',
+                'client_name': rent_agreements[0].driver.driver_name if rent_agreements else '',
                 'client_id': rent_agreements[0].driver.id if rent_agreements else '',
                 'vehicle_id': rent_agreements[0].vehicle.id if rent_agreements else '',
             }
