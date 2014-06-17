@@ -19,46 +19,46 @@ RENT_TYPE = (
     ('Monthly', 'Monthly'),
 )
 
-class Client(models.Model):
+# class Client(models.Model):
 
-    # Personal Details
-    name = models.CharField('Name of the Client', max_length=75, null=True, blank=True)
-    address = models.TextField('Address', null=True, blank=True)
-    nationality = models.CharField('Nationality', null=True, blank=True, max_length=50)
-    dob = models.DateField('Date of Birth', null=True, blank=True)
-    phone_number = models.CharField('Phone number', max_length=15, unique=True, null=True, blank=True)
-    work_address = models.TextField('Work Address', null=True, blank=True)
-    work_ph_no = models.CharField('Phone no.(Work)', max_length=15, null=True, blank=True)
+#     # Personal Details
+#     name = models.CharField('Name of the Client', max_length=75, null=True, blank=True)
+#     address = models.TextField('Address', null=True, blank=True)
+#     nationality = models.CharField('Nationality', null=True, blank=True, max_length=50)
+#     dob = models.DateField('Date of Birth', null=True, blank=True)
+#     phone_number = models.CharField('Phone number', max_length=15, unique=True, null=True, blank=True)
+#     work_address = models.TextField('Work Address', null=True, blank=True)
+#     work_ph_no = models.CharField('Phone no.(Work)', max_length=15, null=True, blank=True)
 
-    # License Details
-    license_no = models.CharField('License No.', max_length=30, null=True, blank=True)
-    license_type = models.CharField('License Type', max_length=40, null=True, blank=True, choices=LICENSE_TYPE)
-    date_of_issue = models.DateField('Date of Issue', null=True, blank=True)
-    issued_by = models.CharField('Issued By', null=True, blank=True, max_length=50)
-    expiry_license_date = models.DateField('Expiry Date', null=True, blank=True)
+#     # License Details
+#     license_no = models.CharField('License No.', max_length=30, null=True, blank=True)
+#     license_type = models.CharField('License Type', max_length=40, null=True, blank=True, choices=LICENSE_TYPE)
+#     date_of_issue = models.DateField('Date of Issue', null=True, blank=True)
+#     issued_by = models.CharField('Issued By', null=True, blank=True, max_length=50)
+#     expiry_license_date = models.DateField('Expiry Date', null=True, blank=True)
 
-    # Passport Details
-    passport_no = models.CharField('Passport Number', max_length=30, unique=True, null=True, blank=True)
-    date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
-    place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
+#     # Passport Details
+#     passport_no = models.CharField('Passport Number', max_length=30, unique=True, null=True, blank=True)
+#     date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
+#     place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
 
-    emirates_id = models.CharField('Emiratesid', max_length=25, null=True, blank=True)
+#     emirates_id = models.CharField('Emiratesid', max_length=25, null=True, blank=True)
 
-    # Rent Details
-    rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
-    paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
-    balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
+#     # Rent Details
+#     rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
+#     paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
+#     balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
 
 
 
-    def __unicode__(self):
+#     def __unicode__(self):
 
-        return str(self.name)
+#         return str(self.name)
 
-    class Meta:
+#     class Meta:
 
-        verbose_name = 'Client'
-        verbose_name_plural = 'Client'
+#         verbose_name = 'Client'
+#         verbose_name_plural = 'Client'
 
 
 class VehicleType(models.Model):
@@ -103,7 +103,7 @@ class Vehicle(models.Model):
 class RentAgreement(models.Model):
 
     vehicle = models.ForeignKey(Vehicle, null=True, blank=True)
-    client = models.ForeignKey(Client, null=True, blank=True)
+    # client = models.ForeignKey(Client, null=True, blank=True)
     
     agreement_no = models.CharField('Agreement No.', null=True, blank=True, max_length=25)
     agreement_date = models.DateField('Agreement Date', null=True, blank=True)
@@ -126,7 +126,7 @@ class RentAgreement(models.Model):
 
     vehicle_scratch = models.DecimalField('Vehicle Scratch', max_digits=25, decimal_places=2, default=0)
     accident_passable = models.DecimalField('Accident Passable', max_digits=25, decimal_places=2, default=0)
-    
+
     is_completed = models.BooleanField('Completed', default=False)
 
     def __unicode__(self):
@@ -196,17 +196,17 @@ class Driver(models.Model):
     sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
     is_available = models.BooleanField('Driver Available', default=True)
 
-    # license_type = models.CharField('License Type', max_length=40, null=True, blank=True, choices=LICENSE_TYPE)
+    license_type = models.CharField('License Type', max_length=40, null=True, blank=True, choices=LICENSE_TYPE)
     # # Passport Details
-    # date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
-    # place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
+    date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
+    place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
 
-    # emirates_id = models.CharField('Emiratesid', max_length=25, null=True, blank=True)
+    emirates_id = models.CharField('Emiratesid', max_length=25, null=True, blank=True)
 
     # # Rent Details
-    # rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
-    # paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
-    # balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
+    rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
+    paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
+    balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
 
     def __unicode__(self):
 
@@ -220,7 +220,7 @@ class Driver(models.Model):
 class CaseDetail(models.Model):
 
     vehicle = models.ForeignKey(Vehicle, null=True, blank=True)
-    client = models.ForeignKey(Client, null=True, blank=True)
+    client = models.ForeignKey(Driver, null=True, blank=True)
 
     fine_amount = models.DecimalField('Fine Amount', decimal_places=2, max_digits=25, default=0)
     type_of_case = models.CharField('Type of Case', max_length=25, null=True, blank=True)
