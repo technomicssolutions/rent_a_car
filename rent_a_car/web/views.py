@@ -423,10 +423,8 @@ class ReceiveCarView(View):
             vehicle = rent_agreement.vehicle
             vehicle.petrol = receive_car_details['returning_petrol']
             vehicle.save()
-            receive_car.vehicle_scratch = receive_car_details['vehicle_scratch']
             receive_car.fine = receive_car_details['fine']
             receive_car.extra_charge = receive_car_details['extra_charge']
-            receive_car.accident_passable = receive_car_details['accident_passable']
             receive_car.credit_card_no = receive_car_details['credit_card_no']
             receive_car.cheque_no = receive_car_details['cheque_no']
             receive_car.total_amount = receive_car_details['total_amount']
@@ -435,26 +433,22 @@ class ReceiveCarView(View):
             receive_car.notes = receive_car_details['notes']
             receive_car.new_meter_reading = receive_car_details['meter_reading']
             receive_car.leaving_petrol = receive_car_details['returning_petrol']
-            receive_car.vehicle_scratch = receive_car_details['vehicle_scratch']
             receive_car.receipt_datetime = utc.localize(datetime.strptime(receive_car_details['receipt_date'], '%d/%m/%Y %I:%M%p'))
 
             receive_car.returning_date_time = utc.localize(datetime.strptime(receive_car_details['returning_date'], '%d/%m/%Y %I:%M%p'))
             receive_car.save()
-            client = rent_agreement.client
-            client.rent = float(client.rent) - float(rent_agreement.rent)
-            client.rent = float(client.rent) + float(receive_car.total_amount)
-            client.paid = float(client.paid) + float(receive_car.paid)
-            client.balance = float(client.rent) - float(client.paid)
-            client.save() 
+            driver = rent_agreement.driver
+            driver.rent = float(driver.rent) - float(rent_agreement.rent)
+            driver.rent = float(driver.rent) + float(receive_car.total_amount)
+            driver.paid = float(driver.paid) + float(receive_car.paid)
+            driver.balance = float(driver.rent) - float(driver.paid)
+            driver.save() 
             vehicle = rent_agreement.vehicle
             vehicle.meter_reading = receive_car.new_meter_reading
             if receive_car_details['balance'] == 0:
                 vehicle.is_available = True
                 rent_agreement.is_completed = True
                 rent_agreement.save()
-                driver = rent_agreement.driver
-                driver.is_available = True
-                driver.save()
                 
             vehicle.save()
 
@@ -518,7 +512,7 @@ class AgreementDetails(View):
                     ctx_agreements.append({
                         'id': agreement.id,
                         'agreement_no': agreement.agreement_no,
-                        'client': agreement.client.name if agreement.client else '',
+                        # 'client': agreement.client.name if agreement.client else '',
                         'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                         'rent': agreement.rent,
                         'date': agreement.agreement_date.strftime('%d/%m/%Y') if agreement.agreement_date else '',
@@ -526,11 +520,11 @@ class AgreementDetails(View):
                         'begining_time': agreement.starting_date_time.strftime('%I:%M%p') if agreement.starting_date_time else '',
                         'end_date': agreement.end_date_time.strftime('%d/%m/%Y') if agreement.end_date_time else '',
                         'end_time': agreement.end_date_time.strftime('%I:%M%p') if agreement.end_date_time else '',
-                        'license_no': agreement.client.license_no if agreement.client else '',
-                        'license_type': agreement.client.license_type if agreement.client else '',
-                        'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
-                        'passport_no': agreement.client.passport_no if agreement.client else '',
-                        'place_of_issue': agreement.client.place_of_issue if agreement.client else '', 
+                        'license_no': agreement.driver.driver_license_no if agreement.driver else '',
+                        'license_type': agreement.driver.license_type if agreement.driver else '',
+                        'license_date': agreement.driver.driver_license_issue_date.strftime('%d/%m/%Y') if agreement.driver else '',
+                        'passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
+                        'place_of_issue': agreement.driver.place_of_issue if agreement.driver else '', 
                         'vehicle_condition': agreement.vehicle.vehicle_condition if agreement.vehicle else '',
                         'meter_reading': agreement.vehicle.meter_reading if agreement.vehicle else '',
                         'insurance_value': agreement.vehicle.insuranse_value if agreement.vehicle else '',
@@ -540,8 +534,8 @@ class AgreementDetails(View):
                         'driver_passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
                         'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                         'paid': agreement.paid,
-                        'damage': agreement.accident_passable if agreement.accident_passable else '',
-                        'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else '',
+                        'damage': agreement.accident_passable if agreement.accident_passable else 0,
+                        'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else 0,
                         'late_message': late_message,
                         'petrol': agreement.leaving_petrol,
                         'receival_details': ctx_receival_details,
@@ -569,7 +563,7 @@ class AgreementDetails(View):
                 ctx_whole_agreements.append({
                     'id': agreement.id,
                     'agreement_no': agreement.agreement_no,
-                    'client': agreement.client.name if agreement.client else '',
+                    # 'client': agreement.client.name if agreement.client else '',
                     'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                     'rent': agreement.rent,
                     'date': agreement.agreement_date.strftime('%d/%m/%Y'),
@@ -577,11 +571,11 @@ class AgreementDetails(View):
                     'begining_time': agreement.starting_date_time.strftime('%I:%M%p'),
                     'end_date': agreement.end_date_time.strftime('%d/%m/%Y'),
                     'end_time': agreement.end_date_time.strftime('%I:%M%p'),
-                    'license_no': agreement.client.license_no if agreement.client else '',
-                    'license_type': agreement.client.license_type if agreement.client else '',
-                    'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
-                    'passport_no': agreement.client.passport_no if agreement.client else '',
-                    'place_of_issue': agreement.client.place_of_issue if agreement.client else '', 
+                    'license_no': agreement.driver.driver_license_no if agreement.driver else '',
+                    'license_type': agreement.driver.license_type if agreement.driver else '',
+                    'license_date': agreement.driver.driver_license_issue_date.strftime('%d/%m/%Y') if agreement.driver else '',
+                    'passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
+                    'place_of_issue': agreement.driver.place_of_issue if agreement.driver else '', 
                     'vehicle_condition': agreement.vehicle.vehicle_condition if agreement.vehicle else '',
                     'meter_reading': agreement.vehicle.meter_reading if agreement.vehicle else '',
                     'insurance_value': agreement.vehicle.insuranse_value if agreement.vehicle else '',
@@ -592,8 +586,8 @@ class AgreementDetails(View):
                     'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                     'paid': agreement.paid,
                     'damage': agreement.accident_passable if agreement.accident_passable else '',
-                    'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else '',
-                    'late_message': 'Late receival' if agreement.end_date_time < current_date else '',
+                    'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else 0,
+                    'late_message': 'Late receival' if agreement.end_date_time < current_date else 0,
                     'receival_details': ctx_receival_details,
                 })
                 ctx_receival_details = []
@@ -605,7 +599,7 @@ class AgreementDetails(View):
                 ctx_rent_agreements.append({
                     'id': agreement.id,
                     'agreement_no': agreement.agreement_no,
-                    'client': agreement.client.name if agreement.client else '',
+                    # 'client': agreement.client.name if agreement.client else '',
                     'vehicle_no': agreement.vehicle.vehicle_no if agreement.vehicle else '',
                     'rent': agreement.rent,
                     'date': agreement.agreement_date.strftime('%d/%m/%Y') if agreement.agreement_date else '',
@@ -613,11 +607,11 @@ class AgreementDetails(View):
                     'begining_time': agreement.starting_date_time.strftime('%I:%M%p ') if agreement.starting_date_time else '',
                     'end_date': agreement.end_date_time.strftime('%d/%m/%Y') if agreement.end_date_time else '',
                     'end_time': agreement.end_date_time.strftime('%I:%M%p ') if agreement.end_date_time else '',
-                    'license_no': agreement.client.license_no if agreement.client else '',
-                    'license_type': agreement.client.license_type if agreement.client else '',
-                    'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
-                    'passport_no': agreement.client.passport_no if agreement.client else '',
-                    'place_of_issue': agreement.client.place_of_issue if agreement.client else '', 
+                    'license_no': agreement.driver.driver_license_no if agreement.driver else '',
+                    'license_type': agreement.driver.license_type if agreement.driver else '',
+                    'license_date': agreement.driver.driver_license_issue_date.strftime('%d/%m/%Y') if agreement.driver else '',
+                    'passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
+                    'place_of_issue': agreement.driver.place_of_issue if agreement.driver else '', 
                     'vehicle_condition': agreement.vehicle.vehicle_condition if agreement.vehicle else '',
                     'meter_reading': agreement.vehicle.meter_reading if agreement.vehicle else '',
                     'insurance_value': agreement.vehicle.insuranse_value if agreement.vehicle else '',
@@ -628,8 +622,8 @@ class AgreementDetails(View):
                     'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                     'paid': agreement.paid,
                     'late_message': late_message,
-                    'damage': agreement.accident_passable if agreement.accident_passable else '',
-                    'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else '',
+                    'damage': agreement.accident_passable if agreement.accident_passable else 0,
+                    'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else 0,
                 })
             
             res = {
@@ -1079,21 +1073,21 @@ class PrintReceiptCar(View):
             p.drawString(150, 780, receive_car.rent_agreement.driver.driver_license_no)
             p.drawString(280, 730, receive_car.rent_agreement.driver.driver_license_issue_date.strftime('%d/%m/%Y') + ' - ' + receive_car.rent_agreement.driver.driver_license_expiry_date.strftime('%d/%m/%Y'))
 
-            p.drawString(560, 970, receive_car.rent_agreement.client.name)
-            p.drawString(610, 920, receive_car.rent_agreement.client.nationality)
-            p.drawString(610, 870, receive_car.rent_agreement.client.dob.strftime('%d/%m/%Y'))
-            p.drawString(610, 820, receive_car.rent_agreement.client.passport_no)
-            p.drawString(670, 770, receive_car.rent_agreement.client.date_of_passport_issue.strftime('%d/%m/%Y') + ' - '+receive_car.rent_agreement.client.place_of_issue)
-            p.drawString(650, 720, receive_car.rent_agreement.client.issued_by)
-            p.drawString(650, 670, receive_car.rent_agreement.client.expiry_license_date.strftime('%d/%m/%Y'))
+            # p.drawString(560, 970, receive_car.rent_agreement.client.name)
+            # p.drawString(610, 920, receive_car.rent_agreement.client.nationality)
+            # p.drawString(610, 870, receive_car.rent_agreement.client.dob.strftime('%d/%m/%Y'))
+            # p.drawString(610, 820, receive_car.rent_agreement.client.passport_no)
+            # p.drawString(670, 770, receive_car.rent_agreement.client.date_of_passport_issue.strftime('%d/%m/%Y') + ' - '+receive_car.rent_agreement.client.place_of_issue)
+            # p.drawString(650, 720, receive_car.rent_agreement.client.issued_by)
+            # p.drawString(650, 670, receive_car.rent_agreement.client.expiry_license_date.strftime('%d/%m/%Y'))
             p.drawString(150, 670, receive_car.rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
             p.drawString(300, 670, receive_car.rent_agreement.starting_date_time.strftime('%H:%M%p'))
             p.drawString(160, 620, receive_car.rent_agreement.end_date_time.strftime('%d/%m/%Y'))
             p.drawString(300, 620, receive_car.rent_agreement.end_date_time.strftime('%H:%M%p'))
-            p.drawString(590, 620, receive_car.rent_agreement.client.phone_number)
+            # p.drawString(590, 620, receive_car.rent_agreement.client.phone_number)
             p.drawString(150, 580, receive_car.receipt_datetime.strftime('%d/%m/%Y') if receive_car.receipt_datetime else '')
             p.drawString(300, 580, receive_car.receipt_datetime.strftime('%H:%M%p') if receive_car.receipt_datetime else '')
-            p.drawString(580, 580, receive_car.rent_agreement.client.address.replace('\n', ' '))
+            # p.drawString(580, 580, receive_car.rent_agreement.client.address.replace('\n', ' '))
             p.drawString(140, 530, receive_car.rent_agreement.vehicle.plate_no)
             p.drawString(340, 530, receive_car.rent_agreement.vehicle.vehicle_color)
             p.drawString(110, 480, receive_car.rent_agreement.vehicle.vehicle_type_name.vehicle_type_name)
@@ -1105,8 +1099,9 @@ class PrintReceiptCar(View):
             p.drawString(550, 430, str(receive_car.rent_agreement.paid))
             p.drawString(550, 380, str(receive_car.fine))
             p.drawString(550, 340, str(receive_car.petrol))
-            p.drawString(550, 310, str(receive_car.accident_passable))
-            p.drawString(550, 270, str(receive_car.vehicle_scratch))
+            print receive_car.rent_agreement.accident_passable, receive_car.rent_agreement.vehicle_scratch
+            p.drawString(550, 310, str(receive_car.rent_agreement.accident_passable))
+            p.drawString(550, 270, str(receive_car.rent_agreement.vehicle_scratch))
             p.drawString(550, 230, str(receive_car.extra_charge))
             
             p.drawString(550, 190, str(receive_car.reduction))
