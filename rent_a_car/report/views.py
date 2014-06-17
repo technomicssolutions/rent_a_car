@@ -130,9 +130,9 @@ class RentReport(View):
                 p.drawString(140, 875, "Agreement No")
                 p.drawString(240, 875, "Vehicle No")
                 p.drawString(340, 875, "Plate No")
-                p.drawString(440, 875, "Client Name")
+                p.drawString(440, 875, "Driver Name")
                 p.drawString(580, 875, "Passport No")
-                p.drawString(680,875, "Driver Name")
+                p.drawString(680,875, "License No")
                 p.drawString(780, 875, "Total Amount")
                 p.drawString(880, 875, "Paid")
                 p.drawString(950, 875, "Balance")
@@ -153,9 +153,9 @@ class RentReport(View):
                         p.drawString(150, y, agreement.agreement_no)
                         p.drawString(240, y, agreement.vehicle.vehicle_no)
                         p.drawString(340, y, agreement.vehicle.plate_no)
-                        p.drawString(440, y, agreement.client.name)
-                        p.drawString(580, y, agreement.client.passport_no)
-                        p.drawString(680, y, agreement.driver.driver_name)
+                        p.drawString(440, y, agreement.driver.driver_name)
+                        p.drawString(580, y, agreement.driver.driver_passport_no)
+                        p.drawString(680, y, agreement.driver.driver_license_no)
                         p.drawString(780, y, str(total_amount))
                         p.drawString(880, y, str(paid))
                         p.drawString(950, y, str(balance))
@@ -214,8 +214,8 @@ class RentReport(View):
                 p.drawString(140, 875, "Agreement No")
                 p.drawString(240, 875, "Vehicle No")
                 p.drawString(340, 875, "Plate No")
-                p.drawString(440, 875, "Client Name")
-                p.drawString(590,875, "Driver Name")
+                p.drawString(440, 875, "Driver Name")
+                p.drawString(590,875, "Passport No")
                 p.drawString(720, 875, "Total Amount")
                 p.drawString(840, 875, "Paid")
                 p.drawString(950, 875, "Balance")
@@ -235,8 +235,9 @@ class RentReport(View):
                         p.drawString(150, y, agreement.agreement_no)
                         p.drawString(240, y, agreement.vehicle.vehicle_no)
                         p.drawString(340, y, agreement.vehicle.plate_no)
-                        p.drawString(440, y, agreement.client.name)
-                        p.drawString(590, y, agreement.driver.driver_name)
+                        p.drawString(440, y, agreement.driver.driver_name)
+
+                        p.drawString(590, y, agreement.driver.driver_passport_no)
                         p.drawString(720, y, str(total_amount))
                         p.drawString(840, y, str(paid))
                         p.drawString(950, y, str(float(total_amount) - float(paid)))
@@ -424,7 +425,7 @@ class RevenueReport(View):
                 p.drawString(530, 875, "Receipt No")
                 p.drawString(620, 875, "Receipt - Total Amount")
                 p.drawString(770, 875, "Receipt - Paid")
-                p.drawString(865, 875, "Client Name")
+                p.drawString(865, 875, "Driver Name")
                 agreement_total = 0
                 receive_total = 0
                 y = 850
@@ -441,7 +442,7 @@ class RevenueReport(View):
                         p.drawString(540, y, str(agreement.receivecar_set.all()[0].receipt_no) if agreement.receivecar_set.all().count() > 0 else '')
                         p.drawString(620, y, str(agreement.receivecar_set.all()[0].total_amount) if agreement.receivecar_set.all().count() > 0 else '')
                         p.drawString(780, y, str(agreement.receivecar_set.all()[0].paid) if agreement.receivecar_set.all().count() > 0 else '')
-                        p.drawString(865, y, agreement.client.name)
+                        p.drawString(865, y, agreement.driver.driver_name)
                         y = y - 30
                         total_amount = 0
                         paid = 0
