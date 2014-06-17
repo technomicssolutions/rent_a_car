@@ -713,7 +713,7 @@ function RentAgreementController($scope, $http, $location) {
 			$scope.validation_error = 'Please choose Driver name';
 			return false;
 		} else if ($scope.rent_agreement.client_identity == '' || $scope.rent_agreement.client_identity == undefined) {
-			$scope.validation_error = 'Please choose the client identity';
+			$scope.validation_error = 'Please choose the Driver Identity';
 			return false;
 		} else if ($scope.vehicle.id == '' || $scope.vehicle.id == undefined) {
 			$scope.validation_error = 'Please choose the Vehicle';

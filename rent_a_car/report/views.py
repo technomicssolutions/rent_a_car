@@ -336,7 +336,7 @@ class VehicleOutstandingReport(View):
         p.drawString(450, 930, 'Outstanding Vehicles Report')
         p.drawString(50, 875, "Vehicle No")
         p.drawString(140, 875, "Plate No")
-        p.drawString(240, 875, "Client Name")
+        p.drawString(240, 875, "Driver Name")
         p.drawString(440, 875, "Total Amount")
         p.drawString(600, 875, "Paid")
         p.drawString(700,875, "Balance")
@@ -349,7 +349,7 @@ class VehicleOutstandingReport(View):
 
                 p.drawString(50, y, agreement.vehicle.vehicle_no)
                 p.drawString(150, y, agreement.vehicle.plate_no)
-                p.drawString(240, y, agreement.client.name)
+                p.drawString(240, y, agreement.driver.driver_name)
                 p.drawString(440, y, str(agreement.total_amount))
                 p.drawString(600, y, str(agreement.paid))
                 p.drawString(700, y, str(float(agreement.total_amount) - float(agreement.paid)))
