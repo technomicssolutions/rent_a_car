@@ -527,23 +527,6 @@ function RentAgreementController($scope, $http, $location) {
             format:'%d/%m/%Y',
             canAlwaysGoUp: ['months', 'years']
         });
-        
-      	new Picker.Date($$('#expiry_date'), {
-            timePicker: false,
-            positionOffset: {x: 5, y: 0},
-            pickerClass: 'datepicker_bootstrap',
-            useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y',
-            canAlwaysGoUp: ['months', 'years']
-        });
-        new Picker.Date($$('#date_of_license_issue'), {
-            timePicker: false,
-            positionOffset: {x: 5, y: 0},
-            pickerClass: 'datepicker_bootstrap',
-            useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y',
-            canAlwaysGoUp: ['months', 'years']
-        });
 
 	}
 	$scope.add_new_vehicle = function() {
@@ -600,6 +583,7 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.validation_error = '';
 		$scope.home_address = '';
 		$scope.driver_working_address = '';
+		$scope.rent_agreement.driver_id = '';
 		$scope.driver = {
 			'id': '',
 			'driver_name': '',
