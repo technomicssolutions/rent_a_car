@@ -200,7 +200,7 @@
 							<label for="accident_passable">Accident Passable</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="accident_passable" ng-model="agreement.damage" id="accident_passable">
+							<input type="text" name="accident_passable" ng-model="agreement.damage" id="accident_passable" readonly>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -208,7 +208,7 @@
 							<label for="vehicle_scratch">Vehicle Scratch</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="vehicle_scratch" ng-model="agreement.vehicle_scratch" id="vehicle_scratch">
+							<input type="text" name="vehicle_scratch" ng-model="agreement.vehicle_scratch" id="vehicle_scratch" readonly>
 						</div>
 					</div>
 				</div>
@@ -375,7 +375,6 @@
 							<label for="notes">Notes</label>
 						</div>
 						<div class="forminput">
-							<!-- <input type="text" name="notes" ng-model="receipt.notes" id="notes" readonly> -->
 							<textarea name="notes" ng-model="receipt.notes" id="notes"></textarea>
 						</div>
 					</div>

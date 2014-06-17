@@ -1213,8 +1213,8 @@ function ReceiveCarController($scope, $http, $location) {
 		// if ($scope.receipt.vehicle_scratch == '' || $scope.receipt.vehicle_scratch != Number($scope.receipt.vehicle_scratch)) {
 		// 	$scope.receipt.vehicle_scratch = 0;
 		// }
-		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.vehicle_scratch) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
-		$scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
+		// $scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.vehicle_scratch) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
+		// $scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
 		$scope.receipt.balance = parseFloat($scope.receipt.balance) - parseFloat($scope.receipt.paid);
 	}
