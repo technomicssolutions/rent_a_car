@@ -124,6 +124,9 @@ class RentAgreement(models.Model):
     leaving_meterreading = models.CharField('Meter Reading', null=True, blank=True, max_length=20)
     leaving_petrol = models.CharField('Leaving Petrol', max_length=25, null=True, blank=True)
 
+    vehicle_scratch = models.DecimalField('Vehicle Scratch', max_digits=25, decimal_places=2, default=0)
+    accident_passable = models.DecimalField('Accident Passable', max_digits=25, decimal_places=2, default=0)
+    
     is_completed = models.BooleanField('Completed', default=False)
 
     def __unicode__(self):
@@ -146,11 +149,14 @@ class ReceiveCar(models.Model):
     returning_date_time = models.DateTimeField('Returning Date Time', null=True, blank=True)
     
     petrol = models.DecimalField('Petrol', max_digits=25, decimal_places=2, default=0)
-    vehicle_scratch = models.DecimalField('Vehicle Scratch', max_digits=25, decimal_places=2, default=0)
+    
+    # vehicle_scratch = models.DecimalField('Vehicle Scratch', max_digits=25, decimal_places=2, default=0)
+    # accident_passable = models.DecimalField('Accident Passable', max_digits=25, decimal_places=2, default=0)
+
     fine = models.DecimalField('Fine', max_digits=25, decimal_places=2, default=0)
     reduction = models.DecimalField('Reduction', max_digits=25, decimal_places=2, default=0)
     extra_charge = models.DecimalField('Extra Charge', max_digits=25, decimal_places=2, default=0)
-    accident_passable = models.DecimalField('Accident Passable', max_digits=25, decimal_places=2, default=0)
+    
     credit_card_no = models.CharField('Credit card no', max_length=20, null=True, blank=True)
     cheque_no = models.CharField('Cheque no', null=True, blank=True, max_length=20)
 
@@ -189,6 +195,18 @@ class Driver(models.Model):
     sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
     sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
     is_available = models.BooleanField('Driver Available', default=True)
+
+    # license_type = models.CharField('License Type', max_length=40, null=True, blank=True, choices=LICENSE_TYPE)
+    # # Passport Details
+    # date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
+    # place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
+
+    # emirates_id = models.CharField('Emiratesid', max_length=25, null=True, blank=True)
+
+    # # Rent Details
+    # rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
+    # paid = models.DecimalField('Paid', default=0, max_digits=14, decimal_places=2)
+    # balance = models.DecimalField('Balance', default=0, max_digits=14, decimal_places=2)
 
     def __unicode__(self):
 

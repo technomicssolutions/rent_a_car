@@ -738,6 +738,8 @@ function RentAgreementController($scope, $http, $location) {
 		'notes': '',
 		'client_identity': '',
 		'petrol': '',
+		'vehicle_scratch': 0,
+		'accident_passable': 0,
 	}
 	$scope.driver_details_needed = true;
 	$scope.init = function(csrf_token) {
@@ -1124,14 +1126,14 @@ function ReceiveCarController($scope, $http, $location) {
 		'meter_reading': 0,
 		'petrol': 0,
 		'fine': 0,
-		'accident_passable': 0,
+		// 'accident_passable': 0,
 		'extra_charge': 0,
 		'total_amount': 0,
 		'reduction': 0,
 		'balance': 0,
 		'paid': 0,
 		'notes': '',
-		'vehicle_scratch': 0,
+		// 'vehicle_scratch': 0,
 		'returning_petrol': 0,
 	}
 	$scope.init = function(csrf_token) {
@@ -1171,14 +1173,14 @@ function ReceiveCarController($scope, $http, $location) {
 			'meter_reading': 0,
 			'petrol': 0,
 			'fine': 0,
-			'accident_passable': 0,
+			// 'accident_passable': 0,
 			'extra_charge': 0,
 			'total_amount': 0,
 			'reduction': 0,
 			'balance': 0,
 			'paid': 0,
 			'notes': '',
-			'vehicle_scratch': 0,
+			// 'vehicle_scratch': 0,
 			'returning_petrol': 0,
 			'returning_date': ''
 		}
@@ -1208,10 +1210,9 @@ function ReceiveCarController($scope, $http, $location) {
 		if ($scope.receipt.paid == '' || $scope.receipt.paid != Number($scope.receipt.paid)) {
 			$scope.receipt.paid = 0;
 		}
-		if ($scope.receipt.vehicle_scratch == '' || $scope.receipt.vehicle_scratch != Number($scope.receipt.vehicle_scratch)) {
-			$scope.receipt.vehicle_scratch = 0;
-		}
-		console.log($scope.receipt.vehicle_scratch);
+		// if ($scope.receipt.vehicle_scratch == '' || $scope.receipt.vehicle_scratch != Number($scope.receipt.vehicle_scratch)) {
+		// 	$scope.receipt.vehicle_scratch = 0;
+		// }
 		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.vehicle_scratch) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
 		$scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);

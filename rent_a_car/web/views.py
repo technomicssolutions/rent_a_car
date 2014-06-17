@@ -566,7 +566,8 @@ class RentAgreementView(View):
                 rent_agreement.starting_date_time = start_date_time
                 rent_agreement.end_date_time = end_date_time
                 rent_agreement.rent_type = rent_agreement_details['rent_type']
-                
+                rent_agreement.vehicle_scratch = rent_agreement_details['vehicle_scratch']
+                rent_agreement.accident_passable = rent_agreement_details['accident_passable']
                 driver = Driver.objects.get(id=int(rent_agreement_details['driver_id']))
                 driver.is_available = False
                 driver.save()
@@ -703,12 +704,12 @@ class AgreementDetails(View):
                             'deposit': agreement.paid,
                             'new_meter_reading': agreement.receivecar_set.all()[0].new_meter_reading if agreement.receivecar_set.all().count() > 0 else '',
                             'fine': agreement.receivecar_set.all()[0].fine if agreement.receivecar_set.all().count() > 0 else '',
-                            'damage': agreement.receivecar_set.all()[0].accident_passable if agreement.receivecar_set.all().count() > 0 else '',
+                            # 'damage': agreement.receivecar_set.all()[0].accident_passable if agreement.receivecar_set.all().count() > 0 else '',
                             'petrol': agreement.receivecar_set.all()[0].petrol if agreement.receivecar_set.all().count() > 0 else '',
                             'extra_charge': agreement.receivecar_set.all()[0].extra_charge if agreement.receivecar_set.all().count() > 0 else '',
                             'reduction': agreement.receivecar_set.all()[0].reduction if agreement.receivecar_set.all().count() > 0 else '',
                             'paid': agreement.receivecar_set.all()[0].paid if agreement.receivecar_set.all().count() > 0 else '',
-                            'vehicle_scratch': agreement.receivecar_set.all()[0].vehicle_scratch if agreement.receivecar_set.all().count() > 0 else '',
+                            # 'vehicle_scratch': agreement.receivecar_set.all()[0].vehicle_scratch if agreement.receivecar_set.all().count() > 0 else '',
                             'petrol_on_return': agreement.receivecar_set.all()[0].returning_petrol if agreement.receivecar_set.all().count() > 0 else '',
                         })
                     late_message = ''
@@ -741,6 +742,8 @@ class AgreementDetails(View):
                         'driver_passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
                         'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                         'paid': agreement.paid,
+                        'damage': agreement.accident_passable if agreement.accident_passable else '',
+                        'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else '',
                         'late_message': late_message,
                         'petrol': agreement.leaving_petrol,
                         'receival_details': ctx_receival_details,
@@ -756,7 +759,7 @@ class AgreementDetails(View):
                         'deposit': agreement.paid,
                         'meter_reading': agreement.receivecar_set.all()[0].new_meter_reading if agreement.receivecar_set.all().count() > 0 else '',
                         'fine': agreement.receivecar_set.all()[0].fine if agreement.receivecar_set.all().count() > 0 else '',
-                        'accident_passable': agreement.receivecar_set.all()[0].accident_passable if agreement.receivecar_set.all().count() > 0 else '',
+                        # 'accident_passable': agreement.receivecar_set.all()[0].accident_passable if agreement.receivecar_set.all().count() > 0 else '',
                         'petrol': agreement.receivecar_set.all()[0].petrol if agreement.receivecar_set.all().count() > 0 else '',
                         'extra_charge': agreement.receivecar_set.all()[0].extra_charge if agreement.receivecar_set.all().count() > 0 else '',
                         'reduction': agreement.receivecar_set.all()[0].reduction if agreement.receivecar_set.all().count() > 0 else '',
@@ -790,6 +793,8 @@ class AgreementDetails(View):
                     'driver_passport_no': agreement.driver.driver_passport_no if agreement.driver else '',
                     'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                     'paid': agreement.paid,
+                    'damage': agreement.accident_passable if agreement.accident_passable else '',
+                    'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else '',
                     'late_message': 'Late receival' if agreement.end_date_time < current_date else '',
                     'receival_details': ctx_receival_details,
                 })
@@ -807,9 +812,9 @@ class AgreementDetails(View):
                     'rent': agreement.rent,
                     'date': agreement.agreement_date.strftime('%d/%m/%Y') if agreement.agreement_date else '',
                     'begining_date': agreement.starting_date_time.strftime('%d/%m/%Y') if agreement.starting_date_time else '',
-                    'begining_time': agreement.starting_date_time.strftime('%H:%M') if agreement.starting_date_time else '',
+                    'begining_time': agreement.starting_date_time.strftime('%I:%M%p ') if agreement.starting_date_time else '',
                     'end_date': agreement.end_date_time.strftime('%d/%m/%Y') if agreement.end_date_time else '',
-                    'end_time': agreement.end_date_time.strftime('%H:%M') if agreement.end_date_time else '',
+                    'end_time': agreement.end_date_time.strftime('%I:%M%p ') if agreement.end_date_time else '',
                     'license_no': agreement.client.license_no if agreement.client else '',
                     'license_type': agreement.client.license_type if agreement.client else '',
                     'license_date': agreement.client.date_of_issue.strftime('%d/%m/%Y') if agreement.client else '',
@@ -825,7 +830,8 @@ class AgreementDetails(View):
                     'sponsar_name': agreement.driver.sponsar_name if agreement.driver else '',
                     'paid': agreement.paid,
                     'late_message': late_message,
-
+                    'damage': agreement.accident_passable if agreement.accident_passable else '',
+                    'vehicle_scratch': agreement.vehicle_scratch if agreement.vehicle_scratch else '',
                 })
             
             res = {
