@@ -1302,6 +1302,10 @@ function AddDriverController($scope, $http, $location) {
 		'sponsar_name': '',
 		'sponsar_ph': '',
 		'working_tel_no': '',
+		'license_type': '',
+		'passport_issued_date': '',
+		'place_of_issue': '',
+		'emirates_id': '',
 	}
 	$scope.sponsar_address = '';
 	$scope.home_address = '';
@@ -1329,10 +1333,18 @@ function AddDriverController($scope, $http, $location) {
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y',
         });
+        new Picker.Date($$('#passport_issued_date'), {
+            timePicker: false,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y',
+        });
 	}
 	$scope.validate_driver_form = function() {
 		$scope.driver.dob = $$('#dob')[0].get('value');
 		$scope.driver.date_of_license_issue =  $$('#date_of_license_issue')[0].get('value');
+		$scope.driver.passport_issued_date =  $$('#passport_issued_date')[0].get('value');
 		$scope.driver.expiry_date = $$('#expiry_date')[0].get('value');
 		if ($scope.driver.name == '' || $scope.driver.name == undefined) {
 			$scope.validation_error = 'Please enter Name';
@@ -1352,6 +1364,9 @@ function AddDriverController($scope, $http, $location) {
 		} else if ($scope.driver.license_no == '' || $scope.driver.license_no == undefined) {
 			$scope.validation_error = 'Please enter License No';
 			return false;
+		} else if ($scope.driver.license_type == '' || $scope.driver.license_type == undefined) {
+			$scope.validation_error = 'Please choose License Type';
+			return false;
 		} else if ($scope.driver.date_of_license_issue == '' || $scope.driver.date_of_license_issue == undefined) {
 			$scope.validation_error = 'Please enter Date of License Issued';
 			return false;
@@ -1363,6 +1378,15 @@ function AddDriverController($scope, $http, $location) {
 			return false;
 		} else if ($scope.driver.passport_no == '' || $scope.driver.passport_no == undefined) {
 			$scope.validation_error = 'Please enter Passport No';
+			return false;
+		} else if ($scope.driver.passport_issued_date == '' || $scope.driver.passport_issued_date == undefined) {
+			$scope.validation_error = 'Please enter Passport Issued Date';
+			return false;
+		} else if ($scope.driver.place_of_issue == '' || $scope.driver.place_of_issue == undefined) {
+			$scope.validation_error = 'Please enter Place of Issued';
+			return false;
+		} else if ($scope.driver.emirates_id == '' || $scope.driver.emirates_id == undefined) {
+			$scope.validation_error = 'Please enter Emirates Id';
 			return false;
 		} else if ($scope.driver.sponsar_name == '' || $scope.driver.sponsar_name == undefined) {
 			$scope.validation_error = 'Please enter Sponsar Name';

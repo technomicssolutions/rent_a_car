@@ -863,6 +863,10 @@ class AddDriver(View):
                 driver.sponsar_phone = driver_details['sponsar_ph']
                 driver.driver_working_address = request.POST['driver_working_address']
                 driver.driver_working_ph = driver_details['working_tel_no']
+                driver.license_type = driver_details['license_type']
+                driver.date_of_passport_issue = datetime.strptime(driver_details['passport_issued_date'], '%d/%m/%Y')
+                driver.place_of_issue = driver_details['place_of_issue']
+                driver.emirates_id = driver_details['emirates_id']
                 driver.save()
                 ctx_driver.append({
                     'id': driver.id,
@@ -871,16 +875,20 @@ class AddDriver(View):
                     'driver_phone': driver.driver_phone,
                     'driver_nationality': driver.driver_nationality,
                     'driver_license_no': driver.driver_license_no,
-                    'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y'),
+                    'driver_license_issue_date': driver.driver_license_issue_date.strftime('%d/%m/%Y') if driver.driver_license_issue_date else '',
                     'driver_license_issue_place': driver.driver_license_issue_place,
-                    'driver_license_expiry_date': driver.driver_license_expiry_date.strftime('%d/%m/%Y'),
-                    'driver_dob': driver.driver_dob.strftime('%d/%m/%Y'),
+                    'driver_license_expiry_date': driver.driver_license_expiry_date.strftime('%d/%m/%Y') if driver.driver_license_expiry_date else '',
+                    'driver_dob': driver.driver_dob.strftime('%d/%m/%Y') if driver.driver_dob else '',
                     'sponsar_name': driver.sponsar_name,
                     'sponsar_address': driver.sponsar_address,
                     'sponsar_phone': driver.sponsar_phone,
                     'passport_no': driver.driver_passport_no,
                     'driver_working_address': driver.driver_working_address,
-                    'working_tel_no': driver.driver_working_ph
+                    'working_tel_no': driver.driver_working_ph,
+                    'license_type': driver.license_type,
+                    'place_of_issue': driver.place_of_issue,
+                    'emirates_id': driver.emirates_id,
+                    'passport_issued_date': driver.date_of_passport_issue.strftime('%d/%m/%Y') if driver.date_of_passport_issue else '',
                 })
                 res = {
                     'result': 'ok',
@@ -916,7 +924,11 @@ class DriversList(View):
                     'sponsar_address': driver.sponsar_address,
                     'sponsar_phone': driver.sponsar_phone,
                     'driver_working_address': driver.driver_working_address,
-                    'working_tel_no': driver.driver_working_ph
+                    'working_tel_no': driver.driver_working_ph,
+                    'license_type': driver.license_type,
+                    'place_of_issue': driver.place_of_issue,
+                    'emirates_id': driver.emirates_id,
+                    'passport_issued_date': driver.date_of_passport_issue.strftime('%d/%m/%Y') if driver.date_of_passport_issue else '',
                 })
             res = {
                 'result': 'ok',
