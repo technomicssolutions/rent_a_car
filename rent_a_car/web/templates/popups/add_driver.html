@@ -71,6 +71,20 @@
                             </div>
                             <div class="formrow">
                                 <div class="formtext">
+                                    <label for="license_type">License Type</label>
+                                </div>
+                                <div class="forminput">  
+                                    <select name="license_type" ng-model="driver.license_type">
+                                        <option value=''>Select</option>
+                                        <option value="automatic">Automatic</option>
+                                        <option value='manual'>Manual</option>
+                                        <option value='heavy'>Heavy</option>
+                                    </select>
+                                </div>  
+                            </div>
+                       
+                            <div class="formrow">
+                                <div class="formtext">
                                     <label for="date_of_license_issue">Date of License Issued</label>
                                 </div>
                                 <div class="forminput">  
@@ -101,6 +115,31 @@
                                     <input type="text" name="passport_no" ng-model="driver.passport_no"  />
                                 </div>  
                             </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label for="passport_issued_date">Passport Issued Date</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="passport_issued_date" ng-model="driver.passport_issued_date" id="passportissued_date"/>
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label for="place_of_issue">Place of Issued</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="place_of_issue" ng-model="driver.place_of_issue" />
+                                </div>  
+                            </div>
+                            <div class="formrow">
+                                <div class="formtext">
+                                    <label for="emirates_id">Emirates Id</label>
+                                </div>
+                                <div class="forminput">  
+                                    <input type="text" name="emirates_id" ng-model="driver.emirates_id" />
+                                </div>  
+                            </div>
+                            
                             <div class="formrow">
                                 <div class="formtext">
                                     <label for="sponsar_name">Sponsar Name.</label>

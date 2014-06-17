@@ -32,61 +32,150 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="name">Client</label>
+							<label for="driver_name">Driver Name</label>
 						</div>
 						<div class="forminput">
-							<select ng-model="client_data">
-								<option value="" ng-click="get_customer_details('')">Select</option>
-								<option ng-repeat="client in clients" value="[[client.client_name]]" ng-click="get_customer_details(client)" ng-selected="client.client_name == client_data.client_name">[[client.client_name]]</option>
-								<option value="other" ng-click="add_client()">Other</option>
+							<select ng-model="driver_data">
+								<option value="" ng-click="get_driver_details('')">Select</option>
+								<option ng-repeat="driver in drivers" value="[[driver.driver_name]]" ng-click="get_driver_details(driver)" ng-selected="driver.driver_name == driver_data.driver_name">[[driver.driver_name]]</option>
+								<option value="other" ng-click="add_new_driver()">Other</option>
 							</select>
 						</div>
 					</div>
-					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="license_no">License No.</label>
+							<label for="driver_phone">Driver Phone</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="client.license_no" name="license_no" readonly>
-						</div>
-					</div>
-					
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="license_type">License Type.</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="client.license_type" name="license_type" readonly>
+							<input type="text" ng-model="driver.driver_phone" name="driver_phone" readonly/>
+
 						</div>
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="expiry_date">License Expiry Date.</label>
+							<label for="driver_address">Driver Address</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="client.expiry_date" name="expiry_date" readonly>
+							<textarea ng-model="driver.driver_address" name="driver_address" readonly></textarea>
+
 						</div>
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="passport_no">Passport No.</label>
+							<label for="passport_no">Passport No</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="client.passport_no" name="passport_no" readonly>
+							<input type="text" ng-model="driver.passport_no" name="passport_no" readonly/>
+
 						</div>
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="passport_date_of_issue">Passport Date of Issue.</label>
+							<label for="driver_working_address">Driver Working Address</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="client.passport_date_of_issue" name="passport_date_of_issue" readonly>
+							<textarea ng-model="driver.driver_working_address" name="driver_working_address" readonly></textarea>
+
 						</div>
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="client_identity">Client Identity</label>
+							<label for="working_tel_no">Tel No(Working)</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.working_tel_no" name="working_tel_no" readonly/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="nationality">Nationality</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.driver_nationality" name="nationality" readonly/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_no">License No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.driver_license_no" name="license_no" readonly/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="dob">Date of Birth</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.driver_dob" name="dob" id="driver_dob" readonly/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_expiry_date">License Expiry Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.driver_license_expiry_date" name="license_expiry_date" readonly/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_issued_place">License Issued Place</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.driver_license_issue_place" name="license_issued_place" readonly/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="license_issued_date">License Issued Date</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.driver_license_issue_date" name="license_issued_date" id="license_issued_date" readonly/>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_name">Sponsar Name</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.sponsar_name" name="sponsar_name" readonly/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_telephone">Sponsar Telephone</label>
+						</div>
+						<div class="forminput">
+							<input type="text" ng-model="driver.sponsar_phone" name="sponsar_telephone" readonly/>
+
+						</div>
+					</div>
+
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="sponsar_address">Sponsar Address</label>
+						</div>
+						<div class="forminput">
+							<textarea name="sponsar_address" ng-model="driver.sponsar_address" readonly></textarea>
+
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="client_identity">Driver Identity</label>
 						</div>
 						<div class="forminput">
 							<select ng-model="rent_agreement.client_identity">
@@ -268,149 +357,7 @@
 						</div>
 					</div> -->
 					
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="driver_name">Driver Name</label>
-						</div>
-						<div class="forminput">
-							<select ng-model="driver_data">
-								<option value="" ng-click="get_driver_details('')">Select</option>
-								<option ng-repeat="driver in drivers" value="[[driver.driver_name]]" ng-click="get_driver_details(driver)" ng-selected="driver.driver_name == driver_data.driver_name">[[driver.driver_name]]</option>
-								<option value="other" ng-click="add_new_driver()">Other</option>
-							</select>
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="driver_phone">Driver Phone</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.driver_phone" name="driver_phone" readonly/>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="driver_address">Driver Address</label>
-						</div>
-						<div class="forminput">
-							<textarea ng-model="driver.driver_address" name="driver_address" readonly></textarea>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="passport_no">Passport No</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.passport_no" name="passport_no" readonly/>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="driver_working_address">Driver Working Address</label>
-						</div>
-						<div class="forminput">
-							<textarea ng-model="driver.driver_working_address" name="driver_working_address" readonly></textarea>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="working_tel_no">Tel No(Working)</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.working_tel_no" name="working_tel_no" readonly/>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="nationality">Nationality</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.driver_nationality" name="nationality" readonly/>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="license_no">License No</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.driver_license_no" name="license_no" readonly/>
-
-						</div>
-					</div>
-
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="dob">Date of Birth</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.driver_dob" name="dob" id="driver_dob" readonly/>
-
-						</div>
-					</div>
-
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="license_expiry_date">License Expiry Date</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.driver_license_expiry_date" name="license_expiry_date" readonly/>
-
-						</div>
-					</div>
-
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="license_issued_place">License Issued Place</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.driver_license_issue_place" name="license_issued_place" readonly/>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="license_issued_date">License Issued Date</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.driver_license_issue_date" name="license_issued_date" id="license_issued_date" readonly/>
-
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="sponsar_name">Sponsar Name</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.sponsar_name" name="sponsar_name" readonly/>
-
-						</div>
-					</div>
-
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="sponsar_telephone">Sponsar Telephone</label>
-						</div>
-						<div class="forminput">
-							<input type="text" ng-model="driver.sponsar_phone" name="sponsar_telephone" readonly/>
-
-						</div>
-					</div>
-
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="sponsar_address">Sponsar Address</label>
-						</div>
-						<div class="forminput">
-							<textarea name="sponsar_address" ng-model="driver.sponsar_address" readonly></textarea>
-
-						</div>
-					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="notes">Notes</label>

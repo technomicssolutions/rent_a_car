@@ -352,9 +352,7 @@ class RentAgreementView(View):
             vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             try:
                 rent_agreement, agreement_created = RentAgreement.objects.get_or_create(agreement_no=rent_agreement_details['agreement_no'])
-                client = Client.objects.get(id=int(rent_agreement_details['client_id']))
                 vehicle = Vehicle.objects.get(id=int(rent_agreement_details['vehicle_id']))
-                rent_agreement.client = client
                 rent_agreement.vehicle = vehicle
                 if int(vehicle.meter_reading) != int(vehicle_details['meter_reading']):
                     vehicle.meter_reading = vehicle_details['meter_reading']
@@ -371,18 +369,16 @@ class RentAgreementView(View):
                 rent_agreement.vehicle_scratch = rent_agreement_details['vehicle_scratch']
                 rent_agreement.accident_passable = rent_agreement_details['accident_passable']
                 driver = Driver.objects.get(id=int(rent_agreement_details['driver_id']))
-                driver.is_available = False
-                driver.save()
                 rent_agreement.driver = driver
                 rent_agreement.notes = rent_agreement_details['notes']
                 rent_agreement.total_amount = rent_agreement_details['amount']
                 rent_agreement.rent = rent_agreement_details['rent']
                 rent_agreement.paid = rent_agreement_details['paid']
                 rent_agreement.save()
-                client.rent = float(client.rent) + float(rent_agreement_details['rent'])
-                client.paid = float(client.paid) + float(rent_agreement_details['paid'])
-                client.balance = float(client.rent) - float(client.paid)
-                client.save()
+                driver.rent = float(driver.rent) + float(rent_agreement_details['rent'])
+                driver.paid = float(driver.paid) + float(rent_agreement_details['paid'])
+                driver.balance = float(driver.rent) - float(driver.paid)
+                driver.save()
                 vehicle.is_available = False
                 vehicle.save()
                 res = {
@@ -778,18 +774,18 @@ class PrintRentAgreement(View):
             p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
             p.drawString(400, 760, rent_agreement.end_date_time.strftime('%I:%M %p'))
 
-            p.drawString(610, 970, rent_agreement.client.name if rent_agreement.client else '')
-            p.drawString(840, 970, rent_agreement.client.nationality if rent_agreement.client else '')
-            p.drawString(600, 920, rent_agreement.client.dob.strftime('%d/%m/%Y') if rent_agreement.client else '')
-            p.drawString(850, 920, rent_agreement.client.passport_no if rent_agreement.client else '')
-            p.drawString(660, 770, (rent_agreement.client.date_of_passport_issue.strftime('%d/%m/%Y') if rent_agreement.client else '') + ' , ')
-            p.drawString(739, 770, rent_agreement.client.place_of_issue if rent_agreement.client else '' )
-            p.drawString(580, 710, rent_agreement.client.license_no if rent_agreement.client else '')
-            p.drawString(790, 710, rent_agreement.client.issued_by if rent_agreement.client else '')
-            p.drawString(580, 660, rent_agreement.client.date_of_issue.strftime('%d/%m/%Y') if rent_agreement.client else '')
-            p.drawString(790, 660, rent_agreement.client.expiry_license_date.strftime('%d/%m/%Y') if rent_agreement.client else '')
-            p.drawString(620, 880, rent_agreement.client.address if rent_agreement.client else '')
-            p.drawString(600, 830, rent_agreement.client.phone_number if rent_agreement.client else '')
+            # p.drawString(610, 970, rent_agreement.client.name if rent_agreement.client else '')
+            # p.drawString(840, 970, rent_agreement.client.nationality if rent_agreement.client else '')
+            # p.drawString(600, 920, rent_agreement.client.dob.strftime('%d/%m/%Y') if rent_agreement.client else '')
+            # p.drawString(850, 920, rent_agreement.client.passport_no if rent_agreement.client else '')
+            # p.drawString(660, 770, (rent_agreement.client.date_of_passport_issue.strftime('%d/%m/%Y') if rent_agreement.client else '') + ' , ')
+            # p.drawString(739, 770, rent_agreement.client.place_of_issue if rent_agreement.client else '' )
+            # p.drawString(580, 710, rent_agreement.client.license_no if rent_agreement.client else '')
+            # p.drawString(790, 710, rent_agreement.client.issued_by if rent_agreement.client else '')
+            # p.drawString(580, 660, rent_agreement.client.date_of_issue.strftime('%d/%m/%Y') if rent_agreement.client else '')
+            # p.drawString(790, 660, rent_agreement.client.expiry_license_date.strftime('%d/%m/%Y') if rent_agreement.client else '')
+            # p.drawString(620, 880, rent_agreement.client.address if rent_agreement.client else '')
+            # p.drawString(600, 830, rent_agreement.client.phone_number if rent_agreement.client else '')
             p.drawString(860, 830, rent_agreement.client_identity if rent_agreement.client_identity else 'Driving License')
             
 
@@ -906,7 +902,7 @@ class DriversList(View):
         ctx_drivers = []
         if request.is_ajax():
             status = 200
-            drivers = Driver.objects.filter(is_available=True).order_by('id')
+            drivers = Driver.objects.all().order_by('id')
             for driver in drivers:
                 ctx_drivers.append({
                     'id': driver.id,
@@ -1179,8 +1175,8 @@ class RentAgreementDetails(View):
         if request.is_ajax():
             res = {
                 'result': 'ok',
-                'client_name': rent_agreements[0].client.name if rent_agreements else '',
-                'client_id': rent_agreements[0].client.id if rent_agreements else '',
+                'client_name': rent_agreements[0].driver.driver_names if rent_agreements else '',
+                'client_id': rent_agreements[0].driver.id if rent_agreements else '',
                 'vehicle_id': rent_agreements[0].vehicle.id if rent_agreements else '',
             }
             response = simplejson.dumps(res)
