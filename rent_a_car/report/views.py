@@ -292,11 +292,11 @@ class VehicleReport(View):
             for vehicle in vehicles:
 
                 p.drawString(50, y, vehicle.vehicle_no)
-                p.drawString(150, y, vehicle.plate_no)
-                p.drawString(240, y, vehicle.vehicle_color)
-                p.drawString(340, y, vehicle.vehicle_make)
+                p.drawString(150, y, vehicle.plate_no if vehicle.plate_no and vehicle else '')
+                p.drawString(240, y, vehicle.vehicle_color if vehicle.vehicle_color and vehicle else '')
+                p.drawString(340, y, vehicle.vehicle_make if vehicle.vehicle_make and vehicle else '')
                 p.drawString(440, y, vehicle.vehicle_type_name.vehicle_type_name if vehicle.vehicle_type_name else '')
-                p.drawString(590, y, vehicle.vehicle_condition)
+                p.drawString(590, y, vehicle.vehicle_condition if vehicle.vehicle_condition and vehicle else '')
                 p.drawString(720, y, str(vehicle.meter_reading))
                 p.drawString(840, y, str(vehicle.insuranse_value))
                 p.drawString(950, y, "Inside" if vehicle.is_available else "Outside")
