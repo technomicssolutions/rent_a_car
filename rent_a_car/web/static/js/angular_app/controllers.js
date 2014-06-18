@@ -199,15 +199,6 @@ validate_driver_form = function($scope, $http, from) {
 	} else if ($scope.driver.emirates_id == '' || $scope.driver.emirates_id == undefined) {
 		$scope.validation_error = 'Please enter Emirates Id';
 		return false;
-	} else if ($scope.driver.sponsar_name == '' || $scope.driver.sponsar_name == undefined) {
-		$scope.validation_error = 'Please enter Sponsar Name';
-		return false;
-	} else if ($scope.driver.sponsar_ph == '' || $scope.driver.sponsar_ph == undefined) {
-		$scope.validation_error = 'Please enter Sponsar Phone';
-		return false;
-	} else if ($scope.sponsar_address == '' || $scope.sponsar_address == undefined) {
-		$scope.validation_error = 'Please enter Sponsar Address';
-		return false;
 	} 
 	return true;
 }
