@@ -121,7 +121,8 @@ class AddVehicle(View):
                 vehicle.vehicle_color = vehicle_details['color']
                 vehicle.meter_reading = vehicle_details['meter_reading']
                 vehicle.vehicle_condition = vehicle_details['condition']
-                vehicle.insuranse_value = float(vehicle_details['insurance_value'])
+                if vehicle_details['insurance_value']:
+                    vehicle.insuranse_value = float(vehicle_details['insurance_value'])
                 vehicle.type_of_insuranse = vehicle_details['insurance_type']
                 vehicle.vehicle_make = vehicle_details['vehicle_make']
                 vehicle.petrol = vehicle_details['petrol']
@@ -136,7 +137,7 @@ class AddVehicle(View):
                     'color': vehicle.vehicle_color,
                     'insuranse_value': vehicle.insuranse_value,
                     'type_of_insuranse': vehicle.type_of_insuranse,
-                    'petrol': vehicle.petrol,
+                    'petrol': vehicle.petrol if vehicle.petrol else 0,
                 })
                 res = {
                     'result': 'ok',
@@ -170,7 +171,7 @@ class VehicleList(View):
                         'color': vehicle.vehicle_color,
                         'insuranse_value': vehicle.insuranse_value,
                         'type_of_insuranse': vehicle.type_of_insuranse,
-                        'petrol': vehicle.petrol,
+                        'petrol': vehicle.petrol if vehicle.petrol else 0,
                     })
             if whole_vehicles.count() > 0:
                 for vehicle in whole_vehicles:
@@ -184,7 +185,7 @@ class VehicleList(View):
                         'color': vehicle.vehicle_color,
                         'insuranse_value': vehicle.insuranse_value,
                         'type_of_insuranse': vehicle.type_of_insuranse,
-                        'petrol': vehicle.petrol,
+                        'petrol': vehicle.petrol if vehicle.petrol else 0,
                     })
             res = {
                 'vehicles': ctx_vehicles,
@@ -1159,7 +1160,7 @@ class PrintReceiptCar(View):
             p.drawString(660, 560, receive_car.rent_agreement.driver.driver_working_address.replace('\n', ' ') if receive_car.rent_agreement.driver and receive_car.rent_agreement.driver.driver_working_address else '')
             p.drawString(140, 510, receive_car.rent_agreement.vehicle.plate_no)
             p.drawString(340, 510, receive_car.rent_agreement.vehicle.vehicle_color)
-            p.drawString(110, 460, receive_car.rent_agreement.vehicle.vehicle_type_name.vehicle_type_name)
+            p.drawString(110, 460, receive_car.rent_agreement.vehicle.vehicle_type_name.vehicle_type_name if receive_car.rent_agreement.vehicle and receive_car.rent_agreement.vehicle.vehicle_type_name else '')
             p.drawString(330, 460, receive_car.rent_agreement.vehicle.vehicle_make)
             p.drawString(670, 510, str(receive_car.new_meter_reading))
             p.drawString(900, 510, receive_car.returning_petrol)

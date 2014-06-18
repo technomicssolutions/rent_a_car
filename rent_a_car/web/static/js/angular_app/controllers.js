@@ -88,14 +88,8 @@ validate_vehicle_form = function($scope, $http) {
 	} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
 		$scope.validation_error = 'Please enter Meter Reading';
 		return false;
-	} else if ($scope.vehicle.petrol == '' || $scope.vehicle.petrol == undefined) {
-		$scope.validation_error = 'Please enter Petrol';
-		return false;
 	} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
 		$scope.validation_error = 'Please enter Insurance Type';
-		return false;
-	} else if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
-		$scope.validation_error = 'Please enter Insurance Value';
 		return false;
 	}
 	return true;
@@ -442,7 +436,7 @@ function RentAgreementController($scope, $http, $location) {
 		'driver_dob': '',
 		'sponsar_name': '',
 		'sponsar_address': '',
-		'sponsar_phone': '',
+		'sponsar_ph': '',
 		'license_type': '',
 
 	}
@@ -518,7 +512,6 @@ function RentAgreementController($scope, $http, $location) {
             format:'%d/%m/%Y',
             canAlwaysGoUp: ['months', 'years']
         });
-
 	}
 	$scope.add_new_vehicle = function() {
 		$scope.vehicle = {
@@ -588,7 +581,7 @@ function RentAgreementController($scope, $http, $location) {
 			'driver_dob': '',
 			'sponsar_name': '',
 			'sponsar_address': '',
-			'sponsar_phone': '',
+			'sponsar_ph': '',
 			'working_tel_no': '',
 		}
 		$scope.driver_popup = new DialogueModelWindow({
