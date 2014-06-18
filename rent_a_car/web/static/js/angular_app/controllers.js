@@ -149,7 +149,7 @@ validate_driver_form = function($scope, $http, from) {
 	if (from != 'add_driver') {
 		$scope.driver.dob = $$('#dob')[0].get('value');
 		$scope.driver.date_of_license_issue =  $$('#date_of_license_issue')[0].get('value');
-		$scope.driver.passport_issued_date =  $$('#passportissued_date')[0].get('value');
+		$scope.driver.passport_issued_date =  $$('#passport_issued_date')[0].get('value');
 		$scope.driver.expiry_date = $$('#expiry_date')[0].get('value');
 	} else {
 		$scope.driver.dob = $$('#driver_dob')[0].get('value');
@@ -1028,94 +1028,9 @@ function AddDriverController($scope, $http, $location) {
             format:'%d/%m/%Y',
         });
 	}
-	$scope.validate_driver_form = function() {
-		$scope.driver.dob = $$('#dob')[0].get('value');
-		$scope.driver.date_of_license_issue =  $$('#date_of_license_issue')[0].get('value');
-		$scope.driver.passport_issued_date =  $$('#passport_issued_date')[0].get('value');
-		$scope.driver.expiry_date = $$('#expiry_date')[0].get('value');
-		if ($scope.driver.name == '' || $scope.driver.name == undefined) {
-			$scope.validation_error = 'Please enter Name';
-			return false;
-		} else if ($scope.driver.nationality == '' || $scope.driver.nationality == undefined) {
-			$scope.validation_error = 'Please enter Nationality';
-			return false;
-		} else if ($scope.driver.dob == '' || $scope.driver.dob == undefined) {
-			$scope.validation_error = 'Please enter Date of Birth';
-			return false;
-		} else if ($scope.home_address == '' || $scope.home_address == undefined) {
-			$scope.validation_error = 'Please enter Home Address';
-			return false;
-		} else if ($scope.driver.home_ph_no == '' || $scope.driver.home_ph_no == undefined) {
-			$scope.validation_error = 'Please enter Home Phone No';
-			return false;
-		} else if ($scope.driver.license_no == '' || $scope.driver.license_no == undefined) {
-			$scope.validation_error = 'Please enter License No';
-			return false;
-		} else if ($scope.driver.license_type == '' || $scope.driver.license_type == undefined) {
-			$scope.validation_error = 'Please choose License Type';
-			return false;
-		} else if ($scope.driver.date_of_license_issue == '' || $scope.driver.date_of_license_issue == undefined) {
-			$scope.validation_error = 'Please enter Date of License Issued';
-			return false;
-		} else if ($scope.driver.issued_place == '' || $scope.driver.issued_place == undefined) {
-			$scope.validation_error = 'Please enter Issued Place';
-			return false;
-		} else if ($scope.driver.expiry_date == '' || $scope.driver.expiry_date == undefined) {
-			$scope.validation_error = 'Please enter Expiry Date';
-			return false;
-		} else if ($scope.driver.passport_no == '' || $scope.driver.passport_no == undefined) {
-			$scope.validation_error = 'Please enter Passport No';
-			return false;
-		} else if ($scope.driver.passport_issued_date == '' || $scope.driver.passport_issued_date == undefined) {
-			$scope.validation_error = 'Please enter Passport Issued Date';
-			return false;
-		} else if ($scope.driver.place_of_issue == '' || $scope.driver.place_of_issue == undefined) {
-			$scope.validation_error = 'Please enter Place of Issued';
-			return false;
-		} else if ($scope.driver.emirates_id == '' || $scope.driver.emirates_id == undefined) {
-			$scope.validation_error = 'Please enter Emirates Id';
-			return false;
-		} else if ($scope.driver.sponsar_name == '' || $scope.driver.sponsar_name == undefined) {
-			$scope.validation_error = 'Please enter Sponsar Name';
-			return false;
-		} else if ($scope.driver.sponsar_ph == '' || $scope.driver.sponsar_ph == undefined) {
-			$scope.validation_error = 'Please enter Sponsar Phone';
-			return false;
-		} else if ($scope.sponsar_address == '' || $scope.sponsar_address == undefined) {
-			$scope.validation_error = 'Please enter Sponsar Address';
-			return false;
-		} 
-		return true;
-	}
 
 	$scope.add_driver = function() {
-		$scope.is_valid = $scope.validate_driver_form();
-		if ($scope.is_valid) {
-			$scope.validation_error = '';
-			params = {
-				'driver_details': angular.toJson($scope.driver),
-				'home_address': $scope.home_address,
-				'sponsar_address': $scope.sponsar_address,
-				'driver_working_address': $scope.driver_working_address,
-				"csrfmiddlewaretoken" : $scope.csrf_token,
-			}
-			$http({
-	            method : 'post',
-	            url : "/add_driver/",
-	            data : $.param(params),
-	            headers : {
-	                'Content-Type' : 'application/x-www-form-urlencoded'
-	            }
-	        }).success(function(data, status) {
-	        	if (data.result == 'error') {
-	        		$scope.validation_error = data.message;
-	        	} else {
-		            document.location.href ='/drivers/';
-		        }
-	        }).error(function(data, status){
-	            $scope.validation_error = data.message;
-	        });
-		}
+		add_driver($scope, $http, '');
 	}
 }
 
