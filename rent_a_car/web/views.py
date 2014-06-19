@@ -443,10 +443,10 @@ class ReceiveCarView(View):
             driver.save() 
             vehicle = rent_agreement.vehicle
             vehicle.meter_reading = receive_car.new_meter_reading
-            if receive_car_details['balance'] == 0:
-                vehicle.is_available = True
-                rent_agreement.is_completed = True
-                rent_agreement.save()
+            # if receive_car_details['balance'] == 0:
+            vehicle.is_available = True
+            rent_agreement.is_completed = True
+            rent_agreement.save()
                 
             vehicle.save()
 
