@@ -4,6 +4,7 @@ import ast
 from datetime import datetime
 import datetime as dt
 import pytz
+import arabic_reshaper
 
 from django.views.generic.base import View
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -824,6 +825,9 @@ class PrintRentAgreement(View):
             # p = draw_arabic(800, 1080, ': ص.ب', p)
             # p = draw_arabic(800, 1060, 'شارع جوازات القديم', p)
             # p = draw_arabic(800, 1040, 'أبوظبي أ.ع.م', p)
+            arabic_text = u'تلفون'
+            arabic_text = arabic_reshaper.reshape(arabic_text) 
+            p = draw_arabic(750, 1040, arabic_text, p)
             p = draw_arabic(750, 1010, '.................: التاريخ', p)
             p = draw_arabic(610, 1010, 'عقد تأجير', p)
             p.setFont('Arabic', 13)
