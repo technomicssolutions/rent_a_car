@@ -67,6 +67,9 @@ save_vehicle_type = function($scope, $http, from) {
 }
 
 validate_vehicle_form = function($scope, $http) {
+	if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
+		$scope.vehicle.insurance_value = 0;
+	}
 	if ($scope.vehicle.vehicle_no == '' || $scope.vehicle.vehicle_no == undefined) {
 		$scope.validation_error = 'Please enter Vehicle No.';
 		return false;
@@ -87,9 +90,6 @@ validate_vehicle_form = function($scope, $http) {
 		return false;
 	} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
 		$scope.validation_error = 'Please enter Meter Reading';
-		return false;
-	} else if ($scope.vehicle.insurance_type == '' || $scope.vehicle.insurance_type == undefined) {
-		$scope.validation_error = 'Please enter Insurance Type';
 		return false;
 	}
 	return true;
@@ -183,12 +183,6 @@ validate_driver_form = function($scope, $http, from) {
 		return false;
 	} else if ($scope.driver.passport_no == '' || $scope.driver.passport_no == undefined) {
 		$scope.validation_error = 'Please enter Passport No';
-		return false;
-	} else if ($scope.driver.passport_issued_date == '' || $scope.driver.passport_issued_date == undefined) {
-		$scope.validation_error = 'Please enter Passport Issued Date';
-		return false;
-	} else if ($scope.driver.place_of_issue == '' || $scope.driver.place_of_issue == undefined) {
-		$scope.validation_error = 'Please enter Place of Issued';
 		return false;
 	} else if ($scope.driver.emirates_id == '' || $scope.driver.emirates_id == undefined) {
 		$scope.validation_error = 'Please enter Emirates Id';
@@ -286,7 +280,7 @@ function AddVehicleController($scope, $http, $location) {
 		'color': '',
 		'meter_reading': '',
 		'insurance_type': '',
-		'insurance_value': '',
+		'insurance_value': 0,
 		'vehicle_make': '',
 		'petrol': '',
 	}
@@ -583,6 +577,8 @@ function RentAgreementController($scope, $http, $location) {
 			'sponsar_address': '',
 			'sponsar_ph': '',
 			'working_tel_no': '',
+			'passport_issued_date': '',
+			'place_of_issue': '',
 		}
 		$scope.driver_popup = new DialogueModelWindow({
             'dialogue_popup_width': '36%',

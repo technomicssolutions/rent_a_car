@@ -281,51 +281,48 @@ class EditVehicle(View):
         if request.is_ajax():
             status = 200
             vehicle_id = kwargs['vehicle_id']
+            print vehicle_id
             vehicle = Vehicle.objects.get(id=int(vehicle_id))
             vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             vehicle_type = VehicleType.objects.get(vehicle_type_name=vehicle_details['vehicle_type'])
-            try:
-                # try:
-                vehicles = Vehicle.objects.filter(vehicle_no = vehicle_details['vehicle_no']).exclude(id=vehicle_id).count()
-                if vehicles:
-                    res = {
-                        'result': 'error',
-                        'message': 'Vehicle with this vehicle number exists',
-                    }
-                    response = simplejson.dumps(res)
-                    return HttpResponse(response, status=status, mimetype='application/json')
-                else:
-                    vehicle.vehicle_no = vehicle_details['vehicle_no']
-                # except:
-                #     vehicle.vehicle_no = vehicle_details['vehicle_no']
-                # try:
-                vehicles = Vehicle.objects.filter(plate_no = vehicle_details['plate_no']).exclude(id=vehicle_id).count()
-                if vehicles:
-                    res = {
-                        'result': 'error',
-                        'message': 'Vehicle with this plate number exists',
-                    }
-                    response = simplejson.dumps(res)
-                    return HttpResponse(response, status=status, mimetype='application/json')
-                else:
-                    vehicle.plate_no = vehicle_details['plate_no']
-                # except:
-                #     vehicle.plate_no = vehicle_details['plate_no']
-                vehicle.vehicle_type_name = vehicle_type
-                vehicle.vehicle_color = vehicle_details['color']
-                vehicle.meter_reading = vehicle_details['meter_reading']
-                vehicle.vehicle_condition = vehicle_details['condition']
-                vehicle.insuranse_value = vehicle_details['insurance_value']
-                vehicle.type_of_insuranse = vehicle_details['insurance_type']
-                vehicle.vehicle_make = vehicle_details['vehicle_make']
-                vehicle.petrol = vehicle_details['petrol']
-                vehicle.save()
+            # try:
+            vehicles = Vehicle.objects.filter(vehicle_no = vehicle_details['vehicle_no']).exclude(id=vehicle_id).count()
+            if vehicles:
                 res = {
-                    'result': 'ok'
+                    'result': 'error',
+                    'message': 'Vehicle with this vehicle number exists',
                 }
+                response = simplejson.dumps(res)
+                return HttpResponse(response, status=status, mimetype='application/json')
+            else:
+                vehicle.vehicle_no = vehicle_details['vehicle_no']
+           
+            vehicles = Vehicle.objects.filter(plate_no = vehicle_details['plate_no']).exclude(id=vehicle_id).count()
+            if vehicles:
+                res = {
+                    'result': 'error',
+                    'message': 'Vehicle with this plate number exists',
+                }
+                response = simplejson.dumps(res)
+                return HttpResponse(response, status=status, mimetype='application/json')
+            else:
+                vehicle.plate_no = vehicle_details['plate_no']
+            
+            vehicle.vehicle_type_name = vehicle_type
+            vehicle.vehicle_color = vehicle_details['color']
+            vehicle.meter_reading = vehicle_details['meter_reading']
+            vehicle.vehicle_condition = vehicle_details['condition']
+            vehicle.insuranse_value = vehicle_details['insurance_value']
+            vehicle.type_of_insuranse = vehicle_details['insurance_type']
+            vehicle.vehicle_make = vehicle_details['vehicle_make']
+            vehicle.petrol = vehicle_details['petrol']
+            vehicle.save()
+            res = {
+                'result': 'ok'
+            }
                 
-            except Exception as ex:
-                print "Exception == ", str(ex)
+            # except Exception as ex:
+            #     print "Exception == ", str(ex)
                 
             response = simplejson.dumps(res)
             return HttpResponse(response, status=status, mimetype='application/json')
@@ -922,7 +919,8 @@ class AddDriver(View):
                 driver.driver_working_address = request.POST['driver_working_address']
                 driver.driver_working_ph = driver_details['working_tel_no']
                 driver.license_type = driver_details['license_type']
-                driver.date_of_passport_issue = datetime.strptime(driver_details['passport_issued_date'], '%d/%m/%Y')
+                if driver_details['passport_issued_date']:
+                    driver.date_of_passport_issue = datetime.strptime(driver_details['passport_issued_date'], '%d/%m/%Y')
                 driver.place_of_issue = driver_details['place_of_issue']
                 driver.emirates_id = driver_details['emirates_id']
                 driver.save()
