@@ -903,6 +903,12 @@ function ReceiveCarController($scope, $http, $location) {
 		} else if ($scope.receipt.meter_reading == 0 || $scope.receipt.meter_reading == '' || $scope.receipt.meter_reading == undefined) {
 			$scope.validation_error = 'Please enter Meter Reading on Returning';
 			return false;
+		} else if (!Number($scope.receipt.meter_reading)) {
+			$scope.validation_error = 'Please enter valid Meter Reading on Returning';
+			return false;
+		} else if ($scope.receipt.returning_petrol && (!Number($scope.receipt.returning_petrol))) {
+			$scope.validation_error = 'Please enter valid valid Petrol on Returning';
+			return false;
 		} else if ($scope.receipt.paid == 0 || $scope.receipt.paid == '' || $scope.receipt.paid == undefined) {
 			$scope.validation_error = 'Please enter Paid Amount on Receipt';
 			return false;
