@@ -450,29 +450,13 @@ function RentAgreementController($scope, $http, $location) {
 		'rent_type': '',
 		'amount': 0,
 		'date': '',
-		'commission': 0,
 		'start_date_time': '',
-		'reduction': 0,
 		'end_date_time': '',
 		'rent': 0,
 		'paid': 0,
 		'balance': 0,
-		'driver_name': '',
-		'driver_phone': '',
-		'driver_address': '',
-		'passport_no': '',
-		'nationality': '',
-		'license_no': '',
-		'dob': '',
-		'license_expiry_date': '',
-		'license_issued_place': '',
-		'license_issued_date': '',
-		'sponsar_name': '',
-		'sponsar_telephone': '',
-		'sponsar_address': '',
 		'notes': '',
 		'client_identity': '',
-		'petrol': '',
 		'vehicle_scratch': 0,
 		'accident_passable': 0,
 	}
@@ -688,8 +672,14 @@ function RentAgreementController($scope, $http, $location) {
 		} else if ($scope.rent_agreement.client_identity == '' || $scope.rent_agreement.client_identity == undefined) {
 			$scope.validation_error = 'Please choose the Driver Identity';
 			return false;
-		} else if ($scope.vehicle.id == '' || $scope.vehicle.id == undefined) {
-			$scope.validation_error = 'Please choose the Vehicle';
+		} else if ($scope.vehicle.meter_reading && (!Number($scope.vehicle.meter_reading))) {
+			$scope.validation_error = 'Please enter valid Meter Reading';
+			return false;
+		} else if ($scope.rent_agreement.accident_passable &&((!Number($scope.rent_agreement.accident_passable)))) {
+			$scope.validation_error = 'Please enter valid Accident Passable';
+			return false;
+		} else if ($scope.rent_agreement.vehicle_scratch &&((!Number($scope.rent_agreement.vehicle_scratch)))) {
+			$scope.validation_error = 'Please enter valid Vehicle Scratch';
 			return false;
 		} else if ($scope.rent_agreement.rent_type == '' || $scope.rent_agreement.rent_type == undefined) {
 			$scope.validation_error = 'Please enter the Rent Type';
@@ -709,7 +699,10 @@ function RentAgreementController($scope, $http, $location) {
 		} else if ($scope.rent_agreement.paid == undefined || $scope.rent_agreement.paid == '') {
 			$scope.validation_error = 'Please enter the Deposit';
 			return false;
-		} 
+		} else if ($scope.rent_agreement.balance < 0) {
+			$scope.validation_error = 'Please enter valid Deposit';
+			return false;
+		}
 		return true;
 	}  
 	$scope.create_rent_agreement = function() {
@@ -717,7 +710,7 @@ function RentAgreementController($scope, $http, $location) {
 		params = {
 			"csrfmiddlewaretoken": $scope.csrf_token,
 			'rent_agreement': angular.toJson($scope.rent_agreement),
-			'vehicle_details': angular.toJson($scope.vehicle),
+			'vehicle_meter_reading': $scope.vehicle.meter_reading,
 		}
 		if ($scope.is_valid) {
 			var height = $(document).height();
@@ -802,14 +795,12 @@ function ReceiveCarController($scope, $http, $location) {
 		'meter_reading': 0,
 		'petrol': 0,
 		'fine': 0,
-		// 'accident_passable': 0,
 		'extra_charge': 0,
 		'total_amount': 0,
 		'reduction': 0,
 		'balance': 0,
 		'paid': 0,
 		'notes': '',
-		// 'vehicle_scratch': 0,
 		'returning_petrol': 0,
 	}
 	$scope.init = function(csrf_token) {
@@ -849,14 +840,12 @@ function ReceiveCarController($scope, $http, $location) {
 			'meter_reading': 0,
 			'petrol': 0,
 			'fine': 0,
-			// 'accident_passable': 0,
 			'extra_charge': 0,
 			'total_amount': 0,
 			'reduction': 0,
 			'balance': 0,
 			'paid': 0,
 			'notes': '',
-			// 'vehicle_scratch': 0,
 			'returning_petrol': 0,
 			'returning_date': ''
 		}

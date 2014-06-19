@@ -347,15 +347,15 @@ class RentAgreementView(View):
 
         if request.is_ajax():
             rent_agreement_details = ast.literal_eval(request.POST['rent_agreement'])
-            vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
+            # vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             try:
                 rent_agreement, agreement_created = RentAgreement.objects.get_or_create(agreement_no=rent_agreement_details['agreement_no'])
                 vehicle = Vehicle.objects.get(id=int(rent_agreement_details['vehicle_id']))
                 rent_agreement.vehicle = vehicle
-                if int(vehicle.meter_reading) != int(vehicle_details['meter_reading']):
-                    vehicle.meter_reading = vehicle_details['meter_reading']
-                    vehicle.save()
-                rent_agreement.leaving_meterreading = vehicle_details['meter_reading']
+                # if int(vehicle.meter_reading) != int(vehicle_details['meter_reading']):
+                vehicle.meter_reading = request.POST['vehicle_meter_reading']
+                vehicle.save()
+                rent_agreement.leaving_meterreading = request.POST['vehicle_meter_reading']
                 rent_agreement.leaving_petrol = vehicle.petrol
                 rent_agreement.client_identity = rent_agreement_details['client_identity']
                 rent_agreement.agreement_date = datetime.strptime(rent_agreement_details['date'], '%d/%m/%Y')
@@ -758,12 +758,12 @@ class PrintRentAgreement(View):
             vehicle = rent_agreement.vehicle
             p.drawString(100, 960, vehicle.vehicle_type_name.vehicle_type_name if vehicle and vehicle.vehicle_type_name else '')
             p.drawString(300, 960, rent_agreement.agreement_no)
-            p.drawString(100, 910, vehicle.vehicle_make if vehicle else '')
-            p.drawString(300, 910, vehicle.vehicle_color if vehicle else '')
+            p.drawString(100, 910, str(vehicle.vehicle_make) if vehicle else '')
+            p.drawString(300, 910, str(vehicle.vehicle_color) if vehicle else '')
             p.drawString(200, 860, rent_agreement.starting_date_time.strftime('%d/%m/%Y'))
             p.drawString(400, 860, rent_agreement.starting_date_time.strftime('%I:%M %p'))
             p.drawString(150, 810, str(rent_agreement.leaving_meterreading if rent_agreement.leaving_meterreading else ''))
-            p.drawString(380, 810, rent_agreement.leaving_petrol)
+            p.drawString(380, 810, str(rent_agreement.leaving_petrol))
             p.drawString(200, 760, rent_agreement.end_date_time.strftime('%d/%m/%Y'))
             p.drawString(400, 760, rent_agreement.end_date_time.strftime('%I:%M %p'))
 
@@ -1157,9 +1157,9 @@ class PrintReceiptCar(View):
             p.drawString(300, 560, receive_car.receipt_datetime.strftime('%H:%M%p') if receive_car.receipt_datetime else '')
             p.drawString(660, 560, receive_car.rent_agreement.driver.driver_working_address.replace('\n', ' ') if receive_car.rent_agreement.driver and receive_car.rent_agreement.driver.driver_working_address else '')
             p.drawString(140, 510, receive_car.rent_agreement.vehicle.plate_no)
-            p.drawString(340, 510, receive_car.rent_agreement.vehicle.vehicle_color)
+            p.drawString(340, 510, str(receive_car.rent_agreement.vehicle.vehicle_color))
             p.drawString(110, 460, receive_car.rent_agreement.vehicle.vehicle_type_name.vehicle_type_name if receive_car.rent_agreement.vehicle and receive_car.rent_agreement.vehicle.vehicle_type_name else '')
-            p.drawString(330, 460, receive_car.rent_agreement.vehicle.vehicle_make)
+            p.drawString(330, 460, str(receive_car.rent_agreement.vehicle.vehicle_make))
             p.drawString(670, 510, str(receive_car.new_meter_reading))
             p.drawString(900, 510, receive_car.returning_petrol)
             p.drawString(650, 460, str(receive_car.rent_agreement.vehicle.insuranse_value))
