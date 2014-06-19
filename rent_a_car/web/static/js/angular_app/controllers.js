@@ -91,6 +91,15 @@ validate_vehicle_form = function($scope, $http) {
 	} else if ($scope.vehicle.meter_reading == '' || $scope.vehicle.meter_reading == undefined) {
 		$scope.validation_error = 'Please enter Meter Reading';
 		return false;
+	} else if (!Number($scope.vehicle.meter_reading)) {
+		$scope.validation_error = 'Please enter a Valid Meter Reading';
+		return false;
+	} else if ($scope.vehicle.petrol && (!Number($scope.vehicle.petrol))) {
+		$scope.validation_error = 'Please enter a Valid Meter Reading';
+		return false;
+	} else if ($scope.vehicle.insurance_value && (!Number($scope.vehicle.insurance_value))) {
+		$scope.validation_error = 'Please enter a Valid Insurance Value';
+		return false;
 	}
 	return true;
 }
