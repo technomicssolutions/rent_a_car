@@ -83,8 +83,7 @@ pobox = '32900'
 
 addrss1 = u'شارع جوازات القديم'
 addrss2 = u'أبوظبي أ.ع.م'
-            
-# p.drawString(400, 1036, 'Old Passport Road , Abu Dhabi - UAE')
+
 
 def draw_heading(canvas):
     p = canvas
@@ -1082,15 +1081,16 @@ class PrintReceiptCar(View):
             table.wrapOn(p, 200, 400)
             table.drawOn(p, 300, 1180) 
 
-            p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
+            # p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
 
             p.setFont("Helvetica", 12)
-            p.drawString(350, 1050, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+            p.drawString(350, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
             
-            p.drawString(400, 1036, 'Old Passport Road , Abu Dhabi - UAE')
+            p.drawString(400, 1060, 'Old Passport Road , Abu Dhabi - UAE')
             p.setFont("Helvetica", 16)
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
+
             p.drawString(100, 1015,receive_car.receipt_datetime.strftime('%d/%m/%Y') if receive_car.receipt_datetime else '')
             p.drawString(820, 1015,receive_car.receipt_datetime.strftime('%d/%m/%Y') if receive_car.receipt_datetime else '')
             p.setFont("Helvetica-Bold", 15)
@@ -1176,11 +1176,11 @@ class PrintReceiptCar(View):
             p.drawString(750, y - 850, 'Total Amount')
             p.drawString(760, y - 880, 'Balance')
 
-            p.drawString(60, y - 540, "We don't receipt the car in Thursday, Friday the formal holiday")
-            p.drawString(60, y - 580, "Acknowledge that I have read the above and reverse method")
-            p.drawString(60, y - 620, "terms and conditions and agree to able by them")
-            p.drawString(100, y - 660, '................................. Sponsor')
-            p.drawString(350, y - 660, '....................... Hirer')
+            p.drawString(60, y - 620, "We don't receipt the car in Thursday, Friday the formal holiday")
+            p.drawString(60, y - 660, "Acknowledge that I have read the above and reverse method")
+            p.drawString(60, y - 700, "terms and conditions and agree to able by them")
+            p.drawString(100, y - 780, '................................. Sponsor')
+            p.drawString(350, y - 780, '....................... Hirer')
             p.drawString(250, y - 840, '..............................Office incharge')
 
             p.drawString(150, y, receive_car.rent_agreement.driver.driver_name)
@@ -1274,18 +1274,35 @@ class PrintReceiptCar(View):
             # p.drawString(510, y - 480, 'Return Meter Reading: ')
             # p.drawString(760, y - 480, 'Petrol on Returning ')
             # p.drawString(510, y - 530, 'Insurance Value: ')
-
-            # p.drawString(760, y - 580, 'Deposit')
-            # p.drawString(760, y - 615, 'Fine')
+            arabic_text_deposit = u'الوديعة'
+            p.drawString(760, y - 580, arabic_text_deposit[::-1])
+            arabic_text_fine = u'غرامه'
+            p.drawString(760, y - 615, arabic_text_fine[::-1])
+            # arabic_text_petrol = u''
             # p.drawString(760, y - 655, 'Petrol')
-            # p.drawString(760, y - 715, 'Accident Passable')
+            arabic_text_accident = u'حادث مقبول'
+            p.drawString(760, y - 715, arabic_text_accident[::-1])
+            # arabic_text_vehicle_scratch = u''
             # p.drawString(760, y - 755, 'Vehicle Scrtach')
-            # p.drawString(760, y - 795, 'Extra Charge')
-            # p.drawString(760, y - 835, 'Reduction')
+            arabic_text_extra_charge = u'رسوم إضافية'
+            p.drawString(760, y - 795, arabic_text_extra_charge[::-1])
+            arabic_text_reduction = u'تخفيض'
+            p.drawString(760, y - 835, arabic_text_reduction[::-1])
             # p.drawString(760, y - 875, 'Rent')
+
+            # hirer and sponsar
+            arabic_text = u'المستأجر'
+            p.drawString(230, y - 800, arabic_text[::-1])
+            arabic_text = u'الكفيل' 
+            p.drawString(420, y - 800, arabic_text[::-1])
+            # office in charge
+            arabic_text = u'مسؤول المكتب'
+            p.drawString(370, y - 870, arabic_text[::-1])
             
             p.drawString(845, y - 900, arabic_text_total_amount[::-1])
-            # p.drawString(840, y - 930, 'Balance')
+            p.drawString(840, y - 930, arabic_text_balance[::-1])
+
+            p = draw_heading(p)
 
             p.showPage()
             p.save()
