@@ -1155,12 +1155,12 @@ class PrintReceiptCar(View):
             p.drawString(750, y - 850, 'Total Amount')
             p.drawString(760, y - 880, 'Balance')
 
-            p.drawString(60, 420, "We don't receipt the car in Thursday, Friday the formal holiday")
-            p.drawString(60, 380, "Acknowledge that I have read the above and reverse method")
-            p.drawString(60, 340, "terms and conditions and agree to able by them")
-            p.drawString(100, 300, '................................. Sponsor')
-            p.drawString(350, 300, '....................... Hirer')
-            p.drawString(250, 120, '..............................Office incharge')
+            p.drawString(60, y - 540, "We don't receipt the car in Thursday, Friday the formal holiday")
+            p.drawString(60, y - 580, "Acknowledge that I have read the above and reverse method")
+            p.drawString(60, y - 620, "terms and conditions and agree to able by them")
+            p.drawString(100, y - 660, '................................. Sponsor')
+            p.drawString(350, y - 660, '....................... Hirer')
+            p.drawString(250, y - 840, '..............................Office incharge')
 
             p.drawString(150, y, receive_car.rent_agreement.driver.driver_name)
             p.drawString(140, y - 50, receive_car.rent_agreement.driver.driver_nationality)
