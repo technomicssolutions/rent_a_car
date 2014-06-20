@@ -1304,6 +1304,15 @@ class PrintReceiptCar(View):
 
             p = draw_heading(p)
 
+            p.setFont('Arabic-normal', 10)
+
+            content_1 = u'لايتم استلام السيارات يوم الخميس والجمعة والتهانيا والعطال والرسمية والأعياد'
+            p.drawString(120, y - 580, content_1[::-1])
+
+            content_2 = u'اقربانني اطلعت على هذه الاتفاقية والشروط المدونة في الخلف وعليها اوقع'
+
+            p.drawString(140, y - 620, content_2[::-1])
+
             p.showPage()
             p.save()
 
