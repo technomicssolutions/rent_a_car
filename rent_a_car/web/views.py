@@ -93,16 +93,16 @@ def draw_heading(canvas):
     p.setFont('Helvetica', 13)
     p.drawString(460, 1080, '   , ')
     p.drawString(480, 1080, mob_nos)
-    p.drawString(590, 1080, '   , ')
-    p.drawString(610, 1080, pobox)
+    p.drawString(600, 1080, '   , ')
+    p.drawString(620, 1080, pobox)
     p.drawString(350, 1080, tel_nos)
     p.drawString(470, 1040, '   , ')
 
     p.setFont('Arabic-normal', 13)
     
     p.drawString(420, 1080, tel_no[::-1])
-    p.drawString(550, 1080, mob_no[::-1])
-    p.drawString(650, 1080, po_box[::-1])
+    p.drawString(560, 1080, mob_no[::-1])
+    p.drawString(660, 1080, po_box[::-1])
     p.drawString(490, 1040, addrss1[::-1])
     p.drawString(400, 1040, addrss2[::-1])
     return p
@@ -1303,7 +1303,7 @@ class PrintReceiptCar(View):
             p.drawString(840, y - 930, arabic_text_balance[::-1])
 
             p = draw_heading(p)
-
+            # contents
             p.setFont('Arabic-normal', 10)
 
             content_1 = u'لايتم استلام السيارات يوم الخميس والجمعة والتهانيا والعطال والرسمية والأعياد'

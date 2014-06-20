@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import simplejson
 import ast
 from datetime import datetime
@@ -40,6 +41,18 @@ from web.models import *
 
 utc=pytz.UTC
 
+arabic_text_heading = u'الكأس الذهبي لتأجير السيارات'
+
+tel_no = u'تلفون :'
+tel_nos = '02-6266634'
+mob_no = u'متحرك : '
+mob_nos = '055-4087528'
+po_box = u'ص.ب : '
+pobox = '32900'
+
+addrss1 = u'شارع جوازات القديم'
+addrss2 = u'أبوظبي أ.ع.م'
+
 def header(canvas):
 
     p = canvas
@@ -64,12 +77,33 @@ def header(canvas):
     table.wrapOn(p, 200, 400)
     table.drawOn(p, 300, 1160) 
 
-    path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
-    p.drawImage(path, 70, 1045, width=30*cm, height=3*cm, preserveAspectRatio=True)
+    # path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
+    # p.drawImage(path, 70, 1045, width=30*cm, height=3*cm, preserveAspectRatio=True)
     p.setFont("Helvetica", 12)
-    p.drawString(350, 1020, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
-    p.drawString(400, 1006, 'Old Passport Road , Abu Dhabi - UAE')
+    p.drawString(350, 1080, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+    p.drawString(400, 1030, 'Old Passport Road , Abu Dhabi - UAE')
     p.line(50, 960, 1000, 960)
+
+    p.setFont('Arabic-normal', 16)
+    p.drawString(400, 1110, arabic_text_heading[::-1])
+
+    p.setFont('Helvetica', 13)
+    p.drawString(460, 1050, '   , ')
+    p.drawString(480, 1050, mob_nos)
+    p.drawString(600, 1050, '   , ')
+    p.drawString(620, 1050, pobox)
+    p.drawString(350, 1050, tel_nos)
+    p.drawString(470, 1010, '   , ')
+
+    p.setFont('Arabic-normal', 13)
+    
+    p.drawString(420, 1050, tel_no[::-1])
+    p.drawString(560, 1050, mob_no[::-1])
+    p.drawString(660, 1050, po_box[::-1])
+    p.drawString(490, 1010, addrss1[::-1])
+    p.drawString(400, 1010, addrss2[::-1])
+
+    p.setFont("Helvetica", 12)
 
     return p
 
