@@ -672,6 +672,9 @@ function RentAgreementController($scope, $http, $location) {
 		} else if ($scope.rent_agreement.client_identity == '' || $scope.rent_agreement.client_identity == undefined) {
 			$scope.validation_error = 'Please choose the Driver Identity';
 			return false;
+		} else if ($scope.vehicle.id == '' || $scope.vehicle.id == undefined) {
+			$scope.validation_error = 'Please choose the Vehicle';
+			return false;
 		} else if ($scope.vehicle.meter_reading && (!Number($scope.vehicle.meter_reading))) {
 			$scope.validation_error = 'Please enter valid Meter Reading';
 			return false;
@@ -1105,6 +1108,8 @@ function CaseEntryController($scope, $http, $location) {
 		'vehicle_id': '',
 		'client_id': '',
 		'code_author': '',
+		'ref_no': '',
+		'vehicle_status': '',
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -1187,17 +1192,19 @@ function CaseEntryController($scope, $http, $location) {
     }
 	$scope.get_customer_details = function() {
 		$scope.case_details.start_date = $$('#start_date')[0].get('value');
-		$scope.case_details.end_date = $$('#end_date')[0].get('value');
-		var url = '/rent_agreement_details/?start_date='+$scope.case_details.start_date+'&end_date='+$scope.case_details.end_date+'&vehicle_no='+$scope.case_details.vehicle_no;
+		var url = '/rent_agreement_details/?start_date='+$scope.case_details.start_date+'&vehicle_no='+$scope.case_details.vehicle_no;
 		$http.get(url).success(function(data) {
 			if (data.client_name == '' || data.client_name == undefined) {
 				$scope.case_details.client_name = data.client_name;
 				$scope.validation_error = 'No such client with these details';
+				$scope.case_details.vehicle_status = data.vehicle_status;
 			} else {
 				$scope.validation_error = '';
 				$scope.case_details.client_name = data.client_name;
 				$scope.case_details.client_id = data.client_id;
 				$scope.case_details.vehicle_id = data.vehicle_id;
+				$scope.case_details.vehicle_status = data.vehicle_status;
+				$scope.case_details.ref_no = data.ref_no;
 			}
 		})
 	}

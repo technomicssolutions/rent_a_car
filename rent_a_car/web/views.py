@@ -1372,15 +1372,13 @@ class RentAgreementDetails(View):
     def get(self, request, *args, **kwargs):
         ctx_client_details = []
         start_date = request.GET.get('start_date', '')
-        end_date = request.GET.get('end_date', '')
         vehicle_no = request.GET.get('vehicle_no', '')
         rent_agreements = []
         
-        if start_date and end_date and vehicle_no:
+        if start_date and vehicle_no:
             start_date = datetime.strptime(start_date, '%d/%m/%Y')
-            start_date = datetime.combine(start_date, dt.time.max)
-            end_date = datetime.strptime(end_date, '%d/%m/%Y')
-            end_date = datetime.combine(end_date, dt.time.min)
+            start_date = datetime.combine(start_date, dt.time.min)
+            
             # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no=vehicle_no)
             # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no__contains=vehicle_no, starting_date_time__range=(
             #             datetime.combine(start_date, dt.time.min),
@@ -1388,7 +1386,7 @@ class RentAgreementDetails(View):
             #             datetime.combine(end_date, dt.time.min),
             #             datetime.combine(end_date, dt.time.max)
             #             ))
-            rent_agreements = RentAgreement.objects.filter(Q(vehicle__vehicle_no__icontains=vehicle_no),Q(starting_date_time__lte=start_date, end_date_time__gte=end_date))
+            rent_agreements = RentAgreement.objects.filter(Q(vehicle__vehicle_no__icontains=vehicle_no),Q(starting_date_time__lte=start_date, end_date_time__gte=start_date))
             
         if request.is_ajax():
             res = {
@@ -1396,6 +1394,8 @@ class RentAgreementDetails(View):
                 'client_name': rent_agreements[0].driver.driver_name if rent_agreements else '',
                 'client_id': rent_agreements[0].driver.id if rent_agreements else '',
                 'vehicle_id': rent_agreements[0].vehicle.id if rent_agreements else '',
+                'ref_no': rent_agreements[0].agreement_no if rent_agreements.count() > 0 else '',
+                'vehicle_status': "Outside" if rent_agreements.count() > 0 else "Inside"
             }
             response = simplejson.dumps(res)
             return HttpResponse(response, status=200, mimetype='application/json')
