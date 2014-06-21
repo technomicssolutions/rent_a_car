@@ -71,6 +71,10 @@ arabic_text_sponsar_tel = u'تلفون  الكفيل'
 arabic_text_sponsar_address = u'عنوان الكفيل'
 arabic_text_paid = u'مدفوع'
 arabic_text_balance = u'توازن'
+arabic_text_passport_issue_date = u'جواز سفر التاريخ'
+arabic_text_issued_place = u'أصدرت مكان'
+arabic_text_license_type = u'نوع الترخيص'
+arabic_text_emirates_id = u'بطاقة هوية المقيمين'
 
 arabic_text_heading = u'الكأس الذهبي لتأجير السيارات'
 
@@ -876,17 +880,13 @@ class PrintRentAgreement(View):
             arabic_text_exp_return_date = u'تتوقع عودته التسجيل'
             p.drawString(250, 780, arabic_text_exp_return_date[::-1])
             p.drawString(440, 780, arabic_text_time[::-1])
-            arabic_text_passport_issue_date = u'جواز سفر التاريخ'
             p.drawString(510, 987, arabic_text_passport_issue_date[::-1])
-            arabic_text_issued_place = u'أصدرت مكان'
             p.drawString(760, 987, arabic_text_issued_place[::-1])
             p.drawString(510, 937, arabic_text_dob[::-1])
             p.drawString(760, 937, arabic_text_tel[::-1])
             arabic_text_date_place_issue = u'تاريخ ومكان الإصدار'
             p.drawString(510, 790, arabic_text_date_place_issue[::-1])
-            arabic_text_emirates_id = u'بطاقة هوية المقيمين'
             p.drawString(690,730, arabic_text_emirates_id[::-1])
-            arabic_text_license_type = u'نوع الترخيص'
             p.drawString(670, 680, arabic_text_license_type[::-1])
             p.drawString(510, 880, arabic_text_address[::-1])
             arabic_text_license_expiry_date = u'الترخيص تاريخ انتهاء الصلاحية'
@@ -1249,55 +1249,65 @@ class PrintReceiptCar(View):
             
             p.drawString(50, y - 180, arabic_text_address[::-1])
             arabic_text = u'تاريخ الاصدار الرخصة  - تاريخ الانتهاء'
-            # p.drawString(50, y - 230, arabic_text[::-1]) Driver License No
             p.drawString(50, y - 280, arabic_text[::-1])
 
-            # p.drawString(510, y - 30, 'Passport Issue Date: ')
-            # p.drawString(510, y - 80, 'Passport Issue Place')
+            arabic_text_driver_license_no = u'السائق رقم الرخصة'
+            p.drawString(50, y - 230, arabic_text_driver_license_no[::-1])
+
+            p.drawString(510, y - 30, arabic_text_passport_issue_date[::-1])
+            passport_issue_place = u'جواز سفر العدد مكان'
+            p.drawString(510, y - 80, passport_issue_place[::-1])
             
             p.drawString(510, y - 130, arabic_text_dob[::-1])
             
             p.drawString(510, y - 180, arabic_text_tel[::-1])
-            # p.drawString(510, y - 230, 'License Type ')
+            p.drawString(510, y - 230, arabic_text_license_type[::-1])
             
-            # p.drawString(510, y - 280, 'Emirates Id: ')
+            p.drawString(510, y - 280, arabic_text_emirates_id[::-1])
             arabic_text = u'تاريخ مغادرة السيارات '
             p.drawString(50, y - 330, arabic_text[::-1])
             
             p.drawString(260, y - 330, arabic_text_time[::-1])
-            # p.drawString(510, y - 330, 'License Issue Place')
+            arabic_text_license_issue_place = u'العدد الترخيص مكان'
+            p.drawString(510, y - 330, arabic_text_license_issue_place[::-1])
             arabic_text = u'تاريخ عودة السيارات' 
             p.drawString(50, y - 380, arabic_text[::-1])
             p.drawString(260, y - 380, arabic_text_time[::-1])
             p.drawString(510, y - 380, arabic_text_tel[::-1])
             p.drawString(510, y - 430, arabic_text_address[::-1])
-            # p.drawString(50, y - 430, 'Entering Date:')
+            entering_date = u'دخول التسجيل'
+            p.drawString(50, y - 430, entering_date[::-1])
             p.drawString(260, y - 430, arabic_text_time[::-1])
-
-            # p.drawString(50, y - 480, 'Plate No: ')
+            plate_no = u'رقم اللوحة'
+            p.drawString(50, y - 480, plate_no[::-1])
             arabic_text = u'لون السيارات'
             p.drawString(260, y - 480, arabic_text[::-1])
             arabic_text = u'موديل'
             p.drawString(50, y - 530, arabic_text[::-1])
-            # p.drawString(260, y - 530, 'Made: ')
-            # p.drawString(510, y - 480, 'Return Meter Reading: ')
-            # p.drawString(760, y - 480, 'Petrol on Returning ')
-            # p.drawString(510, y - 530, 'Insurance Value: ')
+            made = u'مصنوع'
+            p.drawString(260, y - 530, made[::-1])
+            return_meter_reading = u'عودة قراءة العداد'
+            p.drawString(510, y - 480, return_meter_reading[::-1])
+            petrol_on_return = u'البنزين على العودة'
+            p.drawString(760, y - 480, petrol_on_return[::-1])
+            insuranse_value = u'القيمة التأمين'
+            p.drawString(510, y - 530, insuranse_value[::-1])
             arabic_text_deposit = u'الوديعة'
             p.drawString(760, y - 580, arabic_text_deposit[::-1])
             arabic_text_fine = u'غرامه'
             p.drawString(760, y - 615, arabic_text_fine[::-1])
-            # arabic_text_petrol = u''
-            # p.drawString(760, y - 655, 'Petrol')
+            arabic_text_petrol = u'بنزين'
+            p.drawString(760, y - 655, arabic_text_petrol[::-1])
             arabic_text_accident = u'حادث مقبول'
             p.drawString(760, y - 715, arabic_text_accident[::-1])
-            # arabic_text_vehicle_scratch = u''
-            # p.drawString(760, y - 755, 'Vehicle Scrtach')
+            arabic_text_vehicle_scratch = u'خدش السيارة'
+            p.drawString(760, y - 755, arabic_text_vehicle_scratch[::-1])
             arabic_text_extra_charge = u'رسوم إضافية'
             p.drawString(760, y - 795, arabic_text_extra_charge[::-1])
             arabic_text_reduction = u'تخفيض'
             p.drawString(760, y - 835, arabic_text_reduction[::-1])
-            # p.drawString(760, y - 875, 'Rent')
+            rent = u'إيجار'
+            p.drawString(760, y - 875, rent[::-1])
 
             # hirer and sponsar
             arabic_text = u'المستأجر'
