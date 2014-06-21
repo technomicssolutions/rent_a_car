@@ -871,19 +871,28 @@ class PrintRentAgreement(View):
             p.drawString(440, 880, arabic_text_time[::-1])
             arabic_text_meter_reading_leaving = u'قراءة العداد عند مغادرة السيارات'
             p.drawString(60, 840, arabic_text_meter_reading_leaving[::-1])
-            # p.drawString(310, 840, 'Petrol on Leaving')
-            # p.drawString(200, 780, 'Expecting Returning date')
+            arabic_text = u'البنزين على ترك'
+            p.drawString(310, 840, arabic_text[::-1])
+            arabic_text_exp_return_date = u'تتوقع عودته التسجيل'
+            p.drawString(250, 780, arabic_text_exp_return_date[::-1])
             p.drawString(440, 780, arabic_text_time[::-1])
-            # p.drawString(510, 987, 'Passport Issue Date')
-            # p.drawString(760, 987, 'Passport Issue Place')
+            arabic_text_passport_issue_date = u'جواز سفر التاريخ'
+            p.drawString(510, 987, arabic_text_passport_issue_date[::-1])
+            arabic_text_issued_place = u'أصدرت مكان'
+            p.drawString(760, 987, arabic_text_issued_place[::-1])
             p.drawString(510, 937, arabic_text_dob[::-1])
             p.drawString(760, 937, arabic_text_tel[::-1])
-            # p.drawString(510, 790, 'Date & Place of Issue: ')
-            # p.drawString(690,730, 'Emirates Id')
-            # p.drawString(870, 680, 'License Type')
+            arabic_text_date_place_issue = u'تاريخ ومكان الإصدار'
+            p.drawString(510, 790, arabic_text_date_place_issue[::-1])
+            arabic_text_emirates_id = u'بطاقة هوية المقيمين'
+            p.drawString(690,730, arabic_text_emirates_id[::-1])
+            arabic_text_license_type = u'نوع الترخيص'
+            p.drawString(670, 680, arabic_text_license_type[::-1])
             p.drawString(510, 880, arabic_text_address[::-1])
-            # p.drawString(510, 830, 'License Expiry Date')
-            # p.drawString(760, 830, 'Client Identity:')
+            arabic_text_license_expiry_date = u'الترخيص تاريخ انتهاء الصلاحية'
+            p.drawString(510, 830, arabic_text_license_expiry_date[::-1])
+            arabic_text_client_identity = u'الهوية عميل'
+            p.drawString(760, 830, arabic_text_client_identity[::-1])
             arabic_text_amount = u'مبلغ'
             p.drawString(100, 590, arabic_text_amount[::-1])
             p.drawString(100, 540, arabic_text_total_amount[::-1])
