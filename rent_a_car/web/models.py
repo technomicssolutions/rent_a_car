@@ -221,7 +221,7 @@ class CaseDetail(models.Model):
     vehicle = models.ForeignKey(Vehicle, null=True, blank=True)
     client = models.ForeignKey(Driver, null=True, blank=True)
 
-    inside_or_outside = models.CharField('Vehicle Status', null=True, blank=True, max_length=20)
+    vehicle_status = models.CharField('Vehicle Status', null=True, blank=True, max_length=20)
     rent_agreement_reference_no = models.CharField('Reference No', null=True, blank=True, max_length=20)
     fine_amount = models.DecimalField('Fine Amount', decimal_places=2, max_digits=25, default=0)
     type_of_case = models.CharField('Type of Case', max_length=25, null=True, blank=True)

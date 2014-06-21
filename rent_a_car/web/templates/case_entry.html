@@ -28,10 +28,18 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
+							<label for="name">Vehicle No</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="vehicle_no" ng-model="case_details.vehicle_no" ng-change="get_customer_details()"/>
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
 							<label for="name">Rent Agreement No</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="ref_no" ng-model="case_details.ref_no" id="ref_no"/>
+							<input type="text" name="ref_no" ng-model="case_details.ref_no" id="ref_no" readonly/>
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -39,17 +47,10 @@
 							<label for="name">Vehicle Status</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="vehicle_status" ng-model="case_details.vehicle_status" id="vehicle_status"/>
+							<input type="text" name="vehicle_status" ng-model="case_details.vehicle_status" id="vehicle_status" readonly/>
 						</div>
 					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="name">Vehicle No</label>
-						</div>
-						<div class="forminput">
-							<input type="text" name="vehicle_no" ng-model="case_details.vehicle_no" ng-change="get_customer_details()"/>
-						</div>
-					</div>
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="name">Client Name</label>

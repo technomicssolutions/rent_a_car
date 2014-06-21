@@ -1210,8 +1210,12 @@ function CaseEntryController($scope, $http, $location) {
 	}
 	$scope.case_form_validation = function() {
 		$scope.case_details.penality_date = $$('#penality_date')[0].get('value');
+		$scope.case_details.start_date = $$('#start_date')[0].get('value');
 		$scope.case_details.date_author = $$('#date_author')[0].get('value');
-		if ($scope.case_details.client_name == '' || $scope.case_details.client_name == undefined) {
+		if ($scope.case_details.start_date == '' || $scope.case_details.start_date == undefined) {
+			$scope.validation_error = 'Please enter Start Date';
+			return false;
+		} else if ($scope.case_details.client_name == '' || $scope.case_details.client_name == undefined) {
 			$scope.validation_error = 'Please enter Correct vehicle No';
 			return false;
 		} else if ($scope.case_details.type_of_case == '' || $scope.case_details.type_of_case == undefined || $scope.case_details.type_of_case == 'other') {

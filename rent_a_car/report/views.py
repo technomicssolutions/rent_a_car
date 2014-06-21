@@ -374,6 +374,7 @@ class VehicleOutstandingReport(View):
         p.drawString(440, 875, "Total Amount")
         p.drawString(600, 875, "Paid")
         p.drawString(700,875, "Balance")
+        p.drawString(800,875, "Contact No")
 
         p.setFontSize(13)
         agreements = RentAgreement.objects.filter(vehicle__is_available=False, is_completed=False)
@@ -387,6 +388,7 @@ class VehicleOutstandingReport(View):
                 p.drawString(440, y, str(agreement.total_amount))
                 p.drawString(600, y, str(agreement.paid))
                 p.drawString(700, y, str(float(agreement.total_amount) - float(agreement.paid)))
+                p.drawString(800, y, str(agreement.driver.driver_phone))
                 y = y - 30
 
                 if y <= 135:

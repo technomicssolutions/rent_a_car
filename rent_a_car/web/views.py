@@ -1351,6 +1351,8 @@ class CaseEntry(View):
             driver = Driver.objects.get(id = int(case_details['client_id']))
             vehicle = Vehicle.objects.get(id=case_details['vehicle_id'])
             case = CaseDetail.objects.create(vehicle=vehicle, client=driver)
+            case.vehicle_status = case_details['vehicle_status']
+            case.rent_agreement_reference_no = case_details['ref_no']
             case.fine_amount = case_details['fine']
             case.type_of_case = case_details['type_of_case']
             case.penality_date = datetime.strptime(case_details['penality_date'], '%d/%m/%Y')
@@ -1376,17 +1378,13 @@ class RentAgreementDetails(View):
         rent_agreements = []
         
         if start_date and vehicle_no:
-            start_date = datetime.strptime(start_date, '%d/%m/%Y')
-            start_date = datetime.combine(start_date, dt.time.min)
+            start = start_date
+            start_date = datetime.strptime(start, '%d/%m/%Y')
+            start_date = datetime.combine(start_date, dt.time.max)
+            end_date = datetime.strptime(start, '%d/%m/%Y')
+            end_date = datetime.combine(end_date, dt.time.min)
             
-            # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no=vehicle_no)
-            # rent_agreements = RentAgreement.objects.filter(vehicle__vehicle_no__contains=vehicle_no, starting_date_time__range=(
-            #             datetime.combine(start_date, dt.time.min),
-            #             datetime.combine(start_date, dt.time.max)), end_date_time__range=(
-            #             datetime.combine(end_date, dt.time.min),
-            #             datetime.combine(end_date, dt.time.max)
-            #             ))
-            rent_agreements = RentAgreement.objects.filter(Q(vehicle__vehicle_no__icontains=vehicle_no),Q(starting_date_time__lte=start_date, end_date_time__gte=start_date))
+            rent_agreements = RentAgreement.objects.filter(Q(vehicle__vehicle_no__icontains=vehicle_no),Q(starting_date_time__lte=start_date, end_date_time__gte=end_date))
             
         if request.is_ajax():
             res = {
