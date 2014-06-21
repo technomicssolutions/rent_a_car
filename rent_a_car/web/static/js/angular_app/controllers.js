@@ -67,6 +67,7 @@ save_vehicle_type = function($scope, $http, from) {
 }
 
 validate_vehicle_form = function($scope, $http) {
+	console.log(Number($scope.vehicle.petrol));
 	if ($scope.vehicle.insurance_value == '' || $scope.vehicle.insurance_value == undefined) {
 		$scope.vehicle.insurance_value = 0;
 	}
@@ -94,8 +95,8 @@ validate_vehicle_form = function($scope, $http) {
 	} else if (!Number($scope.vehicle.meter_reading)) {
 		$scope.validation_error = 'Please enter a Valid Meter Reading';
 		return false;
-	} else if ($scope.vehicle.petrol && (!Number($scope.vehicle.petrol))) {
-		$scope.validation_error = 'Please enter a Valid Meter Reading';
+	} else if ($scope.vehicle.petrol != Number($scope.vehicle.petrol)) {
+		$scope.validation_error = 'Please enter a Valid Petrol';
 		return false;
 	} else if ($scope.vehicle.insurance_value && (!Number($scope.vehicle.insurance_value))) {
 		$scope.validation_error = 'Please enter a Valid Insurance Value';
