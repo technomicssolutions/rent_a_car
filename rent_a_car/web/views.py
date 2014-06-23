@@ -1083,7 +1083,7 @@ class PrintReceiptCar(View):
             p.setFont("Helvetica-Bold", 15)
             p.drawString(410, 1010, 'RENTAL CAR RECEIPT')
             p.line(50,1000,950,1000)
-            p.line(500,1000,500,100)
+            p.line(500,1000,500,130)
             p.line(50, 950, 950,950)
             p.line(50, 900, 950, 900)
             p.line(50, 850, 950, 850)
@@ -1106,15 +1106,11 @@ class PrintReceiptCar(View):
             p.line(500, 210, 950, 210)
             p.line(500, 170, 950, 170)
             p.line(500, 130, 950, 130)
-            p.line(500, 100, 950, 100)
-            p.line(500, 70, 950, 70)
             p.line(250, 550, 250, 500)
             p.line(250, 500, 250, 450)
             p.line(750, 500, 750, 550)
             
-            p.line(750, 450, 750, 100)
-            p.line(500, 70, 500, 100)
-            p.line(750, 70, 750, 100)
+            p.line(750, 450, 750, 130)
 
             p.setFont("Helvetica", 15)
             
@@ -1155,13 +1151,11 @@ class PrintReceiptCar(View):
             p.drawString(760, y - 545, 'Deposit')
             p.drawString(760, y - 580, 'Fine')
             p.drawString(760, y - 620, 'Petrol')
-            p.drawString(760, y - 650, 'Accident Passable')
-            p.drawString(760, y - 690, 'Vehicle Scrtach')
-            p.drawString(760, y - 730, 'Extra Charge')
-            p.drawString(760, y - 770, 'Reduction')
-            p.drawString(760, y - 810, 'Rent')
-            p.drawString(750, y - 850, 'Total Amount')
-            p.drawString(760, y - 880, 'Balance')
+            p.drawString(760, y - 650, 'Extra Charge')
+            p.drawString(760, y - 690, 'Reduction')
+            p.drawString(760, y - 730, 'Rent')
+            p.drawString(750, y - 770, 'Total Amount')
+            p.drawString(760, y - 810, 'Balance')
 
             p.drawString(60, y - 620, "We don't receipt the car in Thursday, Friday the formal holiday")
             p.drawString(60, y - 660, "Acknowledge that I have read the above and reverse method")
@@ -1205,14 +1199,12 @@ class PrintReceiptCar(View):
             p.drawString(550, y - 545, str(receive_car.rent_agreement.paid))
             p.drawString(550, y - 580, str(receive_car.fine))
             p.drawString(550, y - 620, str(receive_car.petrol))
-            p.drawString(550, y - 650, str(receive_car.rent_agreement.accident_passable))
-            p.drawString(550, y - 690, str(receive_car.rent_agreement.vehicle_scratch))
-            p.drawString(550, y - 730, str(receive_car.extra_charge))
+            p.drawString(550, y - 650, str(receive_car.extra_charge))
             
-            p.drawString(550, y - 770, str(receive_car.reduction))
-            p.drawString(550, y - 810, str(receive_car.rent_agreement.rent))
-            p.drawString(550, y - 850, str(receive_car.total_amount))
-            p.drawString(550, y - 880, str(float(receive_car.total_amount) - (float(receive_car.paid) + float(receive_car.rent_agreement.paid))))
+            p.drawString(550, y - 690, str(receive_car.reduction))
+            p.drawString(550, y - 730, str(receive_car.rent_agreement.rent))
+            p.drawString(550, y - 770, str(receive_car.total_amount))
+            p.drawString(550, y - 810, str(float(receive_car.total_amount) - (float(receive_car.paid) + float(receive_car.rent_agreement.paid))))
 
             y = 1010
             p.setFont('Arabic-normal', 16)
@@ -1276,15 +1268,12 @@ class PrintReceiptCar(View):
             p.drawString(760, y - 615, arabic_text_fine[::-1])
             arabic_text_petrol = u'بنزين'
             p.drawString(760, y - 655, arabic_text_petrol[::-1])
-            
-            p.drawString(760, y - 715, arabic_text_accident[::-1])
-            p.drawString(760, y - 755, arabic_text_vehicle_scratch[::-1])
             arabic_text_extra_charge = u'رسوم إضافية'
-            p.drawString(760, y - 795, arabic_text_extra_charge[::-1])
+            p.drawString(760, y - 715, arabic_text_extra_charge[::-1])
             arabic_text_reduction = u'تخفيض'
-            p.drawString(760, y - 835, arabic_text_reduction[::-1])
+            p.drawString(760, y - 755, arabic_text_reduction[::-1])
             rent = u'إيجار'
-            p.drawString(760, y - 875, rent[::-1])
+            p.drawString(760, y - 795, rent[::-1])
 
             # hirer and sponsar
             arabic_text = u'المستأجر'
@@ -1295,8 +1284,8 @@ class PrintReceiptCar(View):
             arabic_text = u'مسؤول المكتب'
             p.drawString(370, y - 870, arabic_text[::-1])
             
-            p.drawString(845, y - 900, arabic_text_total_amount[::-1])
-            p.drawString(840, y - 930, arabic_text_balance[::-1])
+            p.drawString(845, y - 820, arabic_text_total_amount[::-1])
+            p.drawString(840, y - 860, arabic_text_balance[::-1])
 
             p = draw_heading(p)
             # contents
