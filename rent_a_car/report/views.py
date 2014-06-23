@@ -36,6 +36,8 @@ from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
+from reportlab.lib.colors import magenta, red, green, black
+
 
 from web.models import *
 
@@ -56,52 +58,42 @@ addrss2 = u'أبوظبي أ.ع.م'
 def header(canvas):
 
     p = canvas
-    style = [
-        ('FONTSIZE', (0,0), (-1, -1), 20),
-        ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-    ]
-
-    new_style = [
-        ('FONTSIZE', (0,0), (-1, -1), 30),
-        ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-    ]
-
-    para_style = ParagraphStyle('fancy')
-    para_style.fontSize = 32
-    para_style.fontName = 'Helvetica-Bold'
-    para = Paragraph('Golden Cup Rent A Car', para_style)
-
-    data =[[ para , '']]
     
-    table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
-    table.wrapOn(p, 200, 400)
-    table.drawOn(p, 300, 1160) 
+    p.setFont("Helvetica-Bold", 30)
+    p.setFillColor(green)
+    p.drawString(50, 1140, 'Golden Cup Rent A Car')
+    p.setFillColor(black)
+
+    # p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
+
+    p.setFont("Helvetica", 12)
+    p.drawString(50, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+    
+    p.drawString(50, 1060, 'Old Passport Road , Abu Dhabi - UAE')
+
+    p.line(50, 1000, 1000, 1000)
 
     # path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
     # p.drawImage(path, 70, 1045, width=30*cm, height=3*cm, preserveAspectRatio=True)
-    p.setFont("Helvetica", 12)
-    p.drawString(350, 1080, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
-    p.drawString(400, 1030, 'Old Passport Road , Abu Dhabi - UAE')
-    p.line(50, 960, 1000, 960)
 
-    p.setFont('Arabic-normal', 16)
-    p.drawString(400, 1110, arabic_text_heading[::-1])
+    p.setFont('Arabic-normal', 20)
+    p.drawString(660, 1140, arabic_text_heading[::-1])
 
     p.setFont('Helvetica', 13)
-    p.drawString(460, 1050, '   , ')
-    p.drawString(480, 1050, mob_nos)
-    p.drawString(600, 1050, '   , ')
-    p.drawString(620, 1050, pobox)
-    p.drawString(350, 1050, tel_nos)
-    p.drawString(470, 1010, '   , ')
+    p.drawString(700, 1100, '   , ')
+    p.drawString(720, 1100, mob_nos)
+    p.drawString(840, 1100, '   , ')
+    p.drawString(860, 1100, pobox)
+    p.drawString(590, 1100, tel_nos)
+    p.drawString(820, 1060, '   , ')
 
     p.setFont('Arabic-normal', 13)
     
-    p.drawString(420, 1050, tel_no[::-1])
-    p.drawString(560, 1050, mob_no[::-1])
-    p.drawString(660, 1050, po_box[::-1])
-    p.drawString(490, 1010, addrss1[::-1])
-    p.drawString(400, 1010, addrss2[::-1])
+    p.drawString(660, 1100, tel_no[::-1])
+    p.drawString(800, 1100, mob_no[::-1])
+    p.drawString(900, 1100, po_box[::-1])
+    p.drawString(840, 1060, addrss1[::-1])
+    p.drawString(750, 1060, addrss2[::-1])
 
     p.setFont("Helvetica", 12)
 
@@ -115,16 +107,7 @@ class RentReport(View):
         response = HttpResponse(content_type='application/pdf')
         p = canvas.Canvas(response, pagesize=(1050, 1200))
         y = 1160
-        style = [
-            ('FONTSIZE', (0,0), (-1, -1), 20),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
-        new_style = [
-            ('FONTSIZE', (0,0), (-1, -1), 30),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
+       
         p = header(p)
         p.setFontSize(15)
 
@@ -155,25 +138,27 @@ class RentReport(View):
                 }
                 return render(request, 'reports/rent_report.html', ctx)                  
             else:
+
+                y = 960
                 start_date = datetime.strptime(start, '%d/%m/%Y')
                 end_date = datetime.strptime(end, '%d/%m/%Y')
                 p.setFontSize(17)
-                p.drawString(350, 930, 'Date Wise Rent Report')
+                p.drawString(350, y, 'Date Wise Rent Report')
                 p.setFontSize(13)
-                p.drawString(50, 875, "Date")
-                p.drawString(140, 875, "Agreement No")
-                p.drawString(240, 875, "Vehicle No")
-                p.drawString(340, 875, "Plate No")
-                p.drawString(440, 875, "Driver Name")
-                p.drawString(580, 875, "Passport No")
-                p.drawString(680,875, "License No")
-                p.drawString(780, 875, "Total Amount")
-                p.drawString(880, 875, "Paid")
-                p.drawString(950, 875, "Balance")
+                p.drawString(50, y - 55, "Date")
+                p.drawString(140, y - 55, "Agreement No")
+                p.drawString(240, y - 55, "Vehicle No")
+                p.drawString(340, y - 55, "Plate No")
+                p.drawString(440, y - 55, "Driver Name")
+                p.drawString(580, y - 55, "Passport No")
+                p.drawString(680, y - 55, "License No")
+                p.drawString(780, y - 55, "Total Amount")
+                p.drawString(880, y - 55, "Paid")
+                p.drawString(950, y - 55, "Balance")
 
                 agreements = RentAgreement.objects.filter(agreement_date__gte=start_date, agreement_date__lte=end_date).order_by('agreement_date')
                 if agreements.count() > 0:
-                    y = 850
+                    y = 880
                     for agreement in agreements:
                         
                         if agreement.receivecar_set.all().count() > 0:
@@ -198,7 +183,7 @@ class RentReport(View):
                         paid = 0
                         balance = 0
                         if y <= 135:
-                            y = 850
+                            y = 960
                             p.showPage()
                             p = header(p)
 
@@ -242,22 +227,23 @@ class RentReport(View):
                 end_date = datetime.strptime(end, '%d/%m/%Y')
                 vehicle = Vehicle.objects.get(id=int(vehicle_id))
                 p.setFontSize(17)
-                p.drawString(350, 930, 'Vehicle Wise Rent Report')
+                y = 960
+                p.drawString(350, y, 'Vehicle Wise Rent Report')
                 p.setFontSize(13)
-                p.drawString(50, 875, "Date")
-                p.drawString(140, 875, "Agreement No")
-                p.drawString(240, 875, "Vehicle No")
-                p.drawString(340, 875, "Plate No")
-                p.drawString(440, 875, "Driver Name")
-                p.drawString(590,875, "Passport No")
-                p.drawString(720, 875, "Total Amount")
-                p.drawString(840, 875, "Paid")
-                p.drawString(950, 875, "Balance")
+                p.drawString(50, y - 55, "Date")
+                p.drawString(140, y - 55, "Agreement No")
+                p.drawString(240, y - 55, "Vehicle No")
+                p.drawString(340, y - 55, "Plate No")
+                p.drawString(440, y - 55, "Driver Name")
+                p.drawString(590, y - 55, "Passport No")
+                p.drawString(720, y - 55, "Total Amount")
+                p.drawString(840, y - 55, "Paid")
+                p.drawString(950, y - 55, "Balance")
 
                 agreements = RentAgreement.objects.filter(agreement_date__gte=start_date, agreement_date__lte=end_date, vehicle=vehicle).order_by('agreement_date')
 
                 if agreements.count() > 0:
-                    y = 850
+                    y = 880
                     for agreement in agreements:
                         if agreement.receivecar_set.all().count() > 0:
                             total_amount = agreement.receivecar_set.all()[0].total_amount
@@ -280,7 +266,7 @@ class RentReport(View):
                         paid = 0
                         balance = 0
                         if y <= 135:
-                            y = 850
+                            y = 960
                             p.showPage()
                             p = header(p)
 
@@ -296,32 +282,24 @@ class VehicleReport(View):
         response = HttpResponse(content_type='application/pdf')
         p = canvas.Canvas(response, pagesize=(1050, 1200))
         y = 1160
-        style = [
-            ('FONTSIZE', (0,0), (-1, -1), 20),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
-        new_style = [
-            ('FONTSIZE', (0,0), (-1, -1), 30),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
+    
         p = header(p)
         p.setFontSize(15)
-        p.drawString(450, 930, 'Vehicles Report')
-        p.drawString(50, 875, "Vehicle No")
-        p.drawString(140, 875, "Plate No")
-        p.drawString(240, 875, "Color")
-        p.drawString(340, 875, "Made")
-        p.drawString(440, 875, "Type")
-        p.drawString(590,875, "Condition")
-        p.drawString(720, 875, "Meter Reading")
-        p.drawString(840, 875, "Insurance")
-        p.drawString(950, 875, "Status")
+        y = 960
+        p.drawString(450, y, 'Vehicles Report')
+        p.drawString(50,  y - 55, "Vehicle No")
+        p.drawString(140,  y - 55, "Plate No")
+        p.drawString(240,  y - 55, "Color")
+        p.drawString(340,  y - 55, "Made")
+        p.drawString(440,  y - 55, "Type")
+        p.drawString(590,  y - 55, "Condition")
+        p.drawString(720,  y - 55, "Meter Reading")
+        p.drawString(840,  y - 55, "Insurance")
+        p.drawString(950,  y - 55, "Status")
 
         p.setFontSize(13)
         vehicles = Vehicle.objects.all().order_by('id')
-        y = 850
+        y = 880
         if vehicles.count() > 0:
             for vehicle in vehicles:
 
@@ -337,7 +315,7 @@ class VehicleReport(View):
                 y = y - 30
 
                 if y <= 135:
-                    y = 850
+                    y = 960
                     p.showPage()
                     p = header(p)
 
@@ -355,30 +333,21 @@ class VehicleOutstandingReport(View):
         response = HttpResponse(content_type='application/pdf')
         p = canvas.Canvas(response, pagesize=(1050, 1200))
         y = 1160
-        style = [
-            ('FONTSIZE', (0,0), (-1, -1), 20),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
-        new_style = [
-            ('FONTSIZE', (0,0), (-1, -1), 30),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
         p = header(p)
         p.setFontSize(15)
-        p.drawString(450, 930, 'Outstanding Vehicles Report')
-        p.drawString(50, 875, "Vehicle No")
-        p.drawString(140, 875, "Plate No")
-        p.drawString(240, 875, "Driver Name")
-        p.drawString(440, 875, "Total Amount")
-        p.drawString(600, 875, "Paid")
-        p.drawString(700,875, "Balance")
-        p.drawString(800,875, "Contact No")
+        y = 960
+        p.drawString(450, y, 'Outstanding Vehicles Report')
+        p.drawString(50,  y - 55, "Vehicle No")
+        p.drawString(140,  y - 55, "Plate No")
+        p.drawString(240,  y - 55, "Driver Name")
+        p.drawString(440,  y - 55, "Total Amount")
+        p.drawString(600,  y - 55, "Paid")
+        p.drawString(700, y - 55, "Balance")
+        p.drawString(800, y - 55, "Contact No")
 
         p.setFontSize(13)
         agreements = RentAgreement.objects.filter(vehicle__is_available=False, is_completed=False)
-        y = 850
+        y = 880
         if agreements.count() > 0:
             for agreement in agreements:
 
@@ -392,7 +361,7 @@ class VehicleOutstandingReport(View):
                 y = y - 30
 
                 if y <= 135:
-                    y = 850
+                    y = 960
                     p.showPage()
                     p = header(p)
 
@@ -410,16 +379,7 @@ class RevenueReport(View):
         response = HttpResponse(content_type='application/pdf')
         p = canvas.Canvas(response, pagesize=(1050, 1200))
         y = 1160
-        style = [
-            ('FONTSIZE', (0,0), (-1, -1), 20),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
-        new_style = [
-            ('FONTSIZE', (0,0), (-1, -1), 30),
-            ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-        ]
-
+      
         p = header(p)
         p.setFontSize(15)
 
@@ -452,19 +412,20 @@ class RevenueReport(View):
 
                 p.setFontSize(17)
                 title_name = 'Date Wise Revenue Report - ' + str(date_range)
-                p.drawString(350, 930, title_name)
+                y = 960
+                p.drawString(350, y, title_name)
                 p.setFontSize(13)
-                p.drawString(50, 875, "Date")
-                p.drawString(140, 875, "Agreement No")
-                p.drawString(240, 875, "Agreement - Total Amount")
-                p.drawString(420, 875, "Agreement - Paid")
-                p.drawString(530, 875, "Receipt No")
-                p.drawString(620, 875, "Receipt - Total Amount")
-                p.drawString(770, 875, "Receipt - Paid")
-                p.drawString(865, 875, "Driver Name")
+                p.drawString(50, y - 55, "Date")
+                p.drawString(140, y - 55, "Agreement No")
+                p.drawString(240, y - 55, "Agreement - Total Amount")
+                p.drawString(420, y - 55, "Agreement - Paid")
+                p.drawString(530, y - 55, "Receipt No")
+                p.drawString(620, y - 55, "Receipt - Total Amount")
+                p.drawString(770, y - 55, "Receipt - Paid")
+                p.drawString(865, y - 55, "Driver Name")
                 agreement_total = 0
                 receive_total = 0
-                y = 850
+                y = 880
                 if agreements.count() > 0:
                     
                     for agreement in agreements:
@@ -484,11 +445,11 @@ class RevenueReport(View):
                         paid = 0
                         balance = 0
                         if y <= 135:
-                            y = 850
+                            y = 960
                             p.showPage()
                             p = header(p)
                 if y <= 135:
-                    y = 850
+                    y = 960
                     p.showPage()
                     p = header(p)
                 p.drawString(165, y, 'Agreement - Total : ')
