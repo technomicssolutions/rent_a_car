@@ -102,20 +102,16 @@ def draw_heading(canvas):
     p.drawString(840, 1120, '   , ')
     p.drawString(860, 1120, pobox)
     p.drawString(590, 1120, tel_nos)
-    p.drawString(820, 1060, '   , ')
+    p.drawString(820, 1090, '   , ')
 
     p.setFont('Arabic-normal', 13)
     
     p.drawString(660, 1120, tel_no[::-1])
     p.drawString(800, 1120, mob_no[::-1])
     p.drawString(900, 1120, po_box[::-1])
-    p.drawString(840, 1060, addrss1[::-1])
-    p.drawString(750, 1060, addrss2[::-1])
+    p.drawString(840, 1090, addrss1[::-1])
+    p.drawString(750, 1090, addrss2[::-1])
     return p
-
-# p.drawString(350, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
-
-# p.drawString(400, 1060, 'Old Passport Road , Abu Dhabi - UAE')
 
 class Home(View):
 
@@ -717,16 +713,16 @@ class PrintRentAgreement(View):
             # p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
 
             p.setFont("Helvetica", 12)
-            p.drawString(350, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+            p.drawString(50, 1120, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
             
-            p.drawString(400, 1060, 'Old Passport Road , Abu Dhabi - UAE')
+            p.drawString(50, 1090, 'Old Passport Road , Abu Dhabi - UAE')
             p.setFont("Helvetica", 16)
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
             p.drawString(90, 1015, rent_agreement.agreement_date.strftime('%d/%m/%Y'))
             p.drawString(820, 1015, rent_agreement.agreement_date.strftime('%d/%m/%Y'))
             p.setFont("Helvetica-Bold", 15)
-            p.drawString(410, 1010, 'RENTAL AGREEMENT')
+            p.drawString(410, 1050, 'RENTAL AGREEMENT')
             p.line(50, 1000, 950, 1000)
             p.line(500, 1000, 500, 150)
             p.line(250, 1000, 250, 900)
@@ -856,7 +852,7 @@ class PrintRentAgreement(View):
             date_arabic =  '.................:'+ arabic_text_date[::-1]
             p.drawString(820, 1010, date_arabic)
             arabic_text_rent_agreement = u'عقد تأجير'
-            p.drawString(610, 1010, arabic_text_rent_agreement[::-1])
+            p.drawString(610, 1050, arabic_text_rent_agreement[::-1])
             p.setFont('Arabic-normal', 13)
             arabic_text_vehicle_type = u'نوع السيارات'
             p.drawString(170, 980, arabic_text_vehicle_type[::-1])
