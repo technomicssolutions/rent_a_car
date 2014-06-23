@@ -43,6 +43,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.lib.colors import magenta, red, green, black
 
 
 from web.models import *
@@ -75,7 +76,8 @@ arabic_text_passport_issue_date = u'جواز سفر التاريخ'
 arabic_text_issued_place = u'أصدرت مكان'
 arabic_text_license_type = u'نوع الترخيص'
 arabic_text_emirates_id = u'بطاقة هوية المقيمين'
-
+arabic_text_vehicle_scratch = u'خدش السيارة'
+arabic_text_accident = u'حادث مقبول'
 arabic_text_heading = u'الكأس الذهبي لتأجير السيارات'
 
 tel_no = u'تلفون :'
@@ -91,26 +93,29 @@ addrss2 = u'أبوظبي أ.ع.م'
 
 def draw_heading(canvas):
     p = canvas
-    p.setFont('Arabic-normal', 16)
-    p.drawString(400, 1130, arabic_text_heading[::-1])
+    p.setFont('Arabic-normal', 25)
+    p.drawString(600, 1160, arabic_text_heading[::-1])
 
     p.setFont('Helvetica', 13)
-    p.drawString(460, 1080, '   , ')
-    p.drawString(480, 1080, mob_nos)
-    p.drawString(600, 1080, '   , ')
-    p.drawString(620, 1080, pobox)
-    p.drawString(350, 1080, tel_nos)
-    p.drawString(470, 1040, '   , ')
+    p.drawString(700, 1120, '   , ')
+    p.drawString(720, 1120, mob_nos)
+    p.drawString(840, 1120, '   , ')
+    p.drawString(860, 1120, pobox)
+    p.drawString(590, 1120, tel_nos)
+    p.drawString(820, 1060, '   , ')
 
     p.setFont('Arabic-normal', 13)
     
-    p.drawString(420, 1080, tel_no[::-1])
-    p.drawString(560, 1080, mob_no[::-1])
-    p.drawString(660, 1080, po_box[::-1])
-    p.drawString(490, 1040, addrss1[::-1])
-    p.drawString(400, 1040, addrss2[::-1])
+    p.drawString(660, 1120, tel_no[::-1])
+    p.drawString(800, 1120, mob_no[::-1])
+    p.drawString(900, 1120, po_box[::-1])
+    p.drawString(840, 1060, addrss1[::-1])
+    p.drawString(750, 1060, addrss2[::-1])
     return p
 
+# p.drawString(350, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+
+# p.drawString(400, 1060, 'Old Passport Road , Abu Dhabi - UAE')
 
 class Home(View):
 
@@ -703,26 +708,11 @@ class PrintRentAgreement(View):
             status_code = 200
 
             y = 1200
-            style = [
-                ('FONTSIZE', (0,0), (-1, -1), 20),
-                ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-            ]
-
-            new_style = [
-                ('FONTSIZE', (0,0), (-1, -1), 30),
-                ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-            ]
-
-            para_style = ParagraphStyle('fancy')
-            para_style.fontSize = 35
-            para_style.fontName = 'Helvetica-Bold'
-            para = Paragraph('Golden Cup Rent A Car', para_style)
-
-            data =[[ para , '']]
             
-            table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
-            table.wrapOn(p, 200, 400)
-            table.drawOn(p, 300, 1180)
+            p.setFont("Helvetica-Bold", 30)
+            p.setFillColor(green)
+            p.drawString(50, 1160, 'Golden Cup Rent A Car')
+            p.setFillColor(black)
 
             # p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
 
@@ -755,7 +745,7 @@ class PrintRentAgreement(View):
             p.line(750, 900, 750, 1000)
             p.line(750, 800, 750, 850)
 
-            p.line(250, 400, 250, 750)
+            p.line(250, 300, 250, 750)
             p.line(300, 850, 300, 800)
             p.line(50, 500, 500, 500)
             p.line(50, 550, 500, 550)
@@ -763,6 +753,8 @@ class PrintRentAgreement(View):
             p.line(50, 400, 500, 400)
             p.line(500, 550, 950, 550)
             p.line(500, 500, 950, 500)
+            p.line(50, 350, 500, 350)
+            p.line(50, 300, 500, 300)
 
             y = 980
             p.drawString(50, y, 'Vehicle Type')
@@ -792,6 +784,8 @@ class PrintRentAgreement(View):
             p.drawString(100, y - 460, 'Total Amount')
             p.drawString(100, y - 510, 'Paid')
             p.drawString(100, y - 560, 'Balance')
+            p.drawString(100, y - 610, 'Accident Passable')
+            p.drawString(100, y - 660, 'Vehicle Scrtach')
 
             p.drawString(50, y - 250, 'Driver Name')
             p.drawString(260, y - 250, 'License No')
@@ -844,6 +838,8 @@ class PrintRentAgreement(View):
             p.drawString(260, 520, str(rent_agreement.total_amount))
             p.drawString(260, 470, str(rent_agreement.paid))
             p.drawString(260, 420, str(float(rent_agreement.total_amount) - float(rent_agreement.paid)))
+            p.drawString(260, 370, str(rent_agreement.accident_passable))
+            p.drawString(260, 320, str(rent_agreement.vehicle_scratch))
             p.drawString(610, 560, str(rent_agreement.driver.driver_working_address))
             p.drawString(610, 510, str(rent_agreement.driver.driver_working_ph))
 
@@ -898,6 +894,8 @@ class PrintRentAgreement(View):
             p.drawString(100, 540, arabic_text_total_amount[::-1])
             p.drawString(100, 490, arabic_text_paid[::-1])
             p.drawString(100, 440, arabic_text_balance[::-1])
+            p.drawString(100, 390, arabic_text_vehicle_scratch[::-1])
+            p.drawString(100, 340, arabic_text_accident[::-1])
 
             p.drawString(150, 730, arabic_text_driver_name[::-1])
             
@@ -1069,33 +1067,17 @@ class PrintReceiptCar(View):
             status_code = 200
 
             y = 1200
-            style = [
-                ('FONTSIZE', (0,0), (-1, -1), 20),
-                ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-            ]
-
-            new_style = [
-                ('FONTSIZE', (0,0), (-1, -1), 30),
-                ('FONTNAME',(0,0),(-1,-1),'Helvetica') 
-            ]
-
-            para_style = ParagraphStyle('fancy')
-            para_style.fontSize = 35
-            para_style.fontName = 'Helvetica-Bold'
-            para = Paragraph('Golden Cup Rent A Car', para_style)
-
-            data =[[ para , '']]
-            
-            table = Table(data, colWidths=[500, 100], rowHeights=50, style=style)
-            table.wrapOn(p, 200, 400)
-            table.drawOn(p, 300, 1180) 
+            p.setFont("Helvetica-Bold", 30)
+            p.setFillColor(green)
+            p.drawString(50, 1160, 'Golden Cup Rent A Car')
+            p.setFillColor(black) 
 
             # p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
 
             p.setFont("Helvetica", 12)
-            p.drawString(350, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+            p.drawString(50, 1130, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
             
-            p.drawString(400, 1060, 'Old Passport Road , Abu Dhabi - UAE')
+            p.drawString(50, 1100, 'Old Passport Road , Abu Dhabi - UAE')
             p.setFont("Helvetica", 16)
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
@@ -1298,9 +1280,8 @@ class PrintReceiptCar(View):
             p.drawString(760, y - 615, arabic_text_fine[::-1])
             arabic_text_petrol = u'بنزين'
             p.drawString(760, y - 655, arabic_text_petrol[::-1])
-            arabic_text_accident = u'حادث مقبول'
+            
             p.drawString(760, y - 715, arabic_text_accident[::-1])
-            arabic_text_vehicle_scratch = u'خدش السيارة'
             p.drawString(760, y - 755, arabic_text_vehicle_scratch[::-1])
             arabic_text_extra_charge = u'رسوم إضافية'
             p.drawString(760, y - 795, arabic_text_extra_charge[::-1])
