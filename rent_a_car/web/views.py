@@ -50,9 +50,7 @@ from web.models import *
 
 utc=pytz.UTC
 
-# font_path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/fonts/KacstOne.ttf"
 font_path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/KacstOne.ttf"
-# pdfmetrics.registerFont(TTFont('Arabic', font_path))
 pdfmetrics.registerFont(TTFont('Arabic-normal', font_path))
 
 path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
@@ -83,7 +81,7 @@ arabic_text_heading = u'الكأس الذهبي لتأجير السيارات'
 tel_no = u'تلفون :'
 tel_nos = '02-6266634'
 mob_no = u'متحرك : '
-mob_nos = '055-4087528'
+mob_nos = '055-3020434'
 po_box = u'ص.ب : '
 pobox = '32900'
 
@@ -94,7 +92,9 @@ addrss2 = u'أبوظبي أ.ع.م'
 def draw_heading(canvas):
     p = canvas
     p.setFont('Arabic-normal', 25)
+    p.setFillColor(green)
     p.drawString(600, 1160, arabic_text_heading[::-1])
+    p.setFillColor(black)
 
     p.setFont('Helvetica', 13)
     p.drawString(700, 1120, '   , ')
@@ -400,12 +400,10 @@ class RentAgreementView(View):
 
         if request.is_ajax():
             rent_agreement_details = ast.literal_eval(request.POST['rent_agreement'])
-            # vehicle_details = ast.literal_eval(request.POST['vehicle_details'])
             try:
                 rent_agreement, agreement_created = RentAgreement.objects.get_or_create(agreement_no=rent_agreement_details['agreement_no'])
                 vehicle = Vehicle.objects.get(id=int(rent_agreement_details['vehicle_id']))
                 rent_agreement.vehicle = vehicle
-                # if int(vehicle.meter_reading) != int(vehicle_details['meter_reading']):
                 vehicle.meter_reading = request.POST['vehicle_meter_reading']
                 vehicle.save()
                 rent_agreement.leaving_meterreading = request.POST['vehicle_meter_reading']
@@ -425,6 +423,8 @@ class RentAgreementView(View):
                 rent_agreement.total_amount = rent_agreement_details['amount']
                 rent_agreement.rent = rent_agreement_details['rent']
                 rent_agreement.paid = rent_agreement_details['paid']
+                rent_agreement.rental_entitled_in_km = rent_agreement_details['rental_in_km']
+                rent_agreement.liable_to_pay_in_km = rent_agreement_details['liable_to_pay_in_km']
                 rent_agreement.save()
                 driver.rent = float(driver.rent) + float(rent_agreement_details['rent'])
                 driver.paid = float(driver.paid) + float(rent_agreement_details['paid'])
@@ -484,6 +484,7 @@ class ReceiveCarView(View):
             receive_car.notes = receive_car_details['notes']
             receive_car.new_meter_reading = receive_car_details['meter_reading']
             receive_car.leaving_petrol = receive_car_details['returning_petrol']
+            receive_car.salik_charges = receive_car_details['salik_charges']
             receive_car.receipt_datetime = utc.localize(datetime.strptime(receive_car_details['receipt_date'], '%d/%m/%Y %I:%M%p'))
 
             receive_car.returning_date_time = utc.localize(datetime.strptime(receive_car_details['returning_date'], '%d/%m/%Y %I:%M%p'))
@@ -710,10 +711,8 @@ class PrintRentAgreement(View):
             p.drawString(50, 1160, 'Golden Cup Rent A Car')
             p.setFillColor(black)
 
-            # p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
-
             p.setFont("Helvetica", 12)
-            p.drawString(50, 1120, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
+            p.drawString(50, 1120, 'Tel : 02-6266634 , Mob : 055-3020434 , P.O.Box : 32900')
             
             p.drawString(50, 1090, 'Old Passport Road , Abu Dhabi - UAE')
             p.setFont("Helvetica", 16)
@@ -739,7 +738,8 @@ class PrintRentAgreement(View):
             p.line(250, 600, 250, 750)
             # p.line(750, 650, 750, 750)
             p.line(750, 900, 750, 1000)
-            p.line(750, 800, 750, 850)
+            p.line(750, 750, 750, 800)
+            # p.line(750, 800, 750, 850)
 
             p.line(250, 300, 250, 750)
             p.line(300, 850, 300, 800)
@@ -751,6 +751,8 @@ class PrintRentAgreement(View):
             p.line(500, 500, 950, 500)
             p.line(50, 350, 500, 350)
             p.line(50, 300, 500, 300)
+            p.line(50, 250, 500, 250)
+            p.line(250, 300, 250, 250)
 
             y = 980
             p.drawString(50, y, 'Vehicle Type')
@@ -769,12 +771,12 @@ class PrintRentAgreement(View):
             p.drawString(760, y - 15, 'Issued Place: ')
             p.drawString(510, y - 60, 'Date of Birth: ')
             p.drawString(760, y - 60, 'Tel No: ')
-            p.drawString(510, y - 210, 'Date & Place of Issue: ')
+            p.drawString(510, y - 170, 'Date & Place of Issue: ')
             p.drawString(560, y - 250, 'Emirates Id: ')
             p.drawString(560, y - 300, 'License Type: ')
             p.drawString(510, y - 120, 'Address:')
-            p.drawString(510, y - 170, 'License Expiry Date:')
-            p.drawString(760, y - 170, 'Client Identity:')
+            p.drawString(510, y - 210, 'License Expiry Date:')
+            p.drawString(760, y - 210, 'Client Identity:')
 
             p.drawString(100, y - 410, 'Amount')
             p.drawString(100, y - 460, 'Total Amount')
@@ -782,6 +784,8 @@ class PrintRentAgreement(View):
             p.drawString(100, y - 560, 'Balance')
             p.drawString(100, y - 610, 'Accident Passable')
             p.drawString(100, y - 660, 'Vehicle Scrtach')
+            p.drawString(50, y - 700, 'Rental Entitled in KM')
+            p.drawString(250, y - 700, 'Liable to Pay in KM')
 
             p.drawString(50, y - 250, 'Driver Name')
             p.drawString(260, y - 250, 'License No')
@@ -812,13 +816,13 @@ class PrintRentAgreement(View):
             p.drawString(860, 965, rent_agreement.driver.place_of_issue if rent_agreement.driver else '')
             p.drawString(600, 920, rent_agreement.driver.driver_dob.strftime('%d/%m/%Y') if rent_agreement.driver and rent_agreement.driver.driver_dob else '')
             p.drawString(850, 920, rent_agreement.driver.driver_phone if rent_agreement.driver else '')
-            p.drawString(660, 770, (rent_agreement.driver.driver_license_issue_date.strftime('%d/%m/%Y') if rent_agreement.driver and rent_agreement.driver.driver_license_issue_date else '') + ' , ')
-            p.drawString(739, 770, rent_agreement.driver.driver_license_issue_place if rent_agreement.driver else '')
+            p.drawString(660, 810, (rent_agreement.driver.driver_license_issue_date.strftime('%d/%m/%Y') if rent_agreement.driver and rent_agreement.driver.driver_license_issue_date else '') + ' , ')
+            p.drawString(739, 810, rent_agreement.driver.driver_license_issue_place if rent_agreement.driver else '')
             p.drawString(580, 710, rent_agreement.driver.emirates_id if rent_agreement.driver else '')
             p.drawString(580, 660, rent_agreement.driver.license_type if rent_agreement.driver else '')
             p.drawString(620, 860, rent_agreement.driver.driver_address.replace('\n', ' ') if rent_agreement.driver and rent_agreement.driver.driver_address else '')
-            p.drawString(650, 810, rent_agreement.driver.driver_license_expiry_date.strftime('%d/%m/%Y') if rent_agreement.driver and rent_agreement.driver.driver_license_expiry_date else '')
-            p.drawString(860, 810, rent_agreement.client_identity if rent_agreement.client_identity else '')
+            p.drawString(650, 770, rent_agreement.driver.driver_license_expiry_date.strftime('%d/%m/%Y') if rent_agreement.driver and rent_agreement.driver.driver_license_expiry_date else '')
+            p.drawString(860, 770, rent_agreement.client_identity if rent_agreement.client_identity else '')
             
 
             p.drawString(130, 710, rent_agreement.driver.driver_name)
@@ -836,11 +840,13 @@ class PrintRentAgreement(View):
             p.drawString(260, 420, str(float(rent_agreement.total_amount) - float(rent_agreement.paid)))
             p.drawString(260, 370, str(rent_agreement.accident_passable))
             p.drawString(260, 320, str(rent_agreement.vehicle_scratch))
+            p.drawString(200, 280, str(rent_agreement.rental_entitled_in_km))
+            p.drawString(390, 280, str(rent_agreement.liable_to_pay_in_km))
             p.drawString(610, 560, str(rent_agreement.driver.driver_working_address))
             p.drawString(610, 510, str(rent_agreement.driver.driver_working_ph))
 
-            p.drawString(60, 200, """This vehicle cann't be taken outside the UAE without prior permission""")
-            p.drawString(60, 180, """ of the owner in writing""")
+            p.drawString(60, 180, """This vehicle cann't be taken outside the UAE without prior permission""")
+            p.drawString(60, 160, """ of the owner in writing""")
             p.drawString(503, 400, """I the undersigned agree to rent from the owner the above mentioned vehcile""")
             p.drawString(503, 380, """for the period set our herein. I have read the terms and conditions det out on""")
             p.drawString(503, 360, """the reverse of this agreement between my self and the owner. I certify that """)
@@ -877,14 +883,14 @@ class PrintRentAgreement(View):
             p.drawString(510, 937, arabic_text_dob[::-1])
             p.drawString(760, 937, arabic_text_tel[::-1])
             arabic_text_date_place_issue = u'تاريخ ومكان الإصدار'
-            p.drawString(510, 790, arabic_text_date_place_issue[::-1])
+            p.drawString(510, 830, arabic_text_date_place_issue[::-1])
             p.drawString(690,730, arabic_text_emirates_id[::-1])
             p.drawString(670, 680, arabic_text_license_type[::-1])
             p.drawString(510, 880, arabic_text_address[::-1])
             arabic_text_license_expiry_date = u'الترخيص تاريخ انتهاء الصلاحية'
-            p.drawString(510, 830, arabic_text_license_expiry_date[::-1])
+            p.drawString(510, 790, arabic_text_license_expiry_date[::-1])
             arabic_text_client_identity = u'الهوية عميل'
-            p.drawString(760, 830, arabic_text_client_identity[::-1])
+            p.drawString(760, 790, arabic_text_client_identity[::-1])
             arabic_text_amount = u'مبلغ'
             p.drawString(100, 590, arabic_text_amount[::-1])
             p.drawString(100, 540, arabic_text_total_amount[::-1])
@@ -892,6 +898,10 @@ class PrintRentAgreement(View):
             p.drawString(100, 440, arabic_text_balance[::-1])
             p.drawString(100, 390, arabic_text_vehicle_scratch[::-1])
             p.drawString(100, 340, arabic_text_accident[::-1])
+            rental_in_km = u'تأجير بعنوان في الكيلومتر'
+            p.drawString(50, 260, rental_in_km[::-1])
+            liable_to_pay_in_km = u'مسؤولا عن دفع في الكيلومتر'
+            p.drawString(260, 260, liable_to_pay_in_km[::-1])
 
             p.drawString(150, 730, arabic_text_driver_name[::-1])
             
@@ -921,7 +931,7 @@ class PrintRentAgreement(View):
             arabic_text = u'بدفع للستأجر قيمة الوقت التانج عن الحادث خروج السيارات من الكراج '
             p.drawString(503, 300, arabic_text[::-1])
             arabic_text = u'لا يجوز اخز السيارات خارج حدود دولة الامارت العربية للمتحدة بدون اذن خطي مسبق من قبل المالك'
-            p.drawString(60, 250, arabic_text[::-1])
+            p.drawString(60, 210, arabic_text[::-1])
 
             p.showPage()
             p.save()
@@ -1111,6 +1121,9 @@ class PrintReceiptCar(View):
             p.line(750, 500, 750, 550)
             
             p.line(750, 450, 750, 130)
+            p.line(500, 130, 500, 90)
+            p.line(750, 130, 750, 90)
+            p.line(500, 90, 950, 90)
 
             p.setFont("Helvetica", 15)
             
@@ -1154,13 +1167,13 @@ class PrintReceiptCar(View):
             p.drawString(760, y - 650, 'Extra Charge')
             p.drawString(760, y - 690, 'Reduction')
             p.drawString(760, y - 730, 'Rent')
-            p.drawString(750, y - 770, 'Total Amount')
-            p.drawString(760, y - 810, 'Balance')
+            p.drawString(750, y - 770, 'Salik Charges')
+            p.drawString(750, y - 810, 'Total Amount')
+            p.drawString(760, y - 850, 'Balance')
 
             p.drawString(60, y - 620, "We don't receipt the car in Thursday, Friday the formal holiday")
             p.drawString(60, y - 660, "Acknowledge that I have read the above and reverse method")
             p.drawString(60, y - 700, "terms and conditions and agree to able by them")
-            p.drawString(100, y - 780, '................................. Sponsor')
             p.drawString(350, y - 780, '....................... Hirer')
             p.drawString(250, y - 840, '..............................Office incharge')
 
@@ -1203,8 +1216,9 @@ class PrintReceiptCar(View):
             
             p.drawString(550, y - 690, str(receive_car.reduction))
             p.drawString(550, y - 730, str(receive_car.rent_agreement.rent))
-            p.drawString(550, y - 770, str(receive_car.total_amount))
-            p.drawString(550, y - 810, str(float(receive_car.total_amount) - (float(receive_car.paid) + float(receive_car.rent_agreement.paid))))
+            p.drawString(550, y - 770, str(receive_car.salik_charges))
+            p.drawString(550, y - 810, str(receive_car.total_amount))
+            p.drawString(550, y - 850, str(float(receive_car.total_amount) - (float(receive_car.paid) + float(receive_car.rent_agreement.paid))))
 
             y = 1010
             p.setFont('Arabic-normal', 16)
@@ -1275,17 +1289,15 @@ class PrintReceiptCar(View):
             rent = u'إيجار'
             p.drawString(760, y - 795, rent[::-1])
 
-            # hirer and sponsar
-            arabic_text = u'المستأجر'
-            p.drawString(230, y - 800, arabic_text[::-1])
             arabic_text = u'الكفيل' 
             p.drawString(420, y - 800, arabic_text[::-1])
             # office in charge
             arabic_text = u'مسؤول المكتب'
             p.drawString(370, y - 870, arabic_text[::-1])
-            
-            p.drawString(845, y - 820, arabic_text_total_amount[::-1])
-            p.drawString(840, y - 860, arabic_text_balance[::-1])
+            arabic_text_slalik_changes = u'رسوم سالك'
+            p.drawString(845, y - 820, arabic_text_slalik_changes[::-1])
+            p.drawString(845, y - 860, arabic_text_total_amount[::-1])
+            p.drawString(840, y - 910, arabic_text_balance[::-1])
 
             p = draw_heading(p)
             # contents

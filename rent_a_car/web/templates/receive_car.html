@@ -37,14 +37,6 @@
 							<input type="text" name="receipt_no" value="{{receipt_no}}" readonly id="receipt_no">
 						</div>
 					</div>
-					<!-- <div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="client">Client</label>
-						</div>
-						<div class="forminput">
-							<input type="text" name="client" ng-model="agreement.client" readonly>
-						</div>
-					</div> -->
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="vehicle_no">Vehicle No</label>
@@ -303,28 +295,21 @@
 							<input type="text" name="fine" ng-model="receipt.fine" id="fine" ng-change="calculate_balance()">
 						</div>
 					</div>
-					<!-- <div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="accident_passable">Accident Passable</label>
-						</div>
-						<div class="forminput">
-							<input type="text" name="accident_passable" ng-model="receipt.accident_passable" id="accident_passable" ng-change="calculate_balance()">
-						</div>
-					</div>
-					<div class="formrow_purchase">
-						<div class="formtext_purchase">
-							<label for="vehicle_scratch">Vehicle Scratch</label>
-						</div>
-						<div class="forminput">
-							<input type="text" name="vehicle_scratch" ng-model="receipt.vehicle_scratch" id="vehicle_scratch" ng-change="calculate_balance()">
-						</div>
-					</div> -->
+					
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
 							<label for="extra_charge">Extra Charge</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="extra_charge" ng-model="receipt.extra_charge" id="extra_charge" ng-change="calculate_balance()">
+						</div>
+					</div>
+					<div class="formrow_purchase">
+						<div class="formtext_purchase">
+							<label for="salik_charges">Salik Charges</label>
+						</div>
+						<div class="forminput">
+							<input type="text" name="extra_charge" ng-model="receipt.salik_charges" id="salik_charges" ng-change="calculate_balance()">
 						</div>
 					</div>
 					<div class="formrow_purchase">

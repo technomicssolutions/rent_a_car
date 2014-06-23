@@ -460,6 +460,8 @@ function RentAgreementController($scope, $http, $location) {
 		'client_identity': '',
 		'vehicle_scratch': 0,
 		'accident_passable': 0,
+		'rental_in_km': 0,
+		'liable_to_pay_in_km': 0,
 	}
 	$scope.driver_details_needed = true;
 	$scope.init = function(csrf_token) {
@@ -659,11 +661,10 @@ function RentAgreementController($scope, $http, $location) {
 		$scope.rent_agreement.agreement_no = $$('#agreement_no')[0].get('value');
 		$scope.rent_agreement.dob = $$('#driver_dob')[0].get('value');
 		$scope.rent_agreement.date = $$('#date')[0].get('value');
-		// $scope.rent_agreement.license_expiry_date = $$('#license_expiry_date')[0].get('value'); 
 		$scope.rent_agreement.license_issued_date = $$('#license_issued_date')[0].get('value');
 		$scope.rent_agreement.start_date_time = $$('#start_date_time')[0].get('value');
 		$scope.rent_agreement.end_date_time = $$('#end_date_time')[0].get('value');
-		console.log($scope.rent_agreement.driver_id);
+		console.log($scope.rent_agreement.rental_in_km, !Number($scope.rent_agreement.rental_in_km));
 		if ($scope.rent_agreement.agreement_no == '' || $scope.rent_agreement.agreement_no == undefined) {
 			$scope.validation_error = 'Please enter the Agreement No.';
 			return false;
@@ -676,13 +677,19 @@ function RentAgreementController($scope, $http, $location) {
 		} else if ($scope.vehicle.id == '' || $scope.vehicle.id == undefined) {
 			$scope.validation_error = 'Please choose the Vehicle';
 			return false;
-		} else if ($scope.vehicle.meter_reading && (!Number($scope.vehicle.meter_reading))) {
+		} else if ($scope.vehicle.meter_reading !=0 && (!Number($scope.vehicle.meter_reading))) {
 			$scope.validation_error = 'Please enter valid Meter Reading';
 			return false;
-		} else if ($scope.rent_agreement.accident_passable &&((!Number($scope.rent_agreement.accident_passable)))) {
+		} else if ($scope.rent_agreement.rental_in_km != 0 && (!Number(parseFloat($scope.rent_agreement.rental_in_km)))) {
+			$scope.validation_error = 'Please enter valid Rental Entitled in KM';
+			return false;
+		} else if ($scope.rent_agreement.liable_to_pay_in_km !=0 && (!Number($scope.rent_agreement.liable_to_pay_in_km))) {
+			$scope.validation_error = 'Please enter valid Liable to Pay in KM';
+			return false;
+		} else if ($scope.rent_agreement.accident_passable !=0 &&((!Number($scope.rent_agreement.accident_passable)))) {
 			$scope.validation_error = 'Please enter valid Accident Passable';
 			return false;
-		} else if ($scope.rent_agreement.vehicle_scratch &&((!Number($scope.rent_agreement.vehicle_scratch)))) {
+		} else if ($scope.rent_agreement.vehicle_scratch !=0 &&((!Number($scope.rent_agreement.vehicle_scratch)))) {
 			$scope.validation_error = 'Please enter valid Vehicle Scratch';
 			return false;
 		} else if ($scope.rent_agreement.rent_type == '' || $scope.rent_agreement.rent_type == undefined) {
@@ -806,6 +813,7 @@ function ReceiveCarController($scope, $http, $location) {
 		'paid': 0,
 		'notes': '',
 		'returning_petrol': 0,
+		'salik_charges': 0,
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
@@ -873,19 +881,17 @@ function ReceiveCarController($scope, $http, $location) {
 		if ($scope.receipt.extra_charge == '' || $scope.receipt.extra_charge != Number($scope.receipt.extra_charge)) {
 			$scope.receipt.extra_charge = 0;
 		}
+		if ($scope.receipt.salik_charges == '' || $scope.receipt.salik_charges != Number($scope.receipt.salik_charges)) {
+			$scope.receipt.salik_charges = 0;
+		}
 		if ($scope.receipt.reduction == '' || $scope.receipt.reduction != Number($scope.receipt.reduction)) {
 			$scope.receipt.reduction = 0;
 		}
 		if ($scope.receipt.paid == '' || $scope.receipt.paid != Number($scope.receipt.paid)) {
 			$scope.receipt.paid = 0;
 		}
-		// if ($scope.receipt.vehicle_scratch == '' || $scope.receipt.vehicle_scratch != Number($scope.receipt.vehicle_scratch)) {
-		// 	$scope.receipt.vehicle_scratch = 0;
-		// }
-		// $scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.vehicle_scratch) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.accident_passable) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
-		// $scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
 		
-		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge)).toFixed(2);
+		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge) + parseFloat($scope.receipt.salik_charges)).toFixed(2);
 		$scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
 		$scope.receipt.balance = parseFloat($scope.receipt.balance) - parseFloat($scope.receipt.paid);

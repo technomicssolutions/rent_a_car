@@ -48,7 +48,7 @@ arabic_text_heading = u'الكأس الذهبي لتأجير السيارات'
 tel_no = u'تلفون :'
 tel_nos = '02-6266634'
 mob_no = u'متحرك : '
-mob_nos = '055-4087528'
+mob_nos = '055-3020434'
 po_box = u'ص.ب : '
 pobox = '32900'
 
@@ -64,8 +64,6 @@ def header(canvas):
     p.drawString(50, 1140, 'Golden Cup Rent A Car')
     p.setFillColor(black)
 
-    # p.drawImage(path, 70, 1065, width=30*cm, height=3*cm, preserveAspectRatio=True)
-
     p.setFont("Helvetica", 12)
     p.drawString(50, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
     
@@ -73,11 +71,10 @@ def header(canvas):
 
     p.line(50, 1000, 1000, 1000)
 
-    # path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
-    # p.drawImage(path, 70, 1045, width=30*cm, height=3*cm, preserveAspectRatio=True)
-
     p.setFont('Arabic-normal', 20)
+    p.setFillColor(green)
     p.drawString(660, 1140, arabic_text_heading[::-1])
+    p.setFillColor(black)
 
     p.setFont('Helvetica', 13)
     p.drawString(700, 1100, '   , ')
