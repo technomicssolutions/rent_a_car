@@ -137,29 +137,29 @@ class ReceiveCar(models.Model):
 
 class Driver(models.Model):
 
-    driver_name = models.CharField('Driver Name', null=True, blank=True, max_length=25)
-    driver_phone = models.CharField('Driver Phone', null=True, blank=True, max_length=15, unique=True)
+    driver_name = models.CharField('Driver Name', null=True, blank=True, max_length=100)
+    driver_phone = models.CharField('Driver Phone', null=True, blank=True, max_length=50, unique=True)
     driver_address = models.TextField('Driver Address', null=True, blank=True)
-    driver_nationality = models.CharField('Driver Nationality', null=True, blank=True, max_length=25)
-    driver_passport_no = models.CharField('Driver Passport No', null=True, blank=True, max_length=25, unique=True)
-    driver_license_no = models.CharField('Driver License No', null=True, blank=True, max_length=25)
+    driver_nationality = models.CharField('Driver Nationality', null=True, blank=True, max_length=50)
+    driver_passport_no = models.CharField('Driver Passport No', null=True, blank=True, max_length=50, unique=True)
+    driver_license_no = models.CharField('Driver License No', null=True, blank=True, max_length=50)
     driver_license_issue_date = models.DateField('Driver License Issue Date', null=True, blank=True)
-    driver_license_issue_place = models.CharField('Driver License Issue Place', null=True, blank=True, max_length=25)
+    driver_license_issue_place = models.CharField('Driver License Issue Place', null=True, blank=True, max_length=50)
     driver_license_expiry_date = models.DateField('Driver License Expiry Date', null=True, blank=True)
     driver_dob = models.DateField('Driver DOB', null=True, blank=True)
     driver_working_address = models.TextField('Driver Working address', null=True, blank=True)
-    driver_working_ph = models.CharField('Driver Working Ph No.', null=True, blank=True, max_length=15)
+    driver_working_ph = models.CharField('Driver Working Ph No.', null=True, blank=True, max_length=50)
 
-    sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=25)
+    sponsar_name = models.CharField('Sponsar Name', null=True, blank=True, max_length=100)
     sponsar_address = models.TextField('Sponsar Address', null=True, blank=True)
-    sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=15)
+    sponsar_phone = models.CharField('Sponsar Phone', null=True, blank=True, max_length=50)
     
     license_type = models.CharField('License Type', max_length=40, null=True, blank=True, choices=LICENSE_TYPE)
     # # Passport Details
     date_of_passport_issue = models.DateField('Date of Passport Issued', null=True, blank=True)
-    place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=40)
+    place_of_issue = models.CharField('Place of Issued', null=True, blank=True, max_length=100)
 
-    emirates_id = models.CharField('Emiratesid', max_length=25, null=True, blank=True)
+    emirates_id = models.CharField('Emiratesid', max_length=50, null=True, blank=True)
 
     # # Rent Details
     rent = models.DecimalField('Rent Amount(Deposit)', default=0, max_digits=14, decimal_places=2)
