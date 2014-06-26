@@ -233,7 +233,6 @@ add_driver = function($scope, $http, from) {
 	            	document.location.href ='/drivers/';
 	            } else {
 	            	$scope.driver_data = data.driver_data[0];
-	            	// get_drivers($scope, $http);
 	            	$scope.driver = data.driver_data[0];
 	            	$scope.driver_name = $scope.driver.driver_name;
 	            	$scope.rent_agreement.driver_id = $scope.driver.id;
