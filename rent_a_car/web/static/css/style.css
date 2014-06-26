@@ -821,4 +821,27 @@ a {
     border: 2px solid #B1FFB1;
 }
 
+/*#rent_agreement .item_list {
+	width: 36% !important;
+	border: 1px solid #008000;
+	margin-left: 250px;
+    margin-top: 44px;
+    position: absolute;
+}*/
+#rent_agreement .item_list .item_list_row {
+	width: 100% !important;
+	border-top: 1px solid #008000;
+}
+#rent_agreement .item_list .item_list_row span {
+	width: 100% !important;
+	
+}
+.driver_list {
+	border: 1px solid #008000;
+    border-radius: 5px;
+    margin-left: 249px !important;
+    margin-top: 30px;
+    position: absolute;
+    width: 16%;
+}
 

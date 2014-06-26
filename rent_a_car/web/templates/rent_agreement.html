@@ -34,11 +34,15 @@
 							<label for="driver_name">Driver Name</label>
 						</div>
 						<div class="forminput">
-							<select ng-model="driver_data">
-								<option value="" ng-click="get_driver_details('')">Select</option>
-								<option ng-repeat="driver in drivers" value="[[driver.driver_name]]" ng-click="get_driver_details(driver)" ng-selected="driver.driver_name == driver_data.driver_name">[[driver.driver_name]]</option>
-								<option value="other" ng-click="add_new_driver()">Other</option>
-							</select>
+							<input type="text" name="driver_name" value="" ng-model="driver_name" ng-change="get_driver_details()">
+							
+						</div>
+						<div class="item_list driver_list" ng-show='selecting_driver' ng-hide="driver_selected">
+							<div ng-repeat="driver in drivers" ng-click="add_driver(driver)" class="item_list_row">
+								<span>[[driver.name]]</span>
+							</div>
+
+							<div class="clear"></div>
 						</div>
 					</div>
 					<div class="formrow_purchase">

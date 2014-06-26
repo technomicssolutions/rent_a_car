@@ -1022,10 +1022,12 @@ class DriversList(View):
         ctx_drivers = []
         if request.is_ajax():
             status = 200
-            drivers = Driver.objects.all().order_by('id')
+            drivers = Driver.objects.filter(driver_name__istartswith=request.GET.get('driver_name', ''))
+
             for driver in drivers:
                 ctx_drivers.append({
                     'id': driver.id,
+                    'name': driver.driver_name + ' - ' + driver.driver_license_no,
                     'driver_name': driver.driver_name,
                     'driver_phone': driver.driver_phone,
                     'driver_address': driver.driver_address,

@@ -14,11 +14,9 @@ get_vehicles = function($scope, $http, list_type) {
 		}
 	})
 }
-get_drivers = function($scope, $http) {
-	$http.get('/drivers/').success(function(data){
-		$scope.drivers = data.drivers;
-	})
-}
+// get_drivers = function($scope, $http, driver_name) {
+
+// }
 
 get_case_types = function($scope, $http) {
 	$http.get('/case_types/').success(function(data){
@@ -235,7 +233,7 @@ add_driver = function($scope, $http, from) {
 	            	document.location.href ='/drivers/';
 	            } else {
 	            	$scope.driver_data = data.driver_data[0];
-	            	get_drivers($scope, $http);
+	            	// get_drivers($scope, $http);
 	            	$scope.driver = data.driver_data[0];
 	            	$scope.rent_agreement.driver_id = $scope.driver.id;
 	            	$scope.close_popup_add_driver();
@@ -467,7 +465,7 @@ function RentAgreementController($scope, $http, $location) {
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
 		get_vehicles($scope, $http, '');
-		get_drivers($scope, $http);
+		// get_drivers($scope, $http);
 		
         new Picker.Date($$('#date'), {
             timePicker: false,
@@ -619,7 +617,59 @@ function RentAgreementController($scope, $http, $location) {
         $scope.driver_popup.set_overlay_height(height);
         $scope.driver_popup.show_content();
 	}
-	
+	$scope.get_driver_details = function(){
+		$scope.rent_agreement.driver_id = '';
+		$scope.driver = {
+			'id': '',
+			'driver_name': '',
+			'driver_phone': '',
+			'driver_address': '',
+			'driver_nationality': '',
+			'driver_license_no': '',
+			'driver_license_issue_date': '',
+			'driver_license_issue_place': '',
+			'driver_license_expiry_date': '',
+			'driver_dob': '',
+			'sponsar_name': '',
+			'sponsar_address': '',
+			'sponsar_ph': '',
+			'working_tel_no': '',
+			'passport_issued_date': '',
+			'place_of_issue': '',
+		}
+		console.log($scope.driver_name);
+		var url = '/drivers/?driver_name=' + $scope.driver_name; 
+		$http.get(url).success(function(data){
+			$scope.drivers = data.drivers;
+			$scope.selecting_driver = true;
+			$scope.driver_selected = false;
+		})
+	}
+	$scope.add_driver = function(driver){
+		console.log(driver);
+		$scope.driver_selected = true;
+		$scope.rent_agreement.driver_id = driver.id;
+		$scope.driver = {
+			'id': '',
+			'driver_name': '',
+			'driver_phone': '',
+			'driver_address': '',
+			'driver_nationality': '',
+			'driver_license_no': '',
+			'driver_license_issue_date': '',
+			'driver_license_issue_place': '',
+			'driver_license_expiry_date': '',
+			'driver_dob': '',
+			'sponsar_name': '',
+			'sponsar_address': '',
+			'sponsar_ph': '',
+			'working_tel_no': '',
+			'passport_issued_date': '',
+			'place_of_issue': '',
+		}
+		$scope.driver = driver;
+		$scope.driver_name = driver.driver_name;
+	}
 	$scope.close_popup_add_vehicle =  function() {
 		$scope.popup.hide_popup();
 	}
@@ -633,11 +683,6 @@ function RentAgreementController($scope, $http, $location) {
 	}
 	$scope.save_vehicle = function() {
 		add_vehicle($scope, $http, 'add_vehicle');
-	}
-	$scope.get_driver_details = function(driver) {
-		$scope.driver = driver;
-		$scope.rent_agreement.driver_id = $scope.driver.id;
-		console.log($scope.rent_agreement.driver_id);
 	}
 	$scope.save_driver = function() {
 		add_driver($scope, $http, 'add_driver');
