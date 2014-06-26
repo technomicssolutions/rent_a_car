@@ -28,6 +28,7 @@ this.DatePicker = Picker.Date = new Class({
 		timePicker: false,
 		timePickerOnly: false, // deprecated, use onlyView = 'time'
 		timeWheelStep: 1, // 10,15,20,30
+		ampm: false,
 
 		yearPicker: true,
 		yearsPerPage: 20,
@@ -126,14 +127,13 @@ this.DatePicker = Picker.Date = new Class({
 	getInputDate: function(input){
 		this.date = new Date();
 		if (!input) return;
+		// var date = Date.parse(input.get('value'));
 		if(this.options.format == '%d/%m/%Y' || this.options.format == '%d/%m/%Y %X' ) {
-			var date_string = input.get('value').split('/')
-			date_string = date_string[1]+'/'+date_string[0]+'/'+date_string[2];
-
-			var date = Date.parse(date_string);
-		} else {
-			var date = Date.parse(input.get('value'));
-		}
+	        var date_string = input.get('value').split('/')
+	        date_string = date_string[1]+'/'+date_string[0]+'/'+date_string[2];
+	        var date = Date.parse(date_string);               } else {
+	        var date = Date.parse(input.get('value'));
+	    }
 		if (date == null || !date.isValid()){
 			var storeDate = input.retrieve('datepicker:value');
 			if (storeDate) date = Date.parse(storeDate);
@@ -202,7 +202,7 @@ this.DatePicker = Picker.Date = new Class({
 
 		// start neatly at interval (eg. 1980 instead of 1987)
 		date = date.clone().decrement('year', date.get('year') % perPage);
-
+	
 		var iterateDate = date.clone().decrement('year', Math.floor((pages - 1) / 2) * perPage);
 
 		for (var i = pages; i--;){
@@ -391,7 +391,7 @@ this.DatePicker = Picker.Date = new Class({
 });
 
 
-// // Renderers only output elements and calculate the limits!
+// Renderers only output elements and calculate the limits!
 
 var timesSelectors = {
 
@@ -430,21 +430,16 @@ var timesSelectors = {
 var renderers = {
 
 	years: function(years, options, currentDate, dateElements, fn){
-		var container = new Element('table.years'),
-			today     = new Date(),
-			rows      = [],
-			element, classes;
+		var container = new Element('div.years'),
+			today = new Date(), element, classes;
 
 		years.each(function(_year, i){
 			var date = new Date(_year), year = date.get('year');
-			if (i % 4 === 0) {
-				rows.push(new Element('tr'));
-				rows[rows.length - 1].inject(container)
-			}
+
 			classes = '.year.year' + i;
 			if (year == today.get('year')) classes += '.today';
 			if (year == currentDate.get('year')) classes += '.selected';
-			element = new Element('td' + classes, {text: year}).inject(rows[rows.length - 1]);
+			element = new Element('div' + classes, {text: year}).inject(container);
 
 			dateElements.push({element: element, time: _year});
 
@@ -456,26 +451,22 @@ var renderers = {
 	},
 
 	months: function(months, options, currentDate, dateElements, fn){
-		var today        = new Date(),
-			month        = today.get('month'),
-			thisyear     = today.get('year'),
+		var today = new Date(),
+			month = today.get('month'),
+			thisyear = today.get('year'),
 			selectedyear = currentDate.get('year'),
-			container    = new Element('table.months'),
-			monthsAbbr   = options.months_abbr || Locale.get('Date.months_abbr'),
-			rows         = [],
+			container = new Element('div.months'),
+			monthsAbbr = options.months_abbr || Locale.get('Date.months_abbr'),
 			element, classes;
 
 		months.each(function(_month, i){
 			var date = new Date(_month), year = date.get('year');
-			if (i % 3 === 0) {
-				rows.push(new Element('tr'));
-				rows[rows.length - 1].inject(container)
-			}
 
 			classes = '.month.month' + (i + 1);
 			if (i == month && year == thisyear) classes += '.today';
 			if (i == currentDate.get('month') && year == selectedyear) classes += '.selected';
-			element = new Element('td' + classes, {text: monthsAbbr[i]}).inject(rows[rows.length - 1]);
+			element = new Element('div' + classes, {text: monthsAbbr[i]}).inject(container);
+
 			dateElements.push({element: element, time: _month});
 
 			if (isUnavailable('month', date, options)) element.addClass('unavailable');
@@ -538,16 +529,27 @@ var renderers = {
 	},
 
 	time: function(options, date, fn){
+		var am, pm;
+		var isPm = date.getHours() > 11;
 		var container = new Element('div.time'),
 			// make sure that the minutes are timeWheelStep * k
 			initMinutes = (date.get('minutes') / options.timeWheelStep).round() * options.timeWheelStep
-
+		if (options.ampm) container.addClass('ampm')
+		
 		if (initMinutes >= 60) initMinutes = 0;
 		date.set('minutes', initMinutes);
-
+		
+		var hourFormat = options.ampm ? '%I' : '%H';
+		var getHours = function(){
+			var value = hoursInput.get('value').toInt();
+			if (options.ampm && isPm && value != 12) value += 12;
+			else if (options.ampm && !isPm && value == 12) value = 0;
+			return value;
+		}		
+		
 		var hoursInput = new Element('input.hour[type=text]', {
 			title: Locale.get('DatePicker.use_mouse_wheel'),
-			value: date.format('%H'),
+			value: date.format(hourFormat),
 			events: {
 				click: function(event){
 					event.target.focus();
@@ -556,17 +558,20 @@ var renderers = {
 				mousewheel: function(event){
 					event.stop();
 					hoursInput.focus();
-					var value = hoursInput.get('value').toInt();
+					var value = getHours();
 					value = (event.wheel > 0) ? ((value < 23) ? value + 1 : 0)
 						: ((value > 0) ? value - 1 : 23)
 					date.set('hours', value);
-					hoursInput.set('value', date.format('%H'));
+					if (options.ampm){
+						isPm = date.getHours() > 11;
+						if (date.getHours() > 11) pm.checked = true
+						else am.checked = true
+					}
+					hoursInput.set('value', date.format(hourFormat));
 				}.bind(this)
 			},
 			maxlength: 2
 		}).inject(container);
-
-		new Element('div.separator[text=:]').inject(container);
 
 		var minutesInput = new Element('input.minutes[type=text]', {
 			title: Locale.get('DatePicker.use_mouse_wheel'),
@@ -590,15 +595,43 @@ var renderers = {
 			maxlength: 2
 		}).inject(container);
 
-
-		new Element('input.ok', {
-			'type': 'submit',
-			// value: Locale.get('DatePicker.time_confirm_button'),
+		new Element('div.separator[text=:]').inject(container);
+		
+		if (options.ampm){
+			var setHours = function(isAm, event){
+				currentHrs = date.getHours();
+				setTimeout(function(){ //this is a hack to get around very strange behavior where the radio reverts instantly on click
+					if (isAm && currentHrs > 11) date.setHours(currentHrs - 12)
+					else if (!isAm && currentHrs < 12) date.setHours(currentHrs + 12)
+					isPm = !isAm;
+					isPm ? pm.checked = true : am.checked = true; 
+				}, 100);
+				if (event) 
+					event.stop();
+			}
+			var ampmBox = new Element('div.ampm_container').inject(container);
+			var createAmPmRadioButton = function(value, checked){
+				return new Element('input[type=radio]', {
+					checked: checked,
+					'class': value,
+					name: 'ampm',
+					value: value
+				}).inject(ampmBox);
+			}
+			var amLabel = new Element('label', {text: Date.getMsg('AM')}).inject(ampmBox);
+			am = createAmPmRadioButton('am', date.getHours() < 12);
+			var pmLabel = new Element('label', {text: Date.getMsg('PM')}).inject(ampmBox);
+			pm = createAmPmRadioButton('pm', date.getHours() > 11);
+			[amLabel, am].invoke('addEvent', 'click', setHours.bind(this, true));
+			[pmLabel, pm].invoke('addEvent', 'click', setHours.bind(this, false));
+		}
+		
+		new Element('input.ok[type=submit]', {
 			value: 'Ok',
 			events: {click: function(event){
 				event.stop();
 				date.set({
-					hours: hoursInput.get('value').toInt(),
+					hours: getHours(),
 					minutes: minutesInput.get('value').toInt()
 				});
 				fn(date.clone());
@@ -615,10 +648,6 @@ Picker.Date.defineRenderer = function(name, fn){
 	renderers[name] = fn;
 	return this;
 };
-
-Picker.Date.getRenderer = function(name) {
-	return renderers[name];
-}
 
 var limitDate = function(date, min, max){
 	if (min && date < min) return min;

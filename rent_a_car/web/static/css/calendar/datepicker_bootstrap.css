@@ -171,3 +171,64 @@
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px; }
+
+.datepicker_bootstrap .time {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.datepicker_bootstrap .time .hour,
+.datepicker_bootstrap .time .separator,
+.datepicker_bootstrap .time .minutes {
+  background: #ffffff;
+  /*border: 0px;*/
+  width: 50px;
+  font-size: 32px;
+  color: #000000;
+  position: absolute;
+  top: 10px;
+  text-align: center;
+  padding: 2px;
+  height: 29px;
+}
+
+.datepicker_bootstrap .time .hour {
+  left: 15px;
+}
+.datepicker_bootstrap .time .separator {
+  background: transparent;
+  width: 10px;
+  left: 76px;
+}
+
+.datepicker_bootstrap .time .minutes {
+  left: 95px;
+}
+.datepicker_bootstrap .time .ok {
+  position: absolute;
+  top: 65px;
+  height: 32px;
+  width: 136px;
+  left: 15px;
+  font-size: 20px;
+}
+
+.datepicker_bootstrap .time.ampm .ok {
+  top: 80px;
+}
+.datepicker_bootstrap .time .ampm_container{
+  position:absolute;
+  top: 55px;
+  left: 15px;
+  width: 135px;
+  text-align: center;
+}
+.datepicker_bootstrap .time .am, .datepicker_bootstrap .time .pm{
+  margin-right:10px;
+  margin-left: 5px;
+  float: left; 
+}
+.datepicker_bootstrap .time .ampm_container label {
+  float: left;
+}

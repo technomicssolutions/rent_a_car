@@ -482,7 +482,8 @@ function RentAgreementController($scope, $http, $location) {
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y %X',
-            canAlwaysGoUp: ['months', 'years']
+            canAlwaysGoUp: ['months', 'years'],
+            ampm: true,
         });
         new Picker.Date($$('#end_date_time'), {
             timePicker: true,
@@ -490,7 +491,8 @@ function RentAgreementController($scope, $http, $location) {
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y %X',
-            canAlwaysGoUp: ['months', 'years']
+            canAlwaysGoUp: ['months', 'years'],
+            ampm: true,
         });
         new Picker.Date($$('#dob'), {
             timePicker: false,
@@ -869,7 +871,8 @@ function ReceiveCarController($scope, $http, $location) {
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y %X',
-            canAlwaysGoUp: ['months', 'years']
+            canAlwaysGoUp: ['months', 'years'],
+            ampm: true,
         });
         new Picker.Date($$('#returning_date'), {
             timePicker: true,
@@ -877,7 +880,8 @@ function ReceiveCarController($scope, $http, $location) {
             pickerClass: 'datepicker_bootstrap',
             useFadeInOut: !Browser.ie,
             format:'%d/%m/%Y %X',
-            canAlwaysGoUp: ['months', 'years']
+            canAlwaysGoUp: ['months', 'years'],
+            ampm: true,
         });
 	}
 	$scope.get_agreement_details = function() {
