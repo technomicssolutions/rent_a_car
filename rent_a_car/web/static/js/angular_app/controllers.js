@@ -235,6 +235,7 @@ add_driver = function($scope, $http, from) {
 	            	$scope.driver_data = data.driver_data[0];
 	            	// get_drivers($scope, $http);
 	            	$scope.driver = data.driver_data[0];
+	            	$scope.driver_name = $scope.driver.driver_name;
 	            	$scope.rent_agreement.driver_id = $scope.driver.id;
 	            	$scope.close_popup_add_driver();
 	            }
@@ -639,16 +640,22 @@ function RentAgreementController($scope, $http, $location) {
 			'passport_issued_date': '',
 			'place_of_issue': '',
 		}
-		console.log($scope.driver_name);
 		var url = '/drivers/?driver_name=' + $scope.driver_name; 
 		$http.get(url).success(function(data){
-			$scope.drivers = data.drivers;
-			$scope.selecting_driver = true;
-			$scope.driver_selected = false;
+			if (data.drivers.length == 0) {
+				$scope.driver_message = 'No driver with this name';
+				$scope.drivers = [];
+				$scope.driver_selected = true;
+			} else {
+				$scope.driver_message = '';
+				$scope.drivers = data.drivers;
+				$scope.selecting_driver = true;
+				$scope.driver_selected = false;
+			}
+			
 		})
 	}
 	$scope.add_driver = function(driver){
-		console.log(driver);
 		$scope.driver_selected = true;
 		$scope.rent_agreement.driver_id = driver.id;
 		$scope.driver = {
