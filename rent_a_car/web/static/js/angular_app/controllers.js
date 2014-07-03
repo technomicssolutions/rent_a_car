@@ -14,9 +14,6 @@ get_vehicles = function($scope, $http, list_type) {
 		}
 	})
 }
-// get_drivers = function($scope, $http, driver_name) {
-
-// }
 
 get_case_types = function($scope, $http) {
 	$http.get('/case_types/').success(function(data){
@@ -744,9 +741,6 @@ function RentAgreementController($scope, $http, $location) {
 			return false;
 		} else if ($scope.rent_agreement.vehicle_scratch !=0 &&((!Number($scope.rent_agreement.vehicle_scratch)))) {
 			$scope.validation_error = 'Please enter valid Vehicle Scratch';
-			return false;
-		} else if ($scope.rent_agreement.rent_type == '' || $scope.rent_agreement.rent_type == undefined) {
-			$scope.validation_error = 'Please enter the Rent Type';
 			return false;
 		} else if ($scope.rent_agreement.date == '' || $scope.rent_agreement.date == undefined) { 
 			$scope.validation_error = 'Please enter the Agreement Date';
