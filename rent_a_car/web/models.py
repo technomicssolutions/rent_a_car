@@ -143,7 +143,7 @@ class Driver(models.Model):
     driver_phone = models.CharField('Driver Phone', null=True, blank=True, max_length=50, unique=True)
     driver_address = models.TextField('Driver Address', null=True, blank=True)
     driver_nationality = models.CharField('Driver Nationality', null=True, blank=True, max_length=50)
-    driver_passport_no = models.CharField('Driver Passport No', null=True, blank=True, max_length=50, unique=True)
+    driver_passport_no = models.CharField('Driver Passport No', null=True, blank=True, max_length=50, unique=False)
     driver_license_no = models.CharField('Driver License No', null=True, blank=True, max_length=50)
     driver_license_issue_date = models.DateField('Driver License Issue Date', null=True, blank=True)
     driver_license_issue_place = models.CharField('Driver License Issue Place', null=True, blank=True, max_length=50)

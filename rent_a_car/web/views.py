@@ -969,20 +969,23 @@ class AddDriver(View):
                     driver = Driver.objects.get(driver_phone=driver_details['home_ph_no'])
                     message = 'Driver with this Phone No is already existing'
                 except Exception as ex:
-                    driver = Driver.objects.get(driver_passport_no=driver_details['passport_no'])
-                    message = 'Driver with this Passport No is already existing'
+                    print str(ex)
+                    
+                    driver = Driver.objects.get(driver_license_no=driver_details['license_no'])
+                    message = 'Driver with this License No is already existing'
+                    print message
                 res = {
                     'result': 'error',
                     'message': message,
                 }
             except Exception as ex:
                 print str(ex)
-                driver = Driver.objects.create(driver_phone=driver_details['home_ph_no'], driver_passport_no=driver_details['passport_no'])
+                driver = Driver.objects.create(driver_phone=driver_details['home_ph_no'], driver_license_no=driver_details['license_no'])
                 driver.driver_name = driver_details['name']  
 
                 driver.driver_address = request.POST['home_address'] 
                 driver.driver_nationality = driver_details['nationality']
-                driver.driver_license_no = driver_details['license_no']
+                # driver.driver_license_no = driver_details['license_no']
                 driver.driver_license_issue_date = datetime.strptime(driver_details['date_of_license_issue'], '%d/%m/%Y')
                 driver.driver_license_issue_place = driver_details['issued_place']
                 driver.driver_license_expiry_date = datetime.strptime(driver_details['expiry_date'], '%d/%m/%Y')

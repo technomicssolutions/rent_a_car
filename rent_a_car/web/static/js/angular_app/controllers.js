@@ -186,9 +186,6 @@ validate_driver_form = function($scope, $http, from) {
 	} else if ($scope.driver.expiry_date == '' || $scope.driver.expiry_date == undefined) {
 		$scope.validation_error = 'Please enter Expiry Date';
 		return false;
-	} else if ($scope.driver.passport_no == '' || $scope.driver.passport_no == undefined) {
-		$scope.validation_error = 'Please enter Passport No';
-		return false;
 	} else if ($scope.driver.emirates_id == '' || $scope.driver.emirates_id == undefined) {
 		$scope.validation_error = 'Please enter Emirates Id';
 		return false;
