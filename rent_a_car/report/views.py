@@ -48,9 +48,11 @@ arabic_text_heading = u'الكأس الذهبي لتأجير السيارات'
 tel_no = u'تلفون :'
 tel_nos = '02-6266634'
 mob_no = u'متحرك : '
-mob_nos = '055-3020434'
+mob_nos = '055-4087528, 055-3020434'
 po_box = u'ص.ب : '
 pobox = '32900'
+fax_no = '02-6420741'
+arabic_text_fax_no = u'الفاكس :'
 
 addrss1 = u'شارع جوازات القديم'
 addrss2 = u'أبوظبي أ.ع.م'
@@ -64,31 +66,33 @@ def header(canvas):
     p.drawString(50, 1140, 'Golden Cup Rent A Car')
     p.setFillColor(black)
 
-    p.setFont("Helvetica", 12)
-    p.drawString(50, 1100, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
-    
+    p.setFont("Helvetica", 13)
+    p.drawString(50, 1100, 'Tel : 02-6266634 , Mob : 055-4087528, 055-3020434 , P.O.Box : 32900')
+    p.drawString(50, 1080, 'Fax : 02-6420741')
     p.drawString(50, 1060, 'Old Passport Road , Abu Dhabi - UAE')
 
     p.line(50, 1000, 1000, 1000)
 
-    p.setFont('Arabic-normal', 20)
+    p.setFont('Arabic-bold', 28)
     p.setFillColor(green)
     p.drawString(660, 1140, arabic_text_heading[::-1])
     p.setFillColor(black)
 
     p.setFont('Helvetica', 13)
-    p.drawString(700, 1100, '   , ')
-    p.drawString(720, 1100, mob_nos)
+    p.drawString(623, 1100, '   , ')
+    p.drawString(640, 1100, mob_nos)
     p.drawString(840, 1100, '   , ')
     p.drawString(860, 1100, pobox)
-    p.drawString(590, 1100, tel_nos)
+    p.drawString(500, 1100, tel_nos)
+    p.drawString(810, 1080, fax_no)
     p.drawString(820, 1060, '   , ')
 
-    p.setFont('Arabic-normal', 13)
+    p.setFont('Arabic-normal', 19)
     
-    p.drawString(660, 1100, tel_no[::-1])
+    p.drawString(575, 1100, tel_no[::-1])
     p.drawString(800, 1100, mob_no[::-1])
     p.drawString(900, 1100, po_box[::-1])
+    p.drawString(880, 1080, arabic_text_fax_no[::-1])
     p.drawString(840, 1060, addrss1[::-1])
     p.drawString(750, 1060, addrss2[::-1])
 

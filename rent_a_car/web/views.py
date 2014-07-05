@@ -50,8 +50,15 @@ from web.models import *
 
 utc=pytz.UTC
 
-font_path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/KacstOne.ttf"
-pdfmetrics.registerFont(TTFont('Arabic-normal', font_path))
+# font_path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/KacstOne.ttf"
+font_path_regular = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-Regular.ttf"
+font_path_bold = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-Bold.ttf"
+# font_path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-Bold.ttf"
+
+
+pdfmetrics.registerFont(TTFont('Arabic-normal', font_path_regular))
+pdfmetrics.registerFont(TTFont('Arabic-bold', font_path_bold))
+
 
 path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/trophy.jpg"
 
@@ -84,6 +91,9 @@ mob_no = u'متحرك : '
 mob_nos = '055-3020434'
 po_box = u'ص.ب : '
 pobox = '32900'
+fax_no = '02-6420741'
+
+arabic_text_fax_no = u'الفاكس :'
 
 addrss1 = u'شارع جوازات القديم'
 addrss2 = u'أبوظبي أ.ع.م'
@@ -91,7 +101,7 @@ addrss2 = u'أبوظبي أ.ع.م'
 
 def draw_heading(canvas):
     p = canvas
-    p.setFont('Arabic-normal', 25)
+    p.setFont('Arabic-bold', 30)
     p.setFillColor(green)
     p.drawString(600, 1160, arabic_text_heading[::-1])
     p.setFillColor(black)
@@ -102,15 +112,17 @@ def draw_heading(canvas):
     p.drawString(840, 1120, '   , ')
     p.drawString(860, 1120, pobox)
     p.drawString(590, 1120, tel_nos)
-    p.drawString(820, 1090, '   , ')
+    p.drawString(830, 1095, fax_no)
+    p.drawString(820, 1070, '   , ')
 
-    p.setFont('Arabic-normal', 13)
+    p.setFont('Arabic-normal', 18)
     
     p.drawString(660, 1120, tel_no[::-1])
     p.drawString(800, 1120, mob_no[::-1])
     p.drawString(900, 1120, po_box[::-1])
-    p.drawString(840, 1090, addrss1[::-1])
-    p.drawString(750, 1090, addrss2[::-1])
+    p.drawString(900, 1095, arabic_text_fax_no[::-1])
+    p.drawString(840, 1070, addrss1[::-1])
+    p.drawString(750, 1070, addrss2[::-1])
     return p
 
 class Home(View):
@@ -710,9 +722,9 @@ class PrintRentAgreement(View):
             p.setFillColor(black)
 
             p.setFont("Helvetica", 12)
-            p.drawString(50, 1120, 'Tel : 02-6266634 , Mob : 055-3020434 , P.O.Box : 32900')
-            
-            p.drawString(50, 1090, 'Old Passport Road , Abu Dhabi - UAE')
+            p.drawString(50, 1120, 'Tel : 02-6266634 , Mob : 055-4087528, 055-3020434 , P.O.Box : 32900')
+            p.drawString(50, 1095, 'Fax : 02-6420741')
+            p.drawString(50, 1070, 'Old Passport Road , Abu Dhabi - UAE')
             p.setFont("Helvetica", 16)
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
@@ -773,17 +785,18 @@ class PrintRentAgreement(View):
             p.drawString(560, y - 300, 'Emirates Id: ')
             p.drawString(560, y - 250, 'License Type: ')
             p.drawString(510, y - 120, 'Address:')
+            p.drawString(760, y - 110, 'Agreement Type')
             p.drawString(510, y - 210, 'License Expiry Date:')
             p.drawString(760, y - 210, 'Client Identity:')
 
-            p.drawString(100, y - 410, 'Amount')
-            p.drawString(100, y - 460, 'Total Amount')
-            p.drawString(100, y - 510, 'Paid')
-            p.drawString(100, y - 560, 'Balance')
-            p.drawString(100, y - 610, 'Accident Passable')
-            p.drawString(100, y - 660, 'Vehicle Scrtach')
-            p.drawString(50, y - 700, 'Rental Entitled in KM')
-            p.drawString(250, y - 700, 'Liable to Pay in KM')
+            p.drawString(100, y - 460, 'Amount')
+            p.drawString(100, y - 510, 'Total Amount')
+            p.drawString(100, y - 560, 'Paid')
+            p.drawString(100, y - 610, 'Balance')
+            p.drawString(100, y - 660, 'Accident Passable')
+            p.drawString(100, y - 700, 'Vehicle Scrtach')
+            p.drawString(50, y - 410, 'Rental Entitled in KM')
+            p.drawString(250, y - 410, 'Liable to Pay in KM')
 
             p.drawString(50, y - 250, 'Driver Name')
             p.drawString(260, y - 250, 'License No')
@@ -818,11 +831,11 @@ class PrintRentAgreement(View):
             p.drawString(795, 810, rent_agreement.driver.driver_license_issue_place if rent_agreement.driver else '')
             p.drawString(580, 660, rent_agreement.driver.emirates_id if rent_agreement.driver else '')
             p.drawString(580, 710, rent_agreement.driver.license_type if rent_agreement.driver else '')
-            p.drawString(620, 860, rent_agreement.driver.driver_address.replace('\n', ' ') if rent_agreement.driver and rent_agreement.driver.driver_address else '')
+            p.drawString(580, 860, rent_agreement.driver.driver_address.replace('\n', ' ') if rent_agreement.driver and rent_agreement.driver.driver_address else '')
+            p.drawString(820, 855, rent_agreement.rent_type if rent_agreement else 'None')
             p.drawString(650, 770, rent_agreement.driver.driver_license_expiry_date.strftime('%d/%m/%Y') if rent_agreement.driver and rent_agreement.driver.driver_license_expiry_date else '')
             p.drawString(860, 770, rent_agreement.client_identity if rent_agreement.client_identity else '')
             
-
             p.drawString(130, 710, rent_agreement.driver.driver_name)
             p.drawString(320, 710, rent_agreement.driver.driver_nationality)
             p.drawString(130, 660, rent_agreement.driver.driver_passport_no)
@@ -832,14 +845,15 @@ class PrintRentAgreement(View):
             p.drawString(340, 610, rent_agreement.driver.sponsar_phone)
             p.drawString(550, 610, rent_agreement.driver.sponsar_address)
 
-            p.drawString(260, 570, str(rent_agreement.rent))
-            p.drawString(260, 520, str(rent_agreement.total_amount))
-            p.drawString(260, 470, str(rent_agreement.paid))
-            p.drawString(260, 420, str(float(rent_agreement.total_amount) - float(rent_agreement.paid)))
-            p.drawString(260, 370, str(rent_agreement.accident_passable))
-            p.drawString(260, 320, str(rent_agreement.vehicle_scratch))
-            p.drawString(200, 280, str(rent_agreement.rental_entitled_in_km))
-            p.drawString(390, 280, str(rent_agreement.liable_to_pay_in_km))
+
+            p.drawString(260, 520, str(rent_agreement.rent))
+            p.drawString(260, 470, str(rent_agreement.total_amount))
+            p.drawString(260, 420, str(rent_agreement.paid))
+            p.drawString(260, 370, str(float(rent_agreement.total_amount) - float(rent_agreement.paid)))
+            p.drawString(260, 320, str(rent_agreement.accident_passable))
+            p.drawString(260, 280, str(rent_agreement.vehicle_scratch))
+            p.drawString(200, 570, str(rent_agreement.rental_entitled_in_km))
+            p.drawString(390, 570, str(rent_agreement.liable_to_pay_in_km))
             p.drawString(610, 560, str(rent_agreement.driver.driver_working_address))
             p.drawString(610, 510, str(rent_agreement.driver.driver_working_ph))
 
@@ -852,12 +866,12 @@ class PrintRentAgreement(View):
             p.drawString(503, 280, """ In the Event of any Accident The Renter is Liable to pay Hire.""")
             p.drawString(503, 180,'SIGNATURE :.........................................................................')
             
-            p.setFont('Arabic-normal', 16)
+            p.setFont('Arabic-normal', 18)
             date_arabic =  '.................:'+ arabic_text_date[::-1]
             p.drawString(820, 1010, date_arabic)
             arabic_text_rent_agreement = u'عقد تأجير'
             p.drawString(610, 1050, arabic_text_rent_agreement[::-1])
-            p.setFont('Arabic-normal', 13)
+            p.setFont('Arabic-normal', 17)
             arabic_text_vehicle_type = u'نوع السيارات'
             p.drawString(170, 980, arabic_text_vehicle_type[::-1])
             arabic_text_reg_no = u'رقم اللوحة'
@@ -885,21 +899,23 @@ class PrintRentAgreement(View):
             p.drawString(690,680, arabic_text_emirates_id[::-1])
             p.drawString(670, 730, arabic_text_license_type[::-1])
             p.drawString(510, 880, arabic_text_address[::-1])
+            agreement_type = u'نوع اتفاق'
+            p.drawString(810, 885, agreement_type[::-1])
             arabic_text_license_expiry_date = u'الترخيص تاريخ انتهاء الصلاحية'
             p.drawString(510, 790, arabic_text_license_expiry_date[::-1])
             arabic_text_client_identity = u'الهوية عميل'
             p.drawString(760, 790, arabic_text_client_identity[::-1])
             arabic_text_amount = u'مبلغ'
-            p.drawString(100, 590, arabic_text_amount[::-1])
-            p.drawString(100, 540, arabic_text_total_amount[::-1])
-            p.drawString(100, 490, arabic_text_paid[::-1])
-            p.drawString(100, 440, arabic_text_balance[::-1])
-            p.drawString(100, 390, arabic_text_vehicle_scratch[::-1])
-            p.drawString(100, 340, arabic_text_accident[::-1])
+            p.drawString(100, 540, arabic_text_amount[::-1])
+            p.drawString(100, 490, arabic_text_total_amount[::-1])
+            p.drawString(100, 440, arabic_text_paid[::-1])
+            p.drawString(100, 390, arabic_text_balance[::-1])
+            p.drawString(100, 340, arabic_text_vehicle_scratch[::-1])
+            p.drawString(100, 260, arabic_text_accident[::-1])
             rental_in_km = u'تأجير بعنوان في الكيلومتر'
-            p.drawString(50, 260, rental_in_km[::-1])
+            p.drawString(50, 590, rental_in_km[::-1])
             liable_to_pay_in_km = u'مسؤولا عن دفع في الكيلومتر'
-            p.drawString(260, 260, liable_to_pay_in_km[::-1])
+            p.drawString(260, 590, liable_to_pay_in_km[::-1])
 
             p.drawString(150, 730, arabic_text_driver_name[::-1])
             
@@ -919,7 +935,7 @@ class PrintRentAgreement(View):
             
             p = draw_heading(p) 
 
-            p.setFont('Arabic-normal', 10)
+            p.setFont('Arabic-normal', 13)
             arabic_text = u'أناالموقع ادناه اوافق على استئجار السياراة المزكورة اعلاه من المالك وللمعدة المشرليها كما وأصرح'
             p.drawString(503, 470, arabic_text[::-1])
             arabic_text = u'بأننى قرأت الشروط المدنة على ظهر هذه الا تفاقة المعقودة بينى وبين المالك كما واقربأن البيانات التى'
@@ -1082,14 +1098,14 @@ class PrintReceiptCar(View):
 
             p.setFont("Helvetica", 12)
             p.drawString(50, 1130, 'Tel : 02-6266634 , Mob : 055-4087528 , P.O.Box : 32900')
-            
-            p.drawString(50, 1100, 'Old Passport Road , Abu Dhabi - UAE')
+            p.drawString(50, 1100, 'Fax : 02-6420741')
+            p.drawString(50, 1070, 'Old Passport Road , Abu Dhabi - UAE')
             p.setFont("Helvetica", 16)
             p.drawString(50, 1010, 'Date : ......................')
             p.setFont("Helvetica", 13)
 
             p.drawString(100, 1015,receive_car.receipt_datetime.strftime('%d/%m/%Y') if receive_car.receipt_datetime else '')
-            p.drawString(820, 1015,receive_car.receipt_datetime.strftime('%d/%m/%Y') if receive_car.receipt_datetime else '')
+            p.drawString(830, 1015,receive_car.receipt_datetime.strftime('%d/%m/%Y') if receive_car.receipt_datetime else '')
             p.setFont("Helvetica-Bold", 15)
             p.drawString(410, 1010, 'RENTAL CAR RECEIPT')
             p.line(50,1000,950,1000)
@@ -1221,10 +1237,10 @@ class PrintReceiptCar(View):
             p.drawString(550, y - 850, str(float(receive_car.total_amount) - (float(receive_car.paid) + float(receive_car.rent_agreement.paid))))
 
             y = 1010
-            p.setFont('Arabic-normal', 16)
+            p.setFont('Arabic-normal', 18)
             
             date_arabic =  '.................:'+ arabic_text_date[::-1]
-            p.drawString(820, y, date_arabic)
+            p.drawString(850, y , date_arabic)
             p.drawString(50, y - 30, arabic_text_driver_name[::-1])
             arabic_text = u'الجنسية'
             p.drawString(50, y - 80, arabic_text[::-1])
@@ -1301,14 +1317,14 @@ class PrintReceiptCar(View):
 
             p = draw_heading(p)
             # contents
-            p.setFont('Arabic-normal', 10)
+            p.setFont('Arabic-normal', 15)
 
             content_1 = u'لايتم استلام السيارات يوم الخميس والجمعة والتهانيا والعطال والرسمية والأعياد'
-            p.drawString(120, y - 580, content_1[::-1])
+            p.drawString(80, y - 580, content_1[::-1])
 
             content_2 = u'اقربانني اطلعت على هذه الاتفاقية والشروط المدونة في الخلف وعليها اوقع'
 
-            p.drawString(140, y - 620, content_2[::-1])
+            p.drawString(100, y - 620, content_2[::-1])
 
             p.showPage()
             p.save()
