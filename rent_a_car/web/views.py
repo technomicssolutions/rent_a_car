@@ -52,10 +52,10 @@ utc=pytz.UTC
 
 # font_path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/KacstOne.ttf"
 font_path_regular = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-Regular.ttf"
+# font_path_regular = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-Italic.ttf"
+# font_path_regular = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-BoldItalic.ttf"
 font_path_bold = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-Bold.ttf"
 # font_path = settings.PROJECT_ROOT.replace("\\", "/")+"/header/AdobeArabic-Bold.ttf"
-
-
 pdfmetrics.registerFont(TTFont('Arabic-normal', font_path_regular))
 pdfmetrics.registerFont(TTFont('Arabic-bold', font_path_bold))
 
