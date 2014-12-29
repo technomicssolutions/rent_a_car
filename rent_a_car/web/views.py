@@ -789,7 +789,7 @@ class PrintRentAgreement(View):
             p.drawString(510, y - 210, 'License Expiry Date:')
             p.drawString(760, y - 210, 'Client Identity:')
 
-            p.drawString(100, y - 460, 'Amount')
+            p.drawString(100, y - 460, 'Rent Amount')
             p.drawString(100, y - 510, 'Total Amount')
             p.drawString(100, y - 560, 'Paid')
             p.drawString(100, y - 610, 'Balance')
@@ -838,7 +838,7 @@ class PrintRentAgreement(View):
             
             p.drawString(130, 710, rent_agreement.driver.driver_name)
             p.drawString(320, 710, rent_agreement.driver.driver_nationality)
-            p.drawString(130, 660, rent_agreement.driver.driver_passport_no)
+            p.drawString(130, 660, rent_agreement.driver.driver_passport_no if rent_agreement.driver.driver_passport_no else '')
             p.drawString(320, 660, rent_agreement.driver.driver_nationality)
 
             p.drawString(140, 610, rent_agreement.driver.sponsar_name)
@@ -1198,7 +1198,7 @@ class PrintReceiptCar(View):
 
             p.drawString(150, y, receive_car.rent_agreement.driver.driver_name)
             p.drawString(140, y - 50, receive_car.rent_agreement.driver.driver_nationality)
-            p.drawString(140, y - 100, receive_car.rent_agreement.driver.driver_passport_no)
+            p.drawString(140, y - 100, receive_car.rent_agreement.driver.driver_passport_no if receive_car.rent_agreement.driver.driver_passport_no else '')
             p.drawString(120, y - 150, receive_car.rent_agreement.driver.driver_address.replace('\n', ' '))
 
             p.drawString(150, y - 200, receive_car.rent_agreement.driver.driver_license_no)

@@ -6,6 +6,7 @@
 {% block controller %}ng-controller="ReceiveCarController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
 
 {% block content %}
+
 	<div id="main-title">
 		<div class="alert alert-info" align="Center"><h4>Receive Car</h4></div>
 	</div>
@@ -114,7 +115,7 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="sponsar_name">Sponsar Name</label>
+							<label for="sponsar_name">Sponsor Name</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="sponsar_name" ng-model="agreement.sponsar_name" readonly>
@@ -243,7 +244,7 @@
 							<label for="returning_date ">Returning Date and Time</label>
 						</div>
 						<div class="forminput">
-							<input type="text" ng-model="rent_agreement.returning_date" name="returning_date" id="returning_date">
+							<input type="text"ng-if="!!receipt.returning_date" ng-model="receipt.returning_date" name="returning_date" id="returning_date">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -317,7 +318,7 @@
 							<label for="total_amount">Total Amount</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="total_amount" ng-model="receipt.total_amount" id="total_amount" readonly>
+							<input type="text" name="total_amount" ng-model="receipt.total_amount" id="total_amount" readonly> [[test]]
 						</div>
 					</div>
 
@@ -331,7 +332,7 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="paid">Paid</label>
+							<label for="paid">Paid Amount on Receipt</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="paid" ng-model="agreement.paid" id="paid" readonly>
@@ -339,7 +340,7 @@
 					</div>
 					<div class="formrow_purchase">
 						<div class="formtext_purchase">
-							<label for="paid">Paid Amount on Receipt</label>
+							<label for="paid">Paid</label>
 						</div>
 						<div class="forminput">
 							<input type="text" name="paid" ng-model="receipt.paid" id="paid" ng-change="calculate_balance()">

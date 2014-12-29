@@ -249,6 +249,7 @@ get_agreement_details = function($scope, $http, from) {
 		var agreement_length = 0;
 		if (from == 'receive_car') {
 			agreement_length = data.whole_agreements.length;
+			$scope.agreement_date = data.whole_agreements.date;
 		} else if (from == 'rent_agreement') {
 			agreement_length = data.rent_agreements.length;
 		} else {
@@ -861,7 +862,7 @@ function ReceiveCarController($scope, $http, $location) {
 	}
 	$scope.init = function(csrf_token) {
 		$scope.csrf_token = csrf_token;
-		
+		$scope.test = 2;
         new Picker.Date($$('#receipt_date'), {
             timePicker: true,
             positionOffset: {x: 5, y: 0},
@@ -879,7 +880,43 @@ function ReceiveCarController($scope, $http, $location) {
             format:'%d/%m/%Y %X',
             canAlwaysGoUp: ['months', 'years'],
             ampm: true,
+            onSelect: function() {
+		       	$scope.calculate_date_difference();
+		       	$scope.calculate_balance();
+		       	console.log($scope.receipt.total_amount ); 
+		        },
+
         });
+        // $scope.receipt.returning_date = $$('#returning_date')[0].get('value');
+        
+	}
+	$scope.$watch($scope.receipt.total_amount,function(){
+			$scope.test = $scope.receipt.total_amount;
+			console.log($scope.receipt.total_amount)
+		});
+	$scope.calculate_date_difference = function(){
+		var dt1 = $scope.agreement.begining_date.split('/');
+		var one = new Date(dt1[2], dt1[1], dt1[0]);
+		console.log($$('#returning_date')[0].get('value'))
+		if ($$('#returning_date')[0].get('value') == ''){
+	   		var dt2 = $scope.agreement.end_date.split('/');
+	   		var two = new Date(dt2[2], dt2[1], dt2[0]);
+	   	}
+	   	else{
+	   		var	dt2 = $$('#returning_date')[0].get('value').split('/');
+	   		var year = dt2[2].split(' ')[0];
+	   		var two = new Date(year, dt2[1], dt2[0]);
+	   		
+	   	}
+	   	console.log(dt2, dt1) ;
+	    
+        var millisecondsPerDay = 1000 * 60 * 60 * 24;
+        var millisBetween = two.getTime() - one.getTime();
+        var days = millisBetween / millisecondsPerDay;
+        $scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge) + parseFloat($scope.receipt.salik_charges)).toFixed(2);
+        $scope.receipt.total_amount = parseFloat($scope.receipt.total_amount) * days;
+        $scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
+        console.log(days,$scope.receipt.total_amount ); 
 	}
 	$scope.get_agreement_details = function() {
 		
@@ -911,7 +948,9 @@ function ReceiveCarController($scope, $http, $location) {
 		$scope.receipt.agreement_id = agreement.id;
 		$scope.calculate_balance();
 	}
+	
 	$scope.calculate_balance = function() {
+		
 		if ($scope.receipt.petrol == '' || $scope.receipt.petrol != Number($scope.receipt.petrol)) {
 			$scope.receipt.petrol = 0;
 		}
@@ -938,9 +977,14 @@ function ReceiveCarController($scope, $http, $location) {
 		}
 		
 		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge) + parseFloat($scope.receipt.salik_charges)).toFixed(2);
+		$scope.calculate_date_difference();
 		$scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
 		$scope.receipt.balance = parseFloat($scope.receipt.balance) - parseFloat($scope.receipt.paid);
+		if ($scope.receipt.balance < 0){
+			$scope.receipt.balance = 0;
+			$scope.receipt.total_amount = $scope.receipt.paid;
+		}
 	}
 
 	$scope.receipt_car_validation = function() {
@@ -968,9 +1012,9 @@ function ReceiveCarController($scope, $http, $location) {
 		} else if ($scope.receipt.paid == 0 || $scope.receipt.paid == '' || $scope.receipt.paid == undefined) {
 			$scope.validation_error = 'Please enter Paid Amount on Receipt';
 			return false;
-		} else if ($scope.receipt.balance < 0) {
-			$scope.validation_error = 'Please enter valid Paid Amount on Receipt';
-			return false;
+		// } else if ($scope.receipt.balance < 0) {
+		// 	$scope.validation_error = 'Please enter valid Paid Amount on Receipt';
+		// 	return false;
 		}
 		return true;
 	}
