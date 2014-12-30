@@ -913,10 +913,15 @@ function ReceiveCarController($scope, $http, $location) {
         var millisecondsPerDay = 1000 * 60 * 60 * 24;
         var millisBetween = two.getTime() - one.getTime();
         var days = millisBetween / millisecondsPerDay;
-        $scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge) + parseFloat($scope.receipt.salik_charges)).toFixed(2);
-        $scope.receipt.total_amount = parseFloat($scope.receipt.total_amount) * days;
-        $scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
-        
+        console.log(days)
+        if (days > 0){
+	        $scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge) + parseFloat($scope.receipt.salik_charges)).toFixed(2);
+	        $scope.receipt.total_amount = parseFloat($scope.receipt.total_amount) * days;
+	        $scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
+        }else{
+        	$scope.receipt.total_amount = parseFloat($scope.agreement.rent);
+        	$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);	
+        }
 	}
 	$scope.get_agreement_details = function() {
 		
