@@ -851,7 +851,7 @@ a {
     color: #FFFFFF;
     font-weight: bold;
     height: 20px;
-    margin-left: 35px;
+    margin-left: -1px;
     padding: 5px;
     width: 20px;
 }

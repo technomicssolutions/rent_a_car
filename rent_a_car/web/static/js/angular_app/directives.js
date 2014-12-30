@@ -12,6 +12,28 @@ directives.directive('appVersion', [ 'version', function(version)
     };
 } ]);
 
+directives.directive('datepicker', function() {
+   return {
+        link:function($scope, $element, $attr, $controller){
+            new Picker.Date($$('#returning_date'), {
+            timePicker: true,
+            positionOffset: {x: 5, y: 0},
+            pickerClass: 'datepicker_bootstrap',
+            useFadeInOut: !Browser.ie,
+            format:'%d/%m/%Y %X',
+            canAlwaysGoUp: ['months', 'years'],
+            ampm: true,
+            onClose: function() {
+                $scope.calculate_date_difference();
+                $$('#total_amount').set('value', $scope.receipt.total_amount);
+                $$('#balance').set('value', $scope.receipt.balance);
+                },
+
+        });
+        
+     }
+    };
+});
 directives.directive('ngEnter', function() {
     return function(scope, element, attrs) {
         element.bind("keypress", function(event) {

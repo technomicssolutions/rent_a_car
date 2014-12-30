@@ -872,32 +872,32 @@ function ReceiveCarController($scope, $http, $location) {
             canAlwaysGoUp: ['months', 'years'],
             ampm: true,
         });
-        new Picker.Date($$('#returning_date'), {
-            timePicker: true,
-            positionOffset: {x: 5, y: 0},
-            pickerClass: 'datepicker_bootstrap',
-            useFadeInOut: !Browser.ie,
-            format:'%d/%m/%Y %X',
-            canAlwaysGoUp: ['months', 'years'],
-            ampm: true,
-            onSelect: function() {
-		       	$scope.calculate_date_difference();
-		       	$scope.calculate_balance();
-		       	console.log($scope.receipt.total_amount ); 
-		        },
+        // new Picker.Date($$('#returning_date'), {
+        //     timePicker: true,
+        //     positionOffset: {x: 5, y: 0},
+        //     pickerClass: 'datepicker_bootstrap',
+        //     useFadeInOut: !Browser.ie,
+        //     format:'%d/%m/%Y %X',
+        //     canAlwaysGoUp: ['months', 'years'],
+        //     ampm: true,
+        //   //   onSelect: function() {
+		      //  	// $scope.calculate_date_difference();
+		      //  	// $scope.calculate_balance()
+		      //  	// console.log($scope.receipt.total_amount ); 
+		      //   // },
 
-        });
+        // });
+        
         // $scope.receipt.returning_date = $$('#returning_date')[0].get('value');
         
 	}
-	$scope.$watch($scope.receipt.total_amount,function(){
-			$scope.test = $scope.receipt.total_amount;
-			console.log($scope.receipt.total_amount)
-		});
+	// $scope.$watch('datepicker',function(){
+	// 		console.log("hi")
+	// 		$scope.calculate_balance();
+	// 	});
 	$scope.calculate_date_difference = function(){
 		var dt1 = $scope.agreement.begining_date.split('/');
 		var one = new Date(dt1[2], dt1[1], dt1[0]);
-		console.log($$('#returning_date')[0].get('value'))
 		if ($$('#returning_date')[0].get('value') == ''){
 	   		var dt2 = $scope.agreement.end_date.split('/');
 	   		var two = new Date(dt2[2], dt2[1], dt2[0]);
@@ -916,7 +916,7 @@ function ReceiveCarController($scope, $http, $location) {
         $scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge) + parseFloat($scope.receipt.salik_charges)).toFixed(2);
         $scope.receipt.total_amount = parseFloat($scope.receipt.total_amount) * days;
         $scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
-        console.log(days,$scope.receipt.total_amount ); 
+        
 	}
 	$scope.get_agreement_details = function() {
 		
@@ -946,6 +946,7 @@ function ReceiveCarController($scope, $http, $location) {
 		}
 		$scope.receipt.total_amount = agreement.rent;
 		$scope.receipt.agreement_id = agreement.id;
+		$scope.receipt.rent_type = agreement.rent_type;
 		$scope.calculate_balance();
 	}
 	
@@ -977,7 +978,8 @@ function ReceiveCarController($scope, $http, $location) {
 		}
 		
 		$scope.receipt.total_amount = (parseFloat($scope.agreement.rent) + parseFloat($scope.receipt.petrol) + parseFloat($scope.receipt.fine) + parseFloat($scope.receipt.extra_charge) + parseFloat($scope.receipt.salik_charges)).toFixed(2);
-		$scope.calculate_date_difference();
+		if ($scope.receipt.rent_type == 'Daily' || $scope.receipt.rent_type == 'None')
+			$scope.calculate_date_difference();
 		$scope.receipt.total_amount = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.receipt.reduction)).toFixed(2);
 		$scope.receipt.balance = (parseFloat($scope.receipt.total_amount) - parseFloat($scope.agreement.paid)).toFixed(2);
 		$scope.receipt.balance = parseFloat($scope.receipt.balance) - parseFloat($scope.receipt.paid);

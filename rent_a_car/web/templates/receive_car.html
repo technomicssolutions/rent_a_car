@@ -236,7 +236,7 @@
 							<label for="receipt_date">Receipt Date and Time</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="receipt_date" ng-model="receipt.receipt_date" id="receipt_date">
+							<input type="text" name="receipt_date" ng-model="receipt.receipt_date" id="receipt_date" >
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -244,7 +244,7 @@
 							<label for="returning_date ">Returning Date and Time</label>
 						</div>
 						<div class="forminput">
-							<input type="text"ng-if="!!receipt.returning_date" ng-model="receipt.returning_date" name="returning_date" id="returning_date">
+							<input type="text"ng-if="!!receipt.returning_date" datepicker ng-model="receipt.returning_date" name="returning_date" id="returning_date">
 						</div>
 					</div>
 					<div class="formrow_purchase">
@@ -318,7 +318,7 @@
 							<label for="total_amount">Total Amount</label>
 						</div>
 						<div class="forminput">
-							<input type="text" name="total_amount" ng-model="receipt.total_amount" id="total_amount" readonly> [[test]]
+							<input type="text" name="total_amount" ng-model="receipt.total_amount" id="total_amount" readonly>
 						</div>
 					</div>
 
