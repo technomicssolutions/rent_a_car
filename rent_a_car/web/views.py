@@ -999,6 +999,7 @@ class AddDriver(View):
                 driver.driver_working_address = request.POST['driver_working_address']
                 driver.driver_working_ph = driver_details['working_tel_no']
                 driver.license_type = driver_details['license_type']
+                driver.driver_passport_no = driver_details['passport_no']
                 if driver_details['passport_issued_date']:
                     driver.date_of_passport_issue = datetime.strptime(driver_details['passport_issued_date'], '%d/%m/%Y')
                 driver.place_of_issue = driver_details['place_of_issue']

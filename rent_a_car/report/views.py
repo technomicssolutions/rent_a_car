@@ -174,7 +174,7 @@ class RentReport(View):
                         p.drawString(240, y, agreement.vehicle.vehicle_no)
                         p.drawString(340, y, agreement.vehicle.plate_no)
                         p.drawString(440, y, agreement.driver.driver_name)
-                        p.drawString(580, y, agreement.driver.driver_passport_no)
+                        p.drawString(580, y, agreement.driver.driver_passport_no if agreement.driver.driver_passport_no else '')
                         p.drawString(680, y, agreement.driver.driver_license_no)
                         p.drawString(780, y, str(total_amount))
                         p.drawString(880, y, str(paid))
@@ -258,7 +258,7 @@ class RentReport(View):
                         p.drawString(340, y, agreement.vehicle.plate_no)
                         p.drawString(440, y, agreement.driver.driver_name)
 
-                        p.drawString(590, y, agreement.driver.driver_passport_no)
+                        p.drawString(590, y, agreement.driver.driver_passport_no if agreement.driver.driver_passport_no else '' )
                         p.drawString(720, y, str(total_amount))
                         p.drawString(840, y, str(paid))
                         p.drawString(950, y, str(float(total_amount) - float(paid)))
